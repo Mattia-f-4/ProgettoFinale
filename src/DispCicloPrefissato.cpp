@@ -1,7 +1,7 @@
 #include "DispCicloPrefissato.h"
 
-DispCicloPrefissato::DispCicloPrefissato(int ID, std::string nome, DispDomotico tipo, Tempo accensione)
-    : Dispositivo(ID, nome, accensione), tipoDispositivo{tipo}
+DispCicloPrefissato::DispCicloPrefissato(std::string nome, DispDomotico tipo, Tempo accensione)
+    : Dispositivo(nome, accensione), tipoDispositivo{tipo}
 {
     switch(tipoDispositivo) {
         case DispDomotico::Lavatrice:

@@ -1,7 +1,7 @@
 #include "DispManuale.h"
 
-DispManuale::DispManuale(int ID, std::string nome, DispDomotico tipo, Tempo accensione, Tempo spegnimento)
-    : Dispositivo(ID, nome, accensione), tipoDispositivo{tipo}, oraSpegnimento{spegnimento}
+DispManuale::DispManuale(std::string nome, DispDomotico tipo, Tempo accensione, Tempo spegnimento)
+    : Dispositivo(nome, accensione), tipoDispositivo{tipo}, oraSpegnimento{spegnimento}
 {
     switch(tipoDispositivo) {
         case DispDomotico::Impianto_Fotovoltaico:

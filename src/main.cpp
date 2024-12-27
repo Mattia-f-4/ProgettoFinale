@@ -9,8 +9,8 @@ int main() {
     Tempo t3(20, 0);
     Tempo t4(22, 0);
 
-    DispManuale disp1(1, "Scaldabagno 1", DispManuale::DispDomotico::Scaldabagno, t1, t2);
-    DispManuale disp2(2, "Scaldabagno 2", DispManuale::DispDomotico::Scaldabagno, t3, t4);
+    DispManuale disp1("Scaldabagno 1", DispManuale::DispDomotico::Scaldabagno, t1, t2);
+    DispManuale disp2("Scaldabagno 2", DispManuale::DispDomotico::Scaldabagno, t3, t4);
 
     std::cout << "ID: " << disp1.getID() << std::endl;
     std::cout << "Nome: " << disp1.getNome() << std::endl;
@@ -29,8 +29,8 @@ int main() {
     Tempo t5(10, 30);
     Tempo t6(12, 30);
 
-    DispCicloPrefissato disp3(3, "Microonde 1", DispCicloPrefissato::DispDomotico::Forno_a_microonde, t5);
-    DispCicloPrefissato disp4(4, "Microonde 2", DispCicloPrefissato::DispDomotico::Forno_a_microonde, t6);
+    DispCicloPrefissato disp3("Microonde 1", DispCicloPrefissato::DispDomotico::Forno_a_microonde, t5);
+    DispCicloPrefissato disp4("Microonde 2", DispCicloPrefissato::DispDomotico::Forno_a_microonde, t6);
 
     std::cout << std::endl;
 

@@ -6,6 +6,7 @@
 
 class Dispositivo {
     public:
+        
         //Getter
         int getID() const;
         std::string getNome() const;
@@ -20,14 +21,12 @@ class Dispositivo {
         void changeStatus();
     
     protected:
+        
         //Costruttori
-        Dispositivo(int ID, std::string nome, Tempo accensione);
-
-        //Distruttore
-        virtual ~Dispositivo() = default;
-
+        Dispositivo(std::string nome, Tempo accensione);
+        
         //Variabili d'istanza
-        int ID;
+        int ID = 0;
         std::string nome;
         bool stato;
         Tempo oraAccensione;

@@ -13,7 +13,7 @@ class DispManuale : public Dispositivo {
             Frigorifero
         };
 
-        DispManuale(int ID, std::string nome, DispDomotico tipoDispositivo, Tempo accensione, Tempo spegnimento);
+        DispManuale(std::string nome, DispDomotico tipoDispositivo, Tempo accensione, Tempo spegnimento);
 
         // Getter
         Tempo getSpegnimento() const;

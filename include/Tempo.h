@@ -18,6 +18,11 @@ class Tempo {
         void setOra(int h);
         void setMinuti(int m);
 
+        //Overloading operatori  > e +
+        bool operator>(const Tempo& obj) const;
+        Tempo operator+(const int durata) const;
+        Tempo operator+(const Tempo& obj) const;
+
     private:
         int ora;
         int minuti;
@@ -25,6 +30,5 @@ class Tempo {
 
 //Helper Function
 std::ostream& operator<<(std::ostream& os, const Tempo& obj);   
-Tempo calcolaOrario(const Tempo& obj, int durata); 
 
 #endif

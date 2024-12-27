@@ -15,7 +15,7 @@ class DispCicloPrefissato : public Dispositivo {
             Televisore
         };
 
-        DispCicloPrefissato(int ID, std::string nome, DispDomotico tipo, Tempo accensione);
+        DispCicloPrefissato(std::string nome, DispDomotico tipo, Tempo accensione);
 
         // Getter
         Tempo getDurata() const;

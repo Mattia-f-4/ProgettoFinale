@@ -2,11 +2,14 @@
 
 using namespace std;
 
+/* VARIABILE GLOBALE ID */
+    int globalID = 0;
+
 /* COSTRUTTORI */
 
     //Costruttore parametrico
-    Dispositivo::Dispositivo(int ID, std::string nome, Tempo accensione)
-        : ID{ID}, nome{nome}, oraAccensione{accensione}, stato{false} {}
+    Dispositivo::Dispositivo(std::string nome, Tempo accensione)
+        : nome{nome}, oraAccensione{accensione}, stato{false}, ID{++globalID} {}
 
 /* FUNZIONI MEMBRO */
 
