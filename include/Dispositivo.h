@@ -6,38 +6,31 @@
 
 class Dispositivo {
     public:
-        //Costruttori
-        Dispositivo(int ID, std::string nome, int prod, int consumo, Tempo accensione, Tempo accensionePost);
         
-        //Distruttore
-        virtual ~Dispositivo() = default;
-
         //Getter
         int getID() const;
         std::string getNome() const;
-        int getProdPotenza() const;
-        int getConsumoPotenza() const;
         bool getStato() const;
         Tempo getAccensione() const;
-        Tempo getAccensionePost() const;
 
         //Setter
         void setStato(bool s);
         void setAccensione(const Tempo& ora);
-        void setAccensionePost(const Tempo& ora);
 
         //Member Function
         void changeStatus();
     
     protected:
+        
+        //Costruttori
+        Dispositivo(std::string nome, Tempo accensione);
+        
         //Variabili d'istanza
-        int ID;
+        int ID = 0;
         std::string nome;
-        int prodPotenza;
-        int consumoPotenza;
         bool stato;
         Tempo oraAccensione;
-        Tempo oraAccensionePost;
+
 };
 
 #endif
