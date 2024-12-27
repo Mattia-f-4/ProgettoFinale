@@ -11,44 +11,55 @@
 class SistemaDomotico
 {
     public:
-        //Costruttori
-        SistemaDomotico(); 
-        SistemaDomotico(double);    
+    /* COSTRUTTORI */
+    SistemaDomotico();    
 
-        //Member Function
-        void setTime(Tempo&);
-        void setOff(Dispositivo&);
-        void setOn(Dispositivo&);
-        void setTimer(Dispositivo&, Tempo&);
-        void setTimer(DispManuale&, Tempo&, Tempo&);
-        void rm(DispManuale&);
-        void add(DispManuale::DispDomotico);
-        void add(DispCicloPrefissato::DispDomotico);
-        void erase(int);
-        
-        //Funzioni di debug
-        void resetTime();
-        void resetTimers();
-        void resetAll();
+    /* FUNZIONI MEMBRO */
+    std::ostream& setTime(std::ostream&, Tempo&);
+    std::ostream& setOff(std::ostream&, Dispositivo&);
+    std::ostream& setOn(std::ostream&, Dispositivo&);
+    std::ostream& setTimer(std::ostream&, Dispositivo&, Tempo&);
+    std::ostream& setTimer(std::ostream&, DispManuale&, Tempo&, Tempo&);
+    std::ostream& rm(std::ostream&, DispManuale&);
+
+    //Funzioni per logging
+    std::ostream& show(std::ostream&); 
+    std::ostream& show(std::ostream&, Dispositivo&);
+
+    //Funzioni per la gestione dei dispositivi
+    void add(DispManuale::DispDomotico);
+    void add(DispCicloPrefissato::DispDomotico);
+    void erase(int);
+
+    // Funzioni di debug
+    std::ostream& resetTime(std::ostream&);
+    void resetTimers();
+    void resetAll();
+
+    //Funzioni di supporto alle funzioni di debug
+    void setOffAll();
+    void rmAll();
+
+    //Getter
+    int getSize() const;
+    Tempo getTime() const;
+    double getPotenzaResidua() const;
+    double getLimitePotenza() const;
 
     private:
-        //Contenitori STL
-        std::multimap<Tempo, int> TimeLine;
-        std::stack<int> OrdineAccensione;
-        std::map<int,Dispositivo&> DataBase;
+    //Contenitori STL   
+    std::multimap<Tempo, int> TimeLine;
+    std::stack<int> OrdineAccensione;
+    std::map<int,Dispositivo&> DataBase;
 
-        //Variabili d'istanza
-        const double limitePotenza;
-        double potenzaResidua;
-        Tempo orario;
-        int size;
+    /* DATI MEMBRO */
+    const double limitePotenza;
+    double potenzaResidua;
+    Tempo orario;
+    int size;
 
-        //Member function
-        void sovraccarico();
+    /*  FUNZIONI DI CONTROLLO */
+    void sovraccarico();
 };
-
-//Helper function
-std::ostream& show(std::ostream&, SistemaDomotico&);
-std::ostream& show(std::ostream&, SistemaDomotico&, Dispositivo&);
 
 #endif
