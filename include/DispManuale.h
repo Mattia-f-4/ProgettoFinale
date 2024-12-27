@@ -13,20 +13,14 @@ class DispManuale : public Dispositivo {
             Frigorifero
         };
 
-        DispManuale(std::string nome, DispDomotico tipoDispositivo, Tempo accensione, Tempo spegnimento);
-
-        // Getter
-        Tempo getSpegnimento() const;
-        double getPotenza() const;
+        DispManuale(std::string, DispDomotico, Tempo, Tempo);
 
         // Setter
-        void setAccensione(const Tempo& ora);
+        void setSpegnimento(const Tempo&);
 
     private:
         std::map<DispDomotico, double> tipiDispositivi;
-        Tempo oraSpegnimento;
         DispDomotico tipoDispositivo;
-        double potenza;
 }; 
 
 #endif

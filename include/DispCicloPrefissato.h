@@ -17,18 +17,16 @@ class DispCicloPrefissato : public Dispositivo {
 
         DispCicloPrefissato(std::string nome, DispDomotico tipo, Tempo accensione);
 
-        // Getter
+        //Getter
         Tempo getDurata() const;
-        double getPotenza() const;
 
-        // Setter
+        //Setter
         void setAccensione(const Tempo& ora);
 
     private:
         std::map<DispDomotico, std::pair<Tempo, double>> tipiDispositivi;
         Tempo durata;
         DispDomotico tipoDispositivo;
-        double potenza;
 }; 
 
 #endif
