@@ -16,7 +16,7 @@ class Dispositivo {
         Tempo getSpegnimento() const;
 
         //Setter
-        void setStato(bool s);
+        void setStato(bool);
         void setAccensione(const Tempo&);
         void setSpegnimento(const Tempo&);
 

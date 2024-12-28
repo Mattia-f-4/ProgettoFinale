@@ -3,7 +3,9 @@
 /* VARIABILE GLOBALE ID */
     int CycleID = 1;    //Disp. a ciclo prefissato hanno ID dispari
 
-/* COSTRUTTORE */
+/* COSTRUTTORI */
+    
+    //Costruttore parametrico
     DispCicloPrefissato::DispCicloPrefissato(std::string nome, DispDomotico tipo, Tempo accensione)
         : Dispositivo(nome, accensione), tipoDispositivo{tipo}
     {
@@ -28,8 +30,10 @@
                 break;
         }
 
+        //Assegnamento e aggiornamento ID
         ID = CycleID;
         CycleID = CycleID + 2;
+
         durata = tipiDispositivi[tipoDispositivo].first;
         oraSpegnimento = getAccensione() + durata;
         potenza = tipiDispositivi[tipoDispositivo].second;

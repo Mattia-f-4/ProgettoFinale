@@ -6,6 +6,8 @@
 
 class DispManuale : public Dispositivo {
     public:
+        
+        //Enum class per elencare i vari dispositivi possibili
         enum class DispDomotico {
             Impianto_Fotovoltaico,
             Pompa_di_calore_termostato,
@@ -13,12 +15,15 @@ class DispManuale : public Dispositivo {
             Frigorifero
         };
 
+        //Costruttore
         DispManuale(std::string, DispDomotico, Tempo, Tempo);
 
-        // Setter
+        //Setter
         void setSpegnimento(const Tempo&);
 
     private:
+
+        //Variabili d'istanza
         std::map<DispDomotico, double> tipiDispositivi;
         DispDomotico tipoDispositivo;
 }; 
