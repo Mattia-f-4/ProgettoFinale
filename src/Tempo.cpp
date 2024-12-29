@@ -38,6 +38,66 @@ using namespace std;
             throw invalid_argument("Minutes must be between 0 and 59");
     }
 
+    //Overloading operator >
+    bool Tempo::operator>(const Tempo& t) const {
+        if (getOra() > t.getOra()) {
+            return true;
+        }
+        if (getOra() == t.getOra() && getMinuti() > t.getMinuti()) {
+            return true;
+        }
+        return false;
+    }
+
+    //Overloading operator <
+    bool Tempo::operator<(const Tempo& t) const {
+        if (getOra() < t.getOra()) {
+            return true;
+        }
+        if (getOra() == t.getOra() && getMinuti() < t.getMinuti()) {
+            return true;
+        }
+        return false;
+    }
+
+    //Overloading operator +
+    Tempo Tempo::operator+(const int durata) const{
+        if(durata <= 0)
+            throw invalid_argument("Duration must be positive");
+
+        int newMin = getMinuti() + durata;
+        int newH = getOra() + newMin / 60;
+        newMin = newMin % 60;
+
+        return Tempo(newH, newMin);
+    }
+
+    Tempo Tempo::operator+(const Tempo& durata) const{
+        if(durata.getOra() < 0 && durata.getMinuti() <= 0)
+            throw invalid_argument("Duration must be positive");
+        
+        int newMin = getMinuti() + durata.getMinuti();
+        int newH = getOra() + durata.getOra() + newMin/60;
+        newMin = newMin % 60;
+
+        return Tempo(newH, newMin);
+    }
+
+    //Overloading operator -
+    Tempo Tempo::operator-(const Tempo& t) const{
+        if(t > *this)
+            throw invalid_argument("Cannot subtract a bigger time");
+        
+        int newMin = getMinuti() - t.getMinuti();
+        int newH = getOra() - t.getOra();
+        if(newMin < 0) {
+            newH--;
+            newMin = (60-abs(newMin)) % 60;
+        }
+
+        return Tempo(newH, newMin);
+    }
+
 /* HELPER FUNCTION */
 
     //Overloading operatore <<
@@ -58,16 +118,4 @@ using namespace std;
         os << "]";
         
         return os;
-    }
-
-    //calcolaOrario, per calcolare un orario a partire da un altro orario e relativa durata
-    Tempo calcolaOrario(const Tempo& obj, int durata) {
-        if(durata <= 0)
-            throw invalid_argument("Duration must be positive");
-
-        int newMin = obj.getMinuti() + durata;
-        int newH = obj.getOra() + newMin / 60;
-        newMin = newMin % 60;
-
-        return Tempo(newH, newMin);
     }

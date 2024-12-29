@@ -6,25 +6,34 @@
 
 class Tempo {
     public:
+        
         //Costruttori
         Tempo();
-        Tempo(int h, int m);
+        Tempo(int, int);
 
         //Getter
         int getOra() const;
         int getMinuti() const;
 
         //Setter
-        void setOra(int h);
-        void setMinuti(int m);
+        void setOra(int);
+        void setMinuti(int);
+
+        //Overloading operatori >, < e +
+        bool operator>(const Tempo&) const;
+        bool operator<(const Tempo&) const;
+        Tempo operator+(const int) const;
+        Tempo operator+(const Tempo&) const;
+        Tempo operator-(const Tempo&) const;
 
     private:
+       
+        //Variabili d'istanza
         int ora;
         int minuti;
 };
 
 //Helper Function
-std::ostream& operator<<(std::ostream& os, const Tempo& obj);   
-Tempo calcolaOrario(const Tempo& obj, int durata); 
+std::ostream& operator<<(std::ostream&, const Tempo&);   
 
 #endif
