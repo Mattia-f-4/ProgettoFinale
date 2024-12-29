@@ -17,10 +17,10 @@ class SistemaDomotico
 
         //Member Function
         std::ostream& setTime(std::ostream&, Tempo&);
-        std::ostream& setOff(std::ostream&, Dispositivo&);
-        std::ostream& setOn(std::ostream&, Dispositivo&);
-        std::ostream& setTimer(std::ostream&, Dispositivo&, Tempo&);
-        std::ostream& setTimer(std::ostream&, DispManuale&, Tempo&, Tempo&);
+        std::ostream& setOff(std::ostream&, std::string);
+        std::ostream& setOn(std::ostream&, std::string);
+        std::ostream& setTimer(std::ostream&, std::string, Tempo&);
+        std::ostream& setTimer(std::ostream&, std::string, Tempo&, Tempo&);
         std::ostream& rm(std::ostream&, DispManuale&);
 
         //Funzioni per logging
@@ -50,15 +50,15 @@ class SistemaDomotico
     private:
         
         //Contenitori STL   
-        std::multimap<Tempo, int> TimeLine;
-        std::stack<int> OrdineAccensione;
-        std::map<int,Dispositivo&> DataBase;
+        std::multimap<Tempo, std::string> TimeLine;
+        std::stack<std::string> OrdineAccensione;
+        std::map<std::string,Dispositivo*> DataBase;
 
-    /* DATI MEMBRO */
-    const double limitePotenza;
-    double potenzaResidua;
-    Tempo orario;
-    int size;
+        /* DATI MEMBRO */
+        constexpr static double limitePotenza = 3.5; 
+        double potenzaResidua;
+        Tempo orario;
+        int size;
 
         //Funzione di controllo 
         void sovraccarico();

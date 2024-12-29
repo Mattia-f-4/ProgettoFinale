@@ -27,7 +27,9 @@ class Dispositivo {
     protected:
         
         //Costruttori
+        Dispositivo(std::string, Tempo, Tempo);
         Dispositivo(std::string, Tempo);
+        Dispositivo(std::string);
         
         //Variabili d'istanza
         int ID = 0;

@@ -98,6 +98,15 @@ using namespace std;
         return Tempo(newH, newMin);
     }
 
+    //Overloading operator=
+    Tempo& Tempo::operator=(const Tempo& t)
+    {
+        ora = t.getOra();
+        minuti = t.getMinuti();
+
+        return *this;
+    }
+
 /* HELPER FUNCTION */
 
     //Overloading operatore <<

@@ -15,7 +15,8 @@ class DispManuale : public Dispositivo {
             Frigorifero
         };
 
-        //Costruttore
+        //Costruttori
+        DispManuale(std::string, DispDomotico);
         DispManuale(std::string, DispDomotico, Tempo, Tempo);
 
         //Setter
