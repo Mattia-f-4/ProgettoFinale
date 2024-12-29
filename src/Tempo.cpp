@@ -83,6 +83,7 @@ using namespace std;
         return Tempo(newH, newMin);
     }
 
+    //Overloading operator -
     Tempo Tempo::operator-(const Tempo& t) const{
         if(t > *this)
             throw invalid_argument("Cannot subtract a bigger time");

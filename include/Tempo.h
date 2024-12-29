@@ -6,6 +6,7 @@
 
 class Tempo {
     public:
+        
         //Costruttori
         Tempo();
         Tempo(int, int);
@@ -26,6 +27,8 @@ class Tempo {
         Tempo operator-(const Tempo&) const;
 
     private:
+       
+        //Variabili d'istanza
         int ora;
         int minuti;
 };

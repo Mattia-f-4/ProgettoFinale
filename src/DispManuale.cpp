@@ -3,7 +3,9 @@
 /* VARIABILE GLOBALE ID */
     int ManualID = 0;   //Disp. manuali hanno ID pari
 
-/* COSTRUTTORE */
+/* COSTRUTTORI */
+    
+    //Costruttore parametrico
     DispManuale::DispManuale(std::string nome, DispDomotico tipo, Tempo accensione, Tempo spegnimento)
         : Dispositivo(nome, accensione), tipoDispositivo{tipo}
     {
@@ -22,8 +24,10 @@
                 break;
         }
 
+        //Assegnamento e aggiornamento ID
         ID = ManualID;
         ManualID = ManualID +2;
+
         oraSpegnimento = spegnimento;
         potenza = tipiDispositivi[tipoDispositivo];
     }
