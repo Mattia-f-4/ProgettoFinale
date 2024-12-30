@@ -19,13 +19,14 @@ class Tempo {
         void setOra(int);
         void setMinuti(int);
 
-        //Overloading operatori >, <, + e =
+        //Overloading operatori >, <, +, = e ==
         bool operator>(const Tempo&) const;
         bool operator<(const Tempo&) const;
         Tempo operator+(const int) const;
         Tempo operator+(const Tempo&) const;
         Tempo operator-(const Tempo&) const;
         Tempo& operator=(const Tempo&);
+        bool operator==(const Tempo&) const;
 
     private:
        

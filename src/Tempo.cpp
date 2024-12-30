@@ -128,3 +128,16 @@ using namespace std;
         
         return os;
     }
+
+    //Overloading operator==
+    bool Tempo::operator==(const Tempo& t) const
+    {
+        if(t.getOra()==ora && t.getMinuti()==minuti)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }

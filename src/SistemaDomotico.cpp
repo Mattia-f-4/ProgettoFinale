@@ -78,13 +78,31 @@ std::ostream& SistemaDomotico::setOn(std::ostream& out, std::string disp)
     }
     else
     {
-        DataBase.find(disp) -> second -> setStato(1); //accendiamo il dispositivo
-        potenzaResidua += DataBase.find(disp) -> second -> getPotenza(); //aggiorniamo la potenza residua del sistema
+        //Se la sua accensione comporterebbe un superamento della potenza non lo accendo
+        if(potenzaResidua + DataBase.find(disp) -> second -> getPotenza() > limitePotenza)
+        {
+            //Rimuovo eventuali timer di spegnimento nel caso in cui l'accensione sia stata chiamata da un timer
+            for(auto p = TimeLine.begin(); p != TimeLine.end(); p++)
+            {
+                if(p -> second -> getNome() == disp && p->first == p->second->getSpegnimento())
+                {
+                    p->second->setSpegnimento(Tempo(-1,0));
+                    TimeLine.erase(p);
+                }
+                break; //ci può essere solamente un timer di spegnimento0
+            };
+            out << orario << " " << disp << " non acceso. Limite di potenza raggiunto." << std::endl;  
+        }
+        else
+        {
+            DataBase.find(disp) -> second -> setStato(1); //accendiamo il dispositivo
+            potenzaResidua += DataBase.find(disp) -> second -> getPotenza(); //aggiorniamo la potenza residua del sistema
 
-        //Mettiamo nello stack l'accensione in modo da poter gestire la politca di spegnimento
-        OrdineAccensione.push(disp);
-        //Mostriamo a schermo il messaggio
-        out << orario << " Il dispositivo" << disp << " si è acceso." << std::endl;
+            //Mettiamo nello stack l'accensione in modo da poter gestire la politca di spegnimento
+            OrdineAccensione.push(disp);
+            //Mostriamo a schermo il messaggio
+            out << orario << " Il dispositivo" << disp << " si è acceso." << std::endl;
+        } //VA CONTROLLATO SE VA BENE CON LA MULTIMAP
     }
 
     return out;
@@ -93,14 +111,25 @@ std::ostream& SistemaDomotico::setOn(std::ostream& out, std::string disp)
 //setTimer
 std::ostream& SistemaDomotico::setTimer(std::ostream& out, std::string disp, Tempo& accensione)
 {
-    if(accensione<orario)
+    if(accensione<orario || accensione == Tempo(-1,0)) //Non imposto il timer se gli orari non sono validi
     {
-        //da terminare
+        out << orario << " L'orario di accensione inserito è non valido. Timer non settato." << std::endl;
+    }
+    else
+    {
+        //se il dispositivo manuale è gia acceso non imposto il timer
+        if(dynamic_cast<DataBase.find(disp)->secondo>!=nullptr)
+
+        //se il dispositivo CP si spegne dopo l'inizio del timer posticipo lo spegnimento
     }
     return out;
 }
 
 std::ostream& SistemaDomotico::setTimer(std::ostream& out, std::string disp, Tempo& accensione, Tempo& spegnimento)
 {
+    if(accensione<orario || accensione == Tempo(-1,0) || spegnimento == Tempo(-1,0)) //Non imposto il timer se gli orari non sono validi
+    {
+        out << orario << " L'orario di accensione inserito è non valido. Timer non settato." << std::endl;
+    }
     return out;
 }

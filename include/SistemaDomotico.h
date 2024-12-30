@@ -50,7 +50,7 @@ class SistemaDomotico
     private:
         
         //Contenitori STL   
-        std::multimap<Tempo, std::string> TimeLine;
+        std::multimap<Tempo, Dispositivo*> TimeLine;
         std::stack<std::string> OrdineAccensione;
         std::map<std::string,Dispositivo*> DataBase;
 
