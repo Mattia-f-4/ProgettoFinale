@@ -1,15 +1,13 @@
 #include "Dispositivo.h"
+#include <cmath>
 
 using namespace std;
-
-/* VARIABILE GLOBALE ID */
-    int globalID = 0;
 
 /* COSTRUTTORI */
 
     //Costruttore parametrico
     Dispositivo::Dispositivo(std::string nome, Tempo accensione)
-        : nome{nome}, oraAccensione{accensione}, stato{false}, ID{++globalID} {}
+        : nome{nome}, oraAccensione{accensione}, stato{false} {}
 
 /* FUNZIONI MEMBRO */
 
@@ -17,7 +15,9 @@ using namespace std;
     int Dispositivo::getID() const { return ID; }
     string Dispositivo::getNome() const { return nome; }
     bool Dispositivo::getStato() const { return stato; }
+    double Dispositivo::getPotenza() const { return potenza; }
     Tempo Dispositivo::getAccensione() const { return oraAccensione; }
+    Tempo Dispositivo::getSpegnimento() const { return oraSpegnimento; }
 
     //Setter
     void Dispositivo::setStato(bool s) { stato = s; }
@@ -29,4 +29,24 @@ using namespace std;
             setStato(false);
         else
             setStato(true);
+    }
+
+    //consumoEnergetico
+    double Dispositivo::consumoEnergetico(const Tempo& t) const {
+        Tempo durata;
+        double consumo;
+        
+        if(getAccensione() > t)
+            return 0;
+        
+        if(t < getSpegnimento()) {
+            durata = t-getAccensione();
+        }
+        else {
+            durata = getSpegnimento()-getAccensione();
+        }
+
+        consumo = fabs(durata.getOra() * getPotenza() + ( (double) durata.getMinuti() / 60) * getPotenza());
+
+        return consumo;
     }

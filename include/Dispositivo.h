@@ -11,25 +11,33 @@ class Dispositivo {
         int getID() const;
         std::string getNome() const;
         bool getStato() const;
+        double getPotenza() const;
         Tempo getAccensione() const;
+        Tempo getSpegnimento() const;
 
         //Setter
-        void setStato(bool s);
-        void setAccensione(const Tempo& ora);
+        void setStato(bool);
+        void setAccensione(const Tempo&);
+        void setSpegnimento(const Tempo&);
 
         //Member Function
         void changeStatus();
+        double consumoEnergetico(const Tempo&) const;
     
     protected:
         
         //Costruttori
-        Dispositivo(std::string nome, Tempo accensione);
+        Dispositivo(std::string, Tempo);
         
         //Variabili d'istanza
         int ID = 0;
         std::string nome;
         bool stato;
+        double potenza;
         Tempo oraAccensione;
+        Tempo oraSpegnimento;
+
 };
+
 
 #endif

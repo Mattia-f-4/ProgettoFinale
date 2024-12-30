@@ -39,11 +39,22 @@ using namespace std;
     }
 
     //Overloading operator >
-    bool Tempo::operator>(const Tempo& obj) const {
-        if (getOra() > obj.getOra()) {
+    bool Tempo::operator>(const Tempo& t) const {
+        if (getOra() > t.getOra()) {
             return true;
         }
-        if (getOra() == obj.getOra() && getMinuti() > obj.getMinuti()) {
+        if (getOra() == t.getOra() && getMinuti() > t.getMinuti()) {
+            return true;
+        }
+        return false;
+    }
+
+    //Overloading operator <
+    bool Tempo::operator<(const Tempo& t) const {
+        if (getOra() < t.getOra()) {
+            return true;
+        }
+        if (getOra() == t.getOra() && getMinuti() < t.getMinuti()) {
             return true;
         }
         return false;
@@ -68,6 +79,21 @@ using namespace std;
         int newMin = getMinuti() + durata.getMinuti();
         int newH = getOra() + durata.getOra() + newMin/60;
         newMin = newMin % 60;
+
+        return Tempo(newH, newMin);
+    }
+
+    //Overloading operator -
+    Tempo Tempo::operator-(const Tempo& t) const{
+        if(t > *this)
+            throw invalid_argument("Cannot subtract a bigger time");
+        
+        int newMin = getMinuti() - t.getMinuti();
+        int newH = getOra() - t.getOra();
+        if(newMin < 0) {
+            newH--;
+            newMin = (60-abs(newMin)) % 60;
+        }
 
         return Tempo(newH, newMin);
     }

@@ -6,6 +6,8 @@
 
 class DispCicloPrefissato : public Dispositivo {
     public:
+        
+        //Enum class per elencare i vari tipi di dispositivi
         enum class DispDomotico {
             Lavatrice,
             Lavastoviglie,
@@ -15,20 +17,21 @@ class DispCicloPrefissato : public Dispositivo {
             Televisore
         };
 
-        DispCicloPrefissato(std::string nome, DispDomotico tipo, Tempo accensione);
+        //Costruttore
+        DispCicloPrefissato(std::string, DispDomotico, Tempo);
 
-        // Getter
+        //Getter
         Tempo getDurata() const;
-        double getPotenza() const;
 
-        // Setter
-        void setAccensione(const Tempo& ora);
+        //Setter
+        void setAccensione(const Tempo&);
 
     private:
+        
+        //Variabili d'istanza
         std::map<DispDomotico, std::pair<Tempo, double>> tipiDispositivi;
-        Tempo durata;
         DispDomotico tipoDispositivo;
-        double potenza;
+        Tempo durata;
 }; 
 
 #endif
