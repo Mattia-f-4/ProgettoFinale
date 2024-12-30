@@ -11,7 +11,6 @@
 class SistemaDomotico
 {
     public:
-        
         //Costruttore
         SistemaDomotico();    
 
@@ -21,16 +20,16 @@ class SistemaDomotico
         std::ostream& setOn(std::ostream&, std::string);
         std::ostream& setTimer(std::ostream&, std::string, Tempo&);
         std::ostream& setTimer(std::ostream&, std::string, Tempo&, Tempo&);
-        std::ostream& rm(std::ostream&, DispManuale&);
+        std::ostream& rm(std::ostream&, std::string);
 
         //Funzioni per logging
         std::ostream& show(std::ostream&); 
-        std::ostream& show(std::ostream&, Dispositivo&);
+        std::ostream& show(std::ostream&, std::string);
 
         //Funzioni per la gestione dei dispositivi
-        void add(DispManuale::DispDomotico);
-        void add(DispCicloPrefissato::DispDomotico);
-        void erase(int);
+        void add(std::string, DispCicloPrefissato::DispDomotico);
+        void add(std::string, DispManuale::DispDomotico);
+        void erase(std::string);
 
         // Funzioni di debug
         std::ostream& resetTime(std::ostream&);
@@ -40,6 +39,9 @@ class SistemaDomotico
         //Funzioni di supporto alle funzioni di debug
         void setOffAll();
         void rmAll();
+        //Funzioni di supporto alle member function
+        bool isManuale(Dispositivo*);
+        bool isCP(Dispositivo*);
 
         //Getter
         int getSize() const;
@@ -49,13 +51,14 @@ class SistemaDomotico
 
     private:
         
-        //Contenitori STL   
-        std::multimap<Tempo, Dispositivo*> TimeLine;
+        //Contenitori STL 
+        //int serve per indicare se si tratta di accensione o spegnimento  
+        std::multimap<Tempo, std::pair<int,Dispositivo*>> TimeLine;
         std::stack<std::string> OrdineAccensione;
         std::map<std::string,Dispositivo*> DataBase;
 
         /* DATI MEMBRO */
-        constexpr static double limitePotenza = 3.5; 
+        const static double limitePotenza = 3.5; 
         double potenzaResidua;
         Tempo orario;
         int size;

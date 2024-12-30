@@ -24,9 +24,6 @@ class DispCicloPrefissato : public Dispositivo {
         //Getter
         Tempo getDurata() const;
 
-        //Setter
-        void setAccensione(const Tempo&);
-
     private:
         
         //Variabili d'istanza

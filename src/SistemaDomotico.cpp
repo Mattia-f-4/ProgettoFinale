@@ -15,7 +15,7 @@ SistemaDomotico::SistemaDomotico() : orario{0,0}, size{10}, potenzaResidua{limit
     //Creazione dei dispositivi manuali predefiniti
     Dispositivo* Frigorifero = new DispManuale("Frigorifero",DispManuale::DispDomotico::Frigorifero);
 
-    Dispositivo* ImpiantoFotovoltaico = new DispManuale("Impianto Fotovoltaico",DispManuale::DispDomotico::Impianto_Fotovoltaico);
+    Dispositivo* ImpiantoFotovoltaico = new DispManuale("Impianto fotovoltaico",DispManuale::DispDomotico::Impianto_Fotovoltaico);
 
     Dispositivo* Pompa_di_calore_termostato = new DispManuale("Pompa di calore + termostato",DispManuale::DispDomotico::Pompa_di_calore_termostato);
 
@@ -84,9 +84,9 @@ std::ostream& SistemaDomotico::setOn(std::ostream& out, std::string disp)
             //Rimuovo eventuali timer di spegnimento nel caso in cui l'accensione sia stata chiamata da un timer
             for(auto p = TimeLine.begin(); p != TimeLine.end(); p++)
             {
-                if(p -> second -> getNome() == disp && p->first == p->second->getSpegnimento())
+                if(p -> second.second -> getNome() == disp && p->second.first==0)
                 {
-                    p->second->setSpegnimento(Tempo(-1,0));
+                    p->second.second->setSpegnimento(Tempo(-1,0));
                     TimeLine.erase(p);
                 }
                 break; //ci può essere solamente un timer di spegnimento0
@@ -108,28 +108,75 @@ std::ostream& SistemaDomotico::setOn(std::ostream& out, std::string disp)
     return out;
 }
 
+//Funzioni di supporto per determinare il tipo di dispositivo
+bool SistemaDomotico::isManuale(Dispositivo* d)
+{
+    return d->getID()%2==0;
+}
+bool SistemaDomotico::isCP(Dispositivo* d)
+{
+    return d->getID()%2==1;
+}
+
 //setTimer
 std::ostream& SistemaDomotico::setTimer(std::ostream& out, std::string disp, Tempo& accensione)
 {
-    if(accensione<orario || accensione == Tempo(-1,0)) //Non imposto il timer se gli orari non sono validi
+    auto  p = DataBase.find(disp);
+    if(p == DataBase.end())
     {
-        out << orario << " L'orario di accensione inserito è non valido. Timer non settato." << std::endl;
+        //se cerco di impostare un timer per un dispositivo inesistente mi avverte
+        out << orario << " Il dispositivo " << disp << " non esiste. Impossibile impostare il timer desiderato." << std::endl;
     }
     else
     {
-        //se il dispositivo manuale è gia acceso non imposto il timer
-        if(dynamic_cast<DataBase.find(disp)->secondo>!=nullptr)
+        if(accensione<orario || accensione == Tempo(-1,0)) //Non imposto il timer se gli orari non sono validi
+        {
+            out << orario << " L'orario di accensione inserito è non valido. Timer non settato." << std::endl;
+        }
+        else
+        {
+            TimeLine.insert(std::make_pair(accensione, std::make_pair(1, p -> second)));
 
-        //se il dispositivo CP si spegne dopo l'inizio del timer posticipo lo spegnimento
+            //si potrebbe dividere il messaggio per cp e manuale, dicendo per i cp l'orario in cui si spegne
+            out << orario << " Impostato un timer per il dispositivo " << disp << " dalle ore " << accensione <<std::endl;
+        }
     }
     return out;
 }
 
 std::ostream& SistemaDomotico::setTimer(std::ostream& out, std::string disp, Tempo& accensione, Tempo& spegnimento)
 {
-    if(accensione<orario || accensione == Tempo(-1,0) || spegnimento == Tempo(-1,0)) //Non imposto il timer se gli orari non sono validi
+    auto p = DataBase.find(disp);
+    if(p == DataBase.end())
     {
-        out << orario << " L'orario di accensione inserito è non valido. Timer non settato." << std::endl;
+        //se cerco di impostare un timer per un dispositivo inesistente mi avverte
+        out << orario << " Il dispositivo " << disp << " non esiste. Impossibile impostare il timer desiderato." << std::endl;
+    }
+    else
+    {
+        if(accensione<orario || accensione == Tempo(-1,0) || spegnimento == Tempo(-1,0) || accensione > spegnimento) //Non imposto il timer se gli orari non sono validi
+        {
+            out << orario << " L'orario inserito non è valido. Timer non settato." << std::endl;
+        }
+        else
+        {  
+            Dispositivo* d = p -> second;
+            //Il timer di accensione viene sempre messo
+            TimeLine.insert(std::make_pair(accensione, std::make_pair(1, d)));
+
+            //Per i dispositivi CP il timer di spegnimento viene ignorato
+            if(isCP(d))
+            {
+                out << orario << " Impostato un timer per il dispositivo " << disp << " dalle ore " << accensione << "." <<std::endl;
+            }
+            else if(isManuale(d)) //uso else if nel caso in cui venissero introdotti ulteriori tipi di dispositivi
+            {
+                TimeLine.insert(std::make_pair(spegnimento, std::make_pair(0, d)));
+
+                out << orario << " Impostato un timer per il dispositivo " << disp << " dalle ore " << accensione << " alle ore" << spegnimento << "."<<std::endl;
+
+            }
+        }
     }
     return out;
 }
