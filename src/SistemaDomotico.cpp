@@ -61,8 +61,6 @@ std::ostream& SistemaDomotico::setOff(std::ostream& out, std::string disp)
     {
         Dispositivo* d = DataBase.find(disp) -> second;
         d -> setStato(0); //spegniamo il dispositivo
-        potenzaResidua -= DataBase.find(disp) -> second -> getPotenza(); //aggiorniamo la potenza residua del sistema
-
         if(isManuale(d))//solo i manuali hanno il timer di spegnimento
         {
             for(auto p = TimeLine.begin(); p != TimeLine.end(); p++)
@@ -76,6 +74,14 @@ std::ostream& SistemaDomotico::setOff(std::ostream& out, std::string disp)
         }
         //Il calcolo della potenza sarà poi fatto da show
         d->setSpegnimento(orario);
+
+        potenzaResidua -= DataBase.find(disp) -> second -> getPotenza(); //aggiorniamo la potenza residua del sistema
+        if(potenzaResidua<0)
+        {
+            sovraccarico();
+        }
+        
+        //Non rimuovo dallo stack il dispositivo, in caso di spegnimento controllerò se è ancora acceso
         //Mostriamo a schermo il messaggio
         out << orario << " Il dispositivo" << disp << " si è spento." << std::endl;
     }
@@ -116,6 +122,7 @@ std::ostream& SistemaDomotico::setOn(std::ostream& out, std::string disp)
             Dispositivo* d = DataBase.find(disp)->second;
             d-> setStato(1); //accendiamo il dispositivo
             potenzaResidua += d -> getPotenza(); //aggiorniamo la potenza residua del sistema
+            d->setAccensione(orario); //indichiamo l'ora di accensione
 
             //Se è a ciclo prefissato dobbiamo inserire nella TimeLine il suo spegnimento
             if(isCP(d))
@@ -232,5 +239,38 @@ std::ostream& SistemaDomotico::rm(std::ostream& out, std::string disp)
             out << orario << " Rimosso il timer dal dispositivo " << disp << " ." << std::endl;
         }; 
     }
+    return out;
+}
+
+//setTime
+std::ostream& SistemaDomotico::setTime(std::ostream& out, Tempo& t)
+{
+    if(t<orario)
+    {
+        out << orario << " orario inserito non valido." << std::endl;
+    }
+    else
+    {
+
+        for(auto p = TimeLine.begin(); p != TimeLine.end(); p++)
+        {
+            //aggiorno l'ora del sistema
+            orario = p->first;
+            Dispositivo* d = p->second.second;
+            //Se devo accendere
+            if(p->second.first==1)
+            {
+                setOn(out, d->getNome());
+            }
+            else if(p->second.first==1) //uso un else if se in futuro ci saranno altri comandi
+            {
+                setOff(out, d->getNome());
+            }         
+            
+
+            TimeLine.erase(p);
+        }; 
+    }
+
     return out;
 }
