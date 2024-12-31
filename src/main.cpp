@@ -1,7 +1,10 @@
 #include "Tempo.h"
 
+#include "SistemaDomotico.h"
 #include "DispManuale.h"
 #include "DispCicloPrefissato.h"
+#include <iostream>
+#include <string>
 
 int main() {
     
@@ -48,4 +51,13 @@ int main() {
     std::cout << "Potenza: " << disp4.getPotenza() << std::endl;
     std::cout << "Tempo accensione: " << disp4.getAccensione() << std::endl;
     std::cout << "Tempo spegnimento: " << disp4.getDurata() << std::endl;
+
+    
+    SistemaDomotico casa;
+    casa.setOn(std::cout,"Lavastoviglie");
+    casa.setOff(std::cout,"Lavatrice");
+
+
+
+    return 0; 
 }

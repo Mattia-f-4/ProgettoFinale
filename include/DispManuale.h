@@ -22,6 +22,9 @@ class DispManuale : public Dispositivo {
         //Setter
         void setSpegnimento(const Tempo&);
 
+        //Distruttore
+        ~DispManuale() = default;
+
     private:
 
         //Variabili d'istanza

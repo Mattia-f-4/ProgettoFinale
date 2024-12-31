@@ -16,12 +16,12 @@ class SistemaDomotico
 
         //Member Function
         std::ostream& setTime(std::ostream&, Tempo&);
-        std::ostream& setOff(std::ostream&, std::string);
-        std::ostream& setOn(std::ostream&, std::string);
+        std::ostream& setOff(std::ostream&, std::string); //se si vuole scrivere in un file mettere 2 stream di output
+        std::ostream& setOn(std::ostream&, std::string);    
         std::ostream& setTimer(std::ostream&, std::string, Tempo&);
         std::ostream& setTimer(std::ostream&, std::string, Tempo&, Tempo&);
         std::ostream& rm(std::ostream&, std::string);
-
+    
         //Funzioni per logging
         std::ostream& show(std::ostream&); 
         std::ostream& show(std::ostream&, std::string);

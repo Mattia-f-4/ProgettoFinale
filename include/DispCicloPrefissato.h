@@ -24,6 +24,9 @@ class DispCicloPrefissato : public Dispositivo {
         //Getter
         Tempo getDurata() const;
 
+        //Distruttore
+        ~DispCicloPrefissato() = default;
+
     private:
         
         //Variabili d'istanza

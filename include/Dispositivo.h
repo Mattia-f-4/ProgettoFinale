@@ -39,6 +39,9 @@ class Dispositivo {
         Tempo oraAccensione;
         Tempo oraSpegnimento;
 
+        //Distruttore
+        virtual ~Dispositivo() = default;
+
 };
 
 
