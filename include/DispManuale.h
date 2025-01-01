@@ -24,7 +24,7 @@ class DispManuale : public Dispositivo {
     private:
 
         //Variabili d'istanza
-        std::map<DispDomotico, double> tipiDispositivi;
+        static std::map<DispDomotico, double> tipiDispositivi;
         DispDomotico tipoDispositivo;
 }; 
 
