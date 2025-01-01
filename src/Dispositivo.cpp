@@ -26,6 +26,7 @@ using namespace std;
     //Setter
     void Dispositivo::setStato(bool s) { stato = s; }
     void Dispositivo::setAccensione(const Tempo& ora) { oraAccensione = ora; }
+    void Dispositivo::setSpegnimento(const Tempo& ora) { oraSpegnimento = ora; }
 
     //changeStatus, per accendere/spegnere il dispositivo
     void Dispositivo::changeStatus() {

@@ -78,7 +78,7 @@ std::ostream& SistemaDomotico::setOff(std::ostream& out, std::string disp)
         potenzaResidua -= DataBase.find(disp) -> second -> getPotenza(); //aggiorniamo la potenza residua del sistema
         if(potenzaResidua<0)
         {
-            sovraccarico();
+            sovraccarico(out);
         }
         
         //Non rimuovo dallo stack il dispositivo, in caso di spegnimento controllerò se è ancora acceso
@@ -273,4 +273,19 @@ std::ostream& SistemaDomotico::setTime(std::ostream& out, Tempo& t)
     }
 
     return out;
+}
+
+//Funzione per il sovraccarico
+void SistemaDomotico::sovraccarico(std::ostream& out)
+{
+    while(potenzaResidua<0)
+    {
+        std::string name = OrdineAccensione.top();
+        Dispositivo* d = DataBase.find(name)->second;
+        if(d->getStato()==1)
+        {
+            setOff(out,name);
+        }
+        OrdineAccensione.pop();
+    }
 }

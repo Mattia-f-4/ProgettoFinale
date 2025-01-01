@@ -58,13 +58,13 @@ class SistemaDomotico
         std::map<std::string,Dispositivo*> DataBase;
 
         /* DATI MEMBRO */
-        const static double limitePotenza = 3.5; 
+        inline const static double limitePotenza = 3.5; //inline necessario per evitare di usare constexpr oppure di definire nel .cpp 
         double potenzaResidua;
         Tempo orario;
         int size;
 
         //Funzione di controllo 
-        void sovraccarico();
+        void sovraccarico(std::ostream&);
 };
 
 #endif
