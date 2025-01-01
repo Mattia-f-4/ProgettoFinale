@@ -6,8 +6,12 @@ using namespace std;
 /* COSTRUTTORI */
 
     //Costruttore parametrico
+    Dispositivo::Dispositivo(std::string nome, Tempo accensione, Tempo spegnimento)
+        : nome{nome}, oraAccensione{accensione}, oraSpegnimento{spegnimento}, stato{false} {}
     Dispositivo::Dispositivo(std::string nome, Tempo accensione)
-        : nome{nome}, oraAccensione{accensione}, stato{false} {}
+        : nome{nome}, oraAccensione{accensione}, oraSpegnimento{-1,0}, stato{false} {}
+    Dispositivo::Dispositivo(std::string nome)
+        : nome{nome}, oraAccensione{-1,0}, oraSpegnimento{-1,0}, stato{false} {}
 
 /* FUNZIONI MEMBRO */
 
@@ -22,6 +26,7 @@ using namespace std;
     //Setter
     void Dispositivo::setStato(bool s) { stato = s; }
     void Dispositivo::setAccensione(const Tempo& ora) { oraAccensione = ora; }
+    void Dispositivo::setSpegnimento(const Tempo& ora) { oraSpegnimento = ora; }
 
     //changeStatus, per accendere/spegnere il dispositivo
     void Dispositivo::changeStatus() {

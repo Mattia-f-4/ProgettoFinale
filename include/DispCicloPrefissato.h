@@ -17,14 +17,15 @@ class DispCicloPrefissato : public Dispositivo {
             Televisore
         };
 
-        //Costruttore
+        //Costruttori
+        DispCicloPrefissato(std::string, DispDomotico);
         DispCicloPrefissato(std::string, DispDomotico, Tempo);
 
         //Getter
         Tempo getDurata() const;
 
-        //Setter
-        void setAccensione(const Tempo&);
+        //Distruttore
+        ~DispCicloPrefissato() = default;
 
     private:
         

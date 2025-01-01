@@ -38,6 +38,19 @@ using namespace std;
             throw invalid_argument("Minutes must be between 0 and 59");
     }
 
+    void Tempo::setNull() {
+        ora = -1;
+        minuti = -1;
+    }
+
+    //Funzione isNull() per capire se il tempo è utilizzabile o meno
+    bool Tempo::isNull() {
+        if(ora == -1 && minuti == -1)
+            return true;
+        else
+            return false;
+    }
+
     //Overloading operator >
     bool Tempo::operator>(const Tempo& t) const {
         if (getOra() > t.getOra()) {
@@ -98,6 +111,15 @@ using namespace std;
         return Tempo(newH, newMin);
     }
 
+    //Overloading operator=
+    Tempo& Tempo::operator=(const Tempo& t)
+    {
+        ora = t.getOra();
+        minuti = t.getMinuti();
+
+        return *this;
+    }
+
 /* HELPER FUNCTION */
 
     //Overloading operatore <<
@@ -118,4 +140,17 @@ using namespace std;
         os << "]";
         
         return os;
+    }
+
+    //Overloading operator==
+    bool Tempo::operator==(const Tempo& t) const
+    {
+        if(t.getOra()==ora && t.getMinuti()==minuti)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
