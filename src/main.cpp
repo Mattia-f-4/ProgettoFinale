@@ -1,16 +1,23 @@
 #include "Tempo.h"
 
+#include "SistemaDomotico.h"
 #include "DispManuale.h"
 #include "DispCicloPrefissato.h"
+#include <iostream>
+#include <string>
 
 int main() {
     
-    Tempo t1(16, 0);
+    /*Tempo t1(25, -2);
     Tempo t2(18, 0);
     Tempo t3(20, 0);
-    Tempo t4(22, 0);
+    Tempo t4(22, 0);*/
 
-    DispManuale disp1("Scaldabagno 1", DispManuale::DispDomotico::Scaldabagno, t1, t2);
+    //throw std::invalid_argument("Prova eccezioni");
+
+    std::cout << "Prova";
+
+    /*DispManuale disp1("Scaldabagno 1", DispManuale::DispDomotico::Scaldabagno, t1, t2);
     DispManuale disp2("Scaldabagno 2", DispManuale::DispDomotico::Scaldabagno, t3, t4);
 
     std::cout << "ID: " << disp1.getID() << std::endl;
@@ -48,4 +55,11 @@ int main() {
     std::cout << "Potenza: " << disp4.getPotenza() << std::endl;
     std::cout << "Tempo accensione: " << disp4.getAccensione() << std::endl;
     std::cout << "Tempo spegnimento: " << disp4.getDurata() << std::endl;
+
+    
+    SistemaDomotico casa;
+    casa.setOn(std::cout,"Lavastoviglie");
+    casa.setOff(std::cout,"Lavatrice");*/
+
+    return 0; 
 }
