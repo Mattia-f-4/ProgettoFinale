@@ -1,3 +1,0 @@
-C:/Users/matti/OneDrive/Desktop/ProgettoFinale/build/CMakeFiles/main.dir
-C:/Users/matti/OneDrive/Desktop/ProgettoFinale/build/CMakeFiles/edit_cache.dir
-C:/Users/matti/OneDrive/Desktop/ProgettoFinale/build/CMakeFiles/rebuild_cache.dir
