@@ -80,6 +80,8 @@ using namespace std;
 
         int newMin = getMinuti() + durata;
         int newH = getOra() + newMin / 60;
+        //Normalizzo ore e minuti in modo che rimangano nel range [0,23] e [0,59]
+        newH = newH % 24;
         newMin = newMin % 60;
 
         return Tempo(newH, newMin);
@@ -118,7 +120,6 @@ using namespace std;
     {
         ora = t.getOra();
         minuti = t.getMinuti();
-
         return *this;
     }
 

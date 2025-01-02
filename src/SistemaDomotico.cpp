@@ -187,22 +187,46 @@
         {
             if(accensione<orario || accensione.isNull()) //Non imposto il timer se gli orari non sono validi
             {
-                out << orario << " L'orario di accensione inserito è non valido. Timer non settato." << std::endl;
+                out << orario << " L'orario di accensione inserito e' non valido. Timer non impostato." << std::endl;
             }
             else
             {
-                if(accensione == orario)
+                //Cerco un timer di spegnimento per questo dispositivo
+                auto pTime = TimeLine.begin();
+                Tempo temp;
+                while(pTime!=TimeLine.end()) 
                 {
-                    out << orario << " L'orario di accensione del timer di " << disp << " corrisponde con l'orario attuale. Il dispositivo verra' acceso." << std::endl;
-                    setOn(out, disp);
+                    if(pTime->second.second -> getNome() == disp && pTime->second.first==0)
+                    {
+                        temp = pTime->first;
+                        break;
+                    }
+                    pTime++;
+                };
+                if(temp > accensione) //Se è presente già un timer di spegnimento successivo all'eventuale accensione non lo imposto
+                {
+                    out << orario << " Gia' presente un timer con spegnimento successivo all'orario di accensione. Timer non impostato." << std::endl;
                 }
                 else
                 {
-                    //Il timer di accensione viene sempre messo, il timer di spegnimento per i CP viene inserito in setOn
-                    TimeLine.insert(std::make_pair(accensione, std::make_pair(1, pData->second)));
+                    if(accensione == orario)
+                    {
+                        out << orario << " L'orario di accensione del timer di " << disp << " corrisponde con l'orario attuale. Il dispositivo verra' acceso." << std::endl;
+                        setOn(out, disp);
+                    }
+                    else if(TimeLine.find(accensione)!=TimeLine.end())
+                    {
+                        out << orario << " Gia' presente un timer per lo stesso orario. Timer non impostato" << std::endl;
+                    }
+                    else
+                    {
+                        //Il timer di accensione viene sempre messo, il timer di spegnimento per i CP viene inserito in setOn
+                        TimeLine.insert(std::make_pair(accensione, std::make_pair(1, pData->second)));
 
-                    //si potrebbe dividere il messaggio per cp e manuale, dicendo per i cp l'orario in cui si spegne
-                    out << orario << " Impostato un timer per il dispositivo " << disp << " dalle ore " << accensione <<std::endl;
+                        //si potrebbe dividere il messaggio per cp e manuale, dicendo per i cp l'orario in cui si spegne
+                        out << orario << " Impostato un timer per il dispositivo " << disp << " dalle ore " << accensione <<std::endl;
+                        
+                    }
                 }
             }
         }
@@ -219,36 +243,55 @@
         }
         else
         {
-            Dispositivo* d = p -> second;
-            //I dispositivi CP non hanno timer di spegnimento, viene lanciata un'eccezione
-            if(isCP(d))
+            if(accensione<orario || accensione.isNull() || spegnimento.isNull() || accensione >= spegnimento) //Non imposto il timer se gli orari non sono validi
             {
-                out << orario << " Il dispositivo " << disp << " è un dispositivo a ciclo prefissato. Impossibile impostare un timer di spegnimento. Nessun timer impostato." << std::endl;
+                out << orario << " L'orario inserito non è valido. Timer non settato." << std::endl;
             }
+            
             else
             {
-                if(accensione<orario || accensione.isNull() || spegnimento.isNull() || accensione <= spegnimento) //Non imposto il timer se gli orari non sono validi
+                Dispositivo* d = p -> second;
+                //I dispositivi CP non hanno timer di spegnimento, viene lanciata un'eccezione
+                if(isCP(d))
                 {
-                    out << orario << " L'orario inserito non è valido. Timer non settato." << std::endl;
+                    out << orario << " Il dispositivo " << disp << " è un dispositivo a ciclo prefissato. Impossibile impostare un timer di spegnimento. Nessun timer impostato." << std::endl;
                 }
                 else
                 {
-                    if(accensione == orario)
+                    //Cerco un timer di spegnimento per questo dispositivo
+                    auto pTime = TimeLine.begin();
+                    Tempo temp;
+                    while(pTime!=TimeLine.end()) 
                     {
-                        out << orario << " L'orario di accensione del timer di " << disp << " corrisponde con l'orario attuale. Il dispositivo verra' acceso." << std::endl;
-                        setOn(out, disp);
-                        //Impostiamo comunque un timer di spegnimento
-                        TimeLine.insert(std::make_pair(spegnimento, std::make_pair(0, d)));
-
-                        out << orario << " Impostato un timer di spegnimento per il dispositivo " << disp << " alle ore" << spegnimento << "."<<std::endl;
+                        if(pTime->second.second -> getNome() == disp && pTime->second.first==0)
+                        {
+                            temp = pTime->first;
+                            break;
+                        }
+                        pTime++;
+                    };
+                    if(temp > accensione) //Se è presente già un timer di spegnimento successivo all'eventuale accensione non lo imposto
+                    {
+                        out << orario << " Gia' presente un timer con spegnimento successivo all'orario di accensione. Timer non impostato." << std::endl;
                     }
                     else
                     {
-                        //Il timer di accensione viene sempre messo, il timer di spegnimento per i CP viene inserito in setOn
-                        TimeLine.insert(std::make_pair(accensione, std::make_pair(1, d)));
-                        TimeLine.insert(std::make_pair(spegnimento, std::make_pair(0, d)));
+                        if(accensione == orario)
+                        {
+                            out << orario << " L'orario di accensione del timer di " << disp << " corrisponde con l'orario attuale. Il dispositivo verra' acceso." << std::endl;
+                            setOn(out, disp);
+                            //Impostiamo comunque un timer di spegnimento
+                            TimeLine.insert(std::make_pair(spegnimento, std::make_pair(0, d)));
 
-                        out << orario << " Impostato un timer per il dispositivo " << disp << " dalle ore " << accensione << " alle ore" << spegnimento << "."<<std::endl;
+                            out << orario << " Impostato un timer di spegnimento per il dispositivo " << disp << " alle ore" << spegnimento << "."<<std::endl;
+                        }
+                        else
+                        {
+                            TimeLine.insert(std::make_pair(accensione, std::make_pair(1, d)));
+                            TimeLine.insert(std::make_pair(spegnimento, std::make_pair(0, d)));
+
+                            out << orario << " Impostato un timer per il dispositivo " << disp << " dalle ore " << accensione << " alle ore" << spegnimento << "."<<std::endl;
+                        }
                     }
                 }
             }
@@ -308,7 +351,7 @@
             else
             {   
                 auto  p = TimeLine.begin();
-                while(p != TimeLine.end() && p->first<t)
+                while(p != TimeLine.end() && p->first<=t)
                 {
                     // Debug output to check the values
                 out << "Current time: " << p->first << ", Target time: " << t << std::endl;
@@ -325,7 +368,7 @@
                     {
                         setOff(out, d->getNome());
                     }         
-                    //l'azione viene rimossa da setOn e setOff dalla TimeLine
+                    TimeLine.erase(p);
                     p++;
 
                     // Debug output to check the values
