@@ -171,7 +171,7 @@ using namespace std;
     }
 
     //Overloading operator >=
-    bool Tempo::operator>(const Tempo& t) const {
+    bool Tempo::operator>=(const Tempo& t) const {
         if (getOra() > t.getOra()) {
             return true;
         }
@@ -182,7 +182,7 @@ using namespace std;
     }
 
     //Overloading operator <=
-    bool Tempo::operator<(const Tempo& t) const {
+    bool Tempo::operator<=(const Tempo& t) const {
         if (getOra() < t.getOra()) {
             return true;
         }
