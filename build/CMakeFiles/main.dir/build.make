@@ -76,90 +76,90 @@ CMakeFiles/main.dir/src/DispCicloPrefissato.cpp.obj: CMakeFiles/main.dir/include
 CMakeFiles/main.dir/src/DispCicloPrefissato.cpp.obj: C:/Users/matti/OneDrive/Desktop/ProgettoFinale/src/DispCicloPrefissato.cpp
 CMakeFiles/main.dir/src/DispCicloPrefissato.cpp.obj: CMakeFiles/main.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\matti\OneDrive\Desktop\ProgettoFinale\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/main.dir/src/DispCicloPrefissato.cpp.obj"
-	C:\msys64\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/DispCicloPrefissato.cpp.obj -MF CMakeFiles\main.dir\src\DispCicloPrefissato.cpp.obj.d -o CMakeFiles\main.dir\src\DispCicloPrefissato.cpp.obj -c C:\Users\matti\OneDrive\Desktop\ProgettoFinale\src\DispCicloPrefissato.cpp
+	C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/DispCicloPrefissato.cpp.obj -MF CMakeFiles\main.dir\src\DispCicloPrefissato.cpp.obj.d -o CMakeFiles\main.dir\src\DispCicloPrefissato.cpp.obj -c C:\Users\matti\OneDrive\Desktop\ProgettoFinale\src\DispCicloPrefissato.cpp
 
 CMakeFiles/main.dir/src/DispCicloPrefissato.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/src/DispCicloPrefissato.cpp.i"
-	C:\msys64\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\matti\OneDrive\Desktop\ProgettoFinale\src\DispCicloPrefissato.cpp > CMakeFiles\main.dir\src\DispCicloPrefissato.cpp.i
+	C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\matti\OneDrive\Desktop\ProgettoFinale\src\DispCicloPrefissato.cpp > CMakeFiles\main.dir\src\DispCicloPrefissato.cpp.i
 
 CMakeFiles/main.dir/src/DispCicloPrefissato.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/src/DispCicloPrefissato.cpp.s"
-	C:\msys64\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\matti\OneDrive\Desktop\ProgettoFinale\src\DispCicloPrefissato.cpp -o CMakeFiles\main.dir\src\DispCicloPrefissato.cpp.s
+	C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\matti\OneDrive\Desktop\ProgettoFinale\src\DispCicloPrefissato.cpp -o CMakeFiles\main.dir\src\DispCicloPrefissato.cpp.s
 
 CMakeFiles/main.dir/src/DispManuale.cpp.obj: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/src/DispManuale.cpp.obj: CMakeFiles/main.dir/includes_CXX.rsp
 CMakeFiles/main.dir/src/DispManuale.cpp.obj: C:/Users/matti/OneDrive/Desktop/ProgettoFinale/src/DispManuale.cpp
 CMakeFiles/main.dir/src/DispManuale.cpp.obj: CMakeFiles/main.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\matti\OneDrive\Desktop\ProgettoFinale\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/main.dir/src/DispManuale.cpp.obj"
-	C:\msys64\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/DispManuale.cpp.obj -MF CMakeFiles\main.dir\src\DispManuale.cpp.obj.d -o CMakeFiles\main.dir\src\DispManuale.cpp.obj -c C:\Users\matti\OneDrive\Desktop\ProgettoFinale\src\DispManuale.cpp
+	C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/DispManuale.cpp.obj -MF CMakeFiles\main.dir\src\DispManuale.cpp.obj.d -o CMakeFiles\main.dir\src\DispManuale.cpp.obj -c C:\Users\matti\OneDrive\Desktop\ProgettoFinale\src\DispManuale.cpp
 
 CMakeFiles/main.dir/src/DispManuale.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/src/DispManuale.cpp.i"
-	C:\msys64\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\matti\OneDrive\Desktop\ProgettoFinale\src\DispManuale.cpp > CMakeFiles\main.dir\src\DispManuale.cpp.i
+	C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\matti\OneDrive\Desktop\ProgettoFinale\src\DispManuale.cpp > CMakeFiles\main.dir\src\DispManuale.cpp.i
 
 CMakeFiles/main.dir/src/DispManuale.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/src/DispManuale.cpp.s"
-	C:\msys64\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\matti\OneDrive\Desktop\ProgettoFinale\src\DispManuale.cpp -o CMakeFiles\main.dir\src\DispManuale.cpp.s
+	C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\matti\OneDrive\Desktop\ProgettoFinale\src\DispManuale.cpp -o CMakeFiles\main.dir\src\DispManuale.cpp.s
 
 CMakeFiles/main.dir/src/Dispositivo.cpp.obj: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/src/Dispositivo.cpp.obj: CMakeFiles/main.dir/includes_CXX.rsp
 CMakeFiles/main.dir/src/Dispositivo.cpp.obj: C:/Users/matti/OneDrive/Desktop/ProgettoFinale/src/Dispositivo.cpp
 CMakeFiles/main.dir/src/Dispositivo.cpp.obj: CMakeFiles/main.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\matti\OneDrive\Desktop\ProgettoFinale\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/main.dir/src/Dispositivo.cpp.obj"
-	C:\msys64\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/Dispositivo.cpp.obj -MF CMakeFiles\main.dir\src\Dispositivo.cpp.obj.d -o CMakeFiles\main.dir\src\Dispositivo.cpp.obj -c C:\Users\matti\OneDrive\Desktop\ProgettoFinale\src\Dispositivo.cpp
+	C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/Dispositivo.cpp.obj -MF CMakeFiles\main.dir\src\Dispositivo.cpp.obj.d -o CMakeFiles\main.dir\src\Dispositivo.cpp.obj -c C:\Users\matti\OneDrive\Desktop\ProgettoFinale\src\Dispositivo.cpp
 
 CMakeFiles/main.dir/src/Dispositivo.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/src/Dispositivo.cpp.i"
-	C:\msys64\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\matti\OneDrive\Desktop\ProgettoFinale\src\Dispositivo.cpp > CMakeFiles\main.dir\src\Dispositivo.cpp.i
+	C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\matti\OneDrive\Desktop\ProgettoFinale\src\Dispositivo.cpp > CMakeFiles\main.dir\src\Dispositivo.cpp.i
 
 CMakeFiles/main.dir/src/Dispositivo.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/src/Dispositivo.cpp.s"
-	C:\msys64\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\matti\OneDrive\Desktop\ProgettoFinale\src\Dispositivo.cpp -o CMakeFiles\main.dir\src\Dispositivo.cpp.s
+	C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\matti\OneDrive\Desktop\ProgettoFinale\src\Dispositivo.cpp -o CMakeFiles\main.dir\src\Dispositivo.cpp.s
 
 CMakeFiles/main.dir/src/SistemaDomotico.cpp.obj: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/src/SistemaDomotico.cpp.obj: CMakeFiles/main.dir/includes_CXX.rsp
 CMakeFiles/main.dir/src/SistemaDomotico.cpp.obj: C:/Users/matti/OneDrive/Desktop/ProgettoFinale/src/SistemaDomotico.cpp
 CMakeFiles/main.dir/src/SistemaDomotico.cpp.obj: CMakeFiles/main.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\matti\OneDrive\Desktop\ProgettoFinale\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/main.dir/src/SistemaDomotico.cpp.obj"
-	C:\msys64\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/SistemaDomotico.cpp.obj -MF CMakeFiles\main.dir\src\SistemaDomotico.cpp.obj.d -o CMakeFiles\main.dir\src\SistemaDomotico.cpp.obj -c C:\Users\matti\OneDrive\Desktop\ProgettoFinale\src\SistemaDomotico.cpp
+	C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/SistemaDomotico.cpp.obj -MF CMakeFiles\main.dir\src\SistemaDomotico.cpp.obj.d -o CMakeFiles\main.dir\src\SistemaDomotico.cpp.obj -c C:\Users\matti\OneDrive\Desktop\ProgettoFinale\src\SistemaDomotico.cpp
 
 CMakeFiles/main.dir/src/SistemaDomotico.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/src/SistemaDomotico.cpp.i"
-	C:\msys64\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\matti\OneDrive\Desktop\ProgettoFinale\src\SistemaDomotico.cpp > CMakeFiles\main.dir\src\SistemaDomotico.cpp.i
+	C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\matti\OneDrive\Desktop\ProgettoFinale\src\SistemaDomotico.cpp > CMakeFiles\main.dir\src\SistemaDomotico.cpp.i
 
 CMakeFiles/main.dir/src/SistemaDomotico.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/src/SistemaDomotico.cpp.s"
-	C:\msys64\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\matti\OneDrive\Desktop\ProgettoFinale\src\SistemaDomotico.cpp -o CMakeFiles\main.dir\src\SistemaDomotico.cpp.s
+	C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\matti\OneDrive\Desktop\ProgettoFinale\src\SistemaDomotico.cpp -o CMakeFiles\main.dir\src\SistemaDomotico.cpp.s
 
 CMakeFiles/main.dir/src/Tempo.cpp.obj: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/src/Tempo.cpp.obj: CMakeFiles/main.dir/includes_CXX.rsp
 CMakeFiles/main.dir/src/Tempo.cpp.obj: C:/Users/matti/OneDrive/Desktop/ProgettoFinale/src/Tempo.cpp
 CMakeFiles/main.dir/src/Tempo.cpp.obj: CMakeFiles/main.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\matti\OneDrive\Desktop\ProgettoFinale\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/main.dir/src/Tempo.cpp.obj"
-	C:\msys64\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/Tempo.cpp.obj -MF CMakeFiles\main.dir\src\Tempo.cpp.obj.d -o CMakeFiles\main.dir\src\Tempo.cpp.obj -c C:\Users\matti\OneDrive\Desktop\ProgettoFinale\src\Tempo.cpp
+	C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/Tempo.cpp.obj -MF CMakeFiles\main.dir\src\Tempo.cpp.obj.d -o CMakeFiles\main.dir\src\Tempo.cpp.obj -c C:\Users\matti\OneDrive\Desktop\ProgettoFinale\src\Tempo.cpp
 
 CMakeFiles/main.dir/src/Tempo.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/src/Tempo.cpp.i"
-	C:\msys64\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\matti\OneDrive\Desktop\ProgettoFinale\src\Tempo.cpp > CMakeFiles\main.dir\src\Tempo.cpp.i
+	C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\matti\OneDrive\Desktop\ProgettoFinale\src\Tempo.cpp > CMakeFiles\main.dir\src\Tempo.cpp.i
 
 CMakeFiles/main.dir/src/Tempo.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/src/Tempo.cpp.s"
-	C:\msys64\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\matti\OneDrive\Desktop\ProgettoFinale\src\Tempo.cpp -o CMakeFiles\main.dir\src\Tempo.cpp.s
+	C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\matti\OneDrive\Desktop\ProgettoFinale\src\Tempo.cpp -o CMakeFiles\main.dir\src\Tempo.cpp.s
 
 CMakeFiles/main.dir/src/main.cpp.obj: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/src/main.cpp.obj: CMakeFiles/main.dir/includes_CXX.rsp
 CMakeFiles/main.dir/src/main.cpp.obj: C:/Users/matti/OneDrive/Desktop/ProgettoFinale/src/main.cpp
 CMakeFiles/main.dir/src/main.cpp.obj: CMakeFiles/main.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\matti\OneDrive\Desktop\ProgettoFinale\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/main.dir/src/main.cpp.obj"
-	C:\msys64\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/main.cpp.obj -MF CMakeFiles\main.dir\src\main.cpp.obj.d -o CMakeFiles\main.dir\src\main.cpp.obj -c C:\Users\matti\OneDrive\Desktop\ProgettoFinale\src\main.cpp
+	C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/main.cpp.obj -MF CMakeFiles\main.dir\src\main.cpp.obj.d -o CMakeFiles\main.dir\src\main.cpp.obj -c C:\Users\matti\OneDrive\Desktop\ProgettoFinale\src\main.cpp
 
 CMakeFiles/main.dir/src/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/src/main.cpp.i"
-	C:\msys64\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\matti\OneDrive\Desktop\ProgettoFinale\src\main.cpp > CMakeFiles\main.dir\src\main.cpp.i
+	C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\matti\OneDrive\Desktop\ProgettoFinale\src\main.cpp > CMakeFiles\main.dir\src\main.cpp.i
 
 CMakeFiles/main.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/src/main.cpp.s"
-	C:\msys64\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\matti\OneDrive\Desktop\ProgettoFinale\src\main.cpp -o CMakeFiles\main.dir\src\main.cpp.s
+	C:\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\matti\OneDrive\Desktop\ProgettoFinale\src\main.cpp -o CMakeFiles\main.dir\src\main.cpp.s
 
 # Object files for target main
 main_OBJECTS = \
