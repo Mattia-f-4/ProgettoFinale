@@ -9,9 +9,16 @@ using namespace std;
     Dispositivo::Dispositivo(std::string nome, Tempo accensione, Tempo spegnimento)
         : nome{nome}, oraAccensione{accensione}, oraSpegnimento{spegnimento}, stato{false} {}
     Dispositivo::Dispositivo(std::string nome, Tempo accensione)
-        : nome{nome}, oraAccensione{accensione}, oraSpegnimento{-1,0}, stato{false} {}
+        : nome{nome}, oraAccensione{accensione}, oraSpegnimento{0,0}, stato{false}
+    {
+        oraSpegnimento.isNull();
+    }
     Dispositivo::Dispositivo(std::string nome)
-        : nome{nome}, oraAccensione{-1,0}, oraSpegnimento{-1,0}, stato{false} {}
+        : nome{nome}, oraAccensione{0,0}, oraSpegnimento{0,0}, stato{false}
+    {
+        oraAccensione.isNull();
+        oraSpegnimento.isNull();
+    }
 
 /* FUNZIONI MEMBRO */
 

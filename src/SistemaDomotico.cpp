@@ -82,7 +82,7 @@
             
             //Non rimuovo dallo stack il dispositivo, in caso di spegnimento controllerò se è ancora acceso
             //Mostriamo a schermo il messaggio
-            out << orario << " Il dispositivo" << disp << " si è spento." << std::endl;
+            out << orario << " Il dispositivo " << disp << " si e' spento." << std::endl;
         }
 
         return out;
@@ -136,7 +136,7 @@
                 //Mettiamo nello stack l'accensione in modo da poter gestire la politca di spegnimento
                 OrdineAccensione.push(disp);
                 //Mostriamo a schermo il messaggio
-                out << orario << " Il dispositivo" << disp << " si è acceso." << std::endl;
+                out << orario << " Il dispositivo " << disp << " si e' acceso." << std::endl;
             } //VA CONTROLLATO SE VA BENE CON LA MULTIMAP
         }
 
@@ -240,7 +240,6 @@
         }
         else
         {
-
             for(auto p = TimeLine.begin(); p != TimeLine.end(); p++)
             {
                 //aggiorno l'ora del sistema
@@ -256,6 +255,7 @@
                     setOff(out, d->getNome());
                 }         
                 
+                out << orario << " orario settato." << std::endl;
 
                 TimeLine.erase(p);
             }; 
@@ -277,6 +277,29 @@
             }
             OrdineAccensione.pop();
         }
+    }
+
+    std::ostream& SistemaDomotico::show(std::ostream& out){
+        out << orario << " show." << std::endl;
+        return out;
+    }
+
+    std::ostream& SistemaDomotico::show(std::ostream& out, std::string device){
+        out << orario << " show " << device << "." << std::endl;
+        return out;
+    }
+
+    std::ostream& SistemaDomotico::resetTime(std::ostream& out){
+        out << orario << " resetTime." << std::endl;
+        return out;
+    }
+
+    void SistemaDomotico::resetTimers(){
+        std::cout << orario << " resetTimers." << std::endl;
+    }
+
+    void SistemaDomotico::resetAll(){
+        std::cout << orario << " resetAll." << std::endl;
     }
 
 /* HELPER FUNCTION */

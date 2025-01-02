@@ -29,7 +29,7 @@ void set_device_on(std::string device){
 }
 
 void set_device_off(std::string device){
-    sistemaDomotico.setOn(std::cout, device);
+    sistemaDomotico.setOff(std::cout, device);
 }
 
 void set_device_start(std::string device, std::string start){
@@ -102,9 +102,10 @@ int main() {
     std::string answer;
     std::string delimiter = " ";
 
-    std::cout << "-------------------------------------------- " << std::endl;
-    std::cout << "------------- SISTEMA DOMOTICO ------------- " << std::endl;
-    std::cout << "-------------------------------------------- " << std::endl << std::endl;
+    std::cout << std::endl;
+    std::cout << "-----------------------------------------------------------------------------" << std::endl;
+    std::cout << "------------------------------ SISTEMA DOMOTICO ----------------------------- " << std::endl;
+    std::cout << "----------------------------------------------------------------------------- " << std::endl << std::endl;
     
     std::cout << "Le operazioni che puoi eseguire con il tuo sistema domotico sono le seguenti: " << std::endl;
     std::cout << "# set ${DEVICENAME} on" << std::endl;
@@ -117,12 +118,12 @@ int main() {
     std::cout << "# reset time" << std::endl;
     std::cout << "# reset timers" << std::endl;
     std::cout << "# reset all" << std::endl << std::endl;
-    std::cout << "Per uscire digitare: exit" << std::endl << std::endl;
+    std::cout << "Per uscire digitare: exit" << std::endl;
 
     while(true){
         answer = "";
 
-        std::cout << "Cosa vuoi fare?" << std::endl;
+        std::cout << std::endl << "Cosa vuoi fare?" << std::endl;
         std::getline(std::cin, answer);
 
         std::string command = answer.substr(0, answer.find(delimiter));
