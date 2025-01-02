@@ -39,10 +39,7 @@ class SistemaDomotico
         //Funzioni di supporto alle funzioni di debug
         void setOffAll();
         void rmAll();
-        //Funzioni di supporto alle member function
-        bool isManuale(Dispositivo*);
-        bool isCP(Dispositivo*);
-
+        
         //Getter
         int getSize() const;
         Tempo getTime() const;
@@ -66,5 +63,9 @@ class SistemaDomotico
         //Funzione di controllo 
         void sovraccarico(std::ostream&);
 };
+
+//Helper Function
+bool isManuale(Dispositivo*);
+bool isCP(Dispositivo*);
 
 #endif

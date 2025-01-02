@@ -9,21 +9,6 @@
     DispManuale::DispManuale(std::string nome, DispDomotico tipo, Tempo accensione, Tempo spegnimento)
         : Dispositivo(nome, accensione, spegnimento), tipoDispositivo{tipo}
     {
-        switch(tipoDispositivo) {
-            case DispDomotico::Impianto_Fotovoltaico:
-                tipiDispositivi[tipoDispositivo] = 1.5;
-                break;
-            case DispDomotico::Pompa_di_calore_termostato:
-                tipiDispositivi[tipoDispositivo] = -2.0;
-                break;
-            case DispDomotico::Scaldabagno:
-                tipiDispositivi[tipoDispositivo] = -1.0;
-                break;
-            case DispDomotico::Frigorifero:
-                tipiDispositivi[tipoDispositivo] = -0.4;
-                break;
-        }
-
         //Assegnamento e aggiornamento ID
         ID = ManualID;
         ManualID = ManualID +2;
@@ -34,21 +19,6 @@
     DispManuale::DispManuale(std::string nome, DispDomotico tipo)
         : Dispositivo(nome), tipoDispositivo{tipo}
     {
-        switch(tipoDispositivo) {
-            case DispDomotico::Impianto_Fotovoltaico:
-                tipiDispositivi[tipoDispositivo] = 1.5;
-                break;
-            case DispDomotico::Pompa_di_calore_termostato:
-                tipiDispositivi[tipoDispositivo] = -2.0;
-                break;
-            case DispDomotico::Scaldabagno:
-                tipiDispositivi[tipoDispositivo] = -1.0;
-                break;
-            case DispDomotico::Frigorifero:
-                tipiDispositivi[tipoDispositivo] = -0.4;
-                break;
-        }
-
         //Assegnamento e aggiornamento ID
         ID = ManualID;
         ManualID = ManualID +2;
@@ -60,3 +30,13 @@
 
     //Setter
     void DispManuale::setSpegnimento(const Tempo& t) { oraSpegnimento = t; }
+
+/* MAPPA */
+
+    //Mappa per tipi dispositivi manuali
+    std::map<DispManuale::DispDomotico, double> DispManuale::tipiDispositivi = {
+        {DispManuale::DispDomotico::Impianto_Fotovoltaico, 1.5},
+        {DispManuale::DispDomotico::Pompa_di_calore_termostato, -2.0},
+        {DispManuale::DispDomotico::Scaldabagno, -1.0},
+        {DispManuale::DispDomotico::Frigorifero, -0.4},
+    };

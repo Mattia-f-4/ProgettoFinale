@@ -18,6 +18,10 @@ class Tempo {
         //Setter
         void setOra(int);
         void setMinuti(int);
+        void setNull();
+
+        //Funzione per capire se il tempo è usabile oppure no
+        bool isNull();
 
         //Overloading operatori >, <, +, = e ==
         bool operator>(const Tempo&) const;

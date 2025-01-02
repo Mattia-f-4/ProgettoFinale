@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 
 #Diamo un nome al progetto
-project(Domotica LANGUAGES CXX )
+project(Domotica VERSION 1.0 LANGUAGES CXX )
 
 #Specifichiammo il c++ standard
 set(CMAKE_CXX_STANDARD 17)
