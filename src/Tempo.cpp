@@ -91,6 +91,8 @@ using namespace std;
         
         int newMin = getMinuti() + durata.getMinuti();
         int newH = getOra() + durata.getOra() + newMin/60;
+        //Normalizzo ore e minuti in modo che rimangano nel range [0,23] e [0,59]
+        newH = newH % 24;
         newMin = newMin % 60;
 
         return Tempo(newH, newMin);
@@ -154,3 +156,39 @@ using namespace std;
             return false;
         }
     }
+
+    //Overloading operator!=
+    bool Tempo::operator!=(const Tempo& t) const
+    {
+        if(t.getOra()!=ora || t.getMinuti()!=minuti)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    //Overloading operator >=
+    bool Tempo::operator>(const Tempo& t) const {
+        if (getOra() > t.getOra()) {
+            return true;
+        }
+        if (getOra() == t.getOra() && getMinuti() >= t.getMinuti()) {
+            return true;
+        }
+        return false;
+    }
+
+    //Overloading operator <=
+    bool Tempo::operator<(const Tempo& t) const {
+        if (getOra() < t.getOra()) {
+            return true;
+        }
+        if (getOra() == t.getOra() && getMinuti() <= t.getMinuti()) {
+            return true;
+        }
+        return false;
+    }
+

@@ -62,6 +62,9 @@ class SistemaDomotico
 
         //Funzione di controllo 
         void sovraccarico(std::ostream&);
+
+        //Funzione di supporto
+        void fineGiornata(std::ostream&);
 };
 
 //Helper Function

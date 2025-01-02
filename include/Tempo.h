@@ -23,7 +23,7 @@ class Tempo {
         //Funzione per capire se il tempo è usabile oppure no
         bool isNull();
 
-        //Overloading operatori >, <, +, = e ==
+        //Overloading operatori >, >=, <, <=, +, -, = ,==, !=
         bool operator>(const Tempo&) const;
         bool operator<(const Tempo&) const;
         Tempo operator+(const int) const;
@@ -31,6 +31,9 @@ class Tempo {
         Tempo operator-(const Tempo&) const;
         Tempo& operator=(const Tempo&);
         bool operator==(const Tempo&) const;
+        bool operator!=(const Tempo&) const;
+        bool operator>=(const Tempo&) const;
+        bool operator<=(const Tempo&) const;
 
     private:
        
