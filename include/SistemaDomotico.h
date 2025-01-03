@@ -65,6 +65,9 @@ class SistemaDomotico
 
         //Funzione di supporto
         void fineGiornata(std::ostream&);
+        std::ostream& setOffbyTimer(std::ostream&, std::string);
+        std::ostream& setOnbyTimer(std::ostream&, std::string);
+
 };
 
 //Helper Function

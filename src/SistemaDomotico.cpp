@@ -49,6 +49,7 @@
     double SistemaDomotico::getPotenzaResidua() const {return potenzaResidua;}
     double SistemaDomotico::getLimitePotenza() const {return limitePotenza;}
 
+    
     //setOff
     std::ostream& SistemaDomotico::setOff(std::ostream& out, std::string disp)
     {
@@ -138,7 +139,7 @@
                     //Rimuovo eventuali timer di spegnimento nel caso in cui l'accensione sia stata chiamata da un timer
                     for(auto pTime = TimeLine.begin(); pTime != TimeLine.end(); pTime++)
                     {
-                        if(pTime->second.second -> getNome() == disp && pTime->second.first==0 && pTime->first!=orario)
+                        if(pTime->second.second -> getNome() == disp && pTime->second.first==0 && pTime->first!=orario)//l'ultima condizione forse non serve
                         {
                             TimeLine.erase(pTime);
                         }
@@ -158,7 +159,6 @@
                     {
                         //I distruttori virtuali servono per garantire che questo metodo funzioni
                         DispCicloPrefissato* cp = dynamic_cast<DispCicloPrefissato*>(d);
-
                         Tempo spegn = cp->getDurata() + orario;
                         TimeLine.insert(std::make_pair(spegn, std::make_pair(0,d)));
                     }
@@ -214,7 +214,7 @@
                         out << orario << " L'orario di accensione del timer di " << disp << " corrisponde con l'orario attuale. Il dispositivo verra' acceso." << std::endl;
                         setOn(out, disp);
                     }
-                    else if(TimeLine.find(accensione)!=TimeLine.end())
+                    else if(TimeLine.find(accensione)!=TimeLine.end() && TimeLine.find(accensione)->second.second->getNome()==disp) //Se è già presente un timer per lo stesso orario
                     {
                         out << orario << " Gia' presente un timer per lo stesso orario. Timer non impostato" << std::endl;
                     }
@@ -367,8 +367,9 @@
                     else if(p->second.first==0) //uso un else if se in futuro ci saranno altri comandi
                     {
                         setOff(out, d->getNome());
-                    }         
-                    TimeLine.erase(p);
+                    }   
+                    //Serve riassegnare p altrimenti cancellando un elemento si perde il riferimento      
+                    p = TimeLine.erase(p);
                     p++;
 
                     // Debug output to check the values
