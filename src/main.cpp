@@ -99,17 +99,13 @@ void reset_all(){
 
 int main() {  
 
-    std::cout << "Ciao";
-
-    
-    
-    /*std::string answer;
+    std::string answer;
     std::string delimiter = " ";
 
     std::cout << std::endl;
     std::cout << "-----------------------------------------------------------------------------" << std::endl;
-    std::cout << "------------------------------ SISTEMA DOMOTICO -----------------------------" << std::endl;
-    std::cout << "-----------------------------------------------------------------------------" << std::endl << std::endl;
+    std::cout << "------------------------------ SISTEMA DOMOTICO ----------------------------- " << std::endl;
+    std::cout << "----------------------------------------------------------------------------- " << std::endl << std::endl;
     
     std::cout << "Le operazioni che puoi eseguire con il tuo sistema domotico sono le seguenti: " << std::endl;
     std::cout << "# set ${DEVICENAME} on" << std::endl;
@@ -189,7 +185,7 @@ int main() {
                 exit(0);
                 break;
         }
-    }*/
+    }
 
     return 0; 
 }
