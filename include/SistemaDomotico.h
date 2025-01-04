@@ -7,6 +7,7 @@
 #include <map>
 #include <stack>
 #include <vector>
+#include <memory>
 
 class SistemaDomotico
 {
@@ -67,6 +68,9 @@ class SistemaDomotico
         void fineGiornata(std::ostream&);
         std::ostream& setOffbyTimer(std::ostream&, std::string);
         std::ostream& setOnbyTimer(std::ostream&, std::string);
+
+        //Funzione di debug per capire il funzionamento generale
+        std::ostream& printTimeLine(std::ostream&);
 
 };
 
