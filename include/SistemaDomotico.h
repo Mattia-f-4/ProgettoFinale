@@ -8,6 +8,7 @@
 #include <stack>
 #include <vector>
 #include <memory>
+#include <queue>
 
 class SistemaDomotico
 {
@@ -51,9 +52,9 @@ class SistemaDomotico
         
         //Contenitori STL 
         //int serve per indicare se si tratta di accensione o spegnimento  
-        std::multimap<Tempo, std::pair<int,Dispositivo*>> TimeLine;
+        std::multimap<Tempo, std::pair<int,std::shared_ptr<Dispositivo>>> TimeLine;
         std::stack<std::string> OrdineAccensione;
-        std::map<std::string,Dispositivo*> DataBase;
+        std::map<std::string,std::shared_ptr<Dispositivo>> DataBase;
 
         /* DATI MEMBRO */
         inline const static double limitePotenza = 3.5; //inline necessario per evitare di usare constexpr oppure di definire nel .cpp 
@@ -65,9 +66,11 @@ class SistemaDomotico
         void sovraccarico(std::ostream&);
 
         //Funzione di supporto
-        void fineGiornata(std::ostream&);
         std::ostream& setOffbyTimer(std::ostream&, std::string);
         std::ostream& setOnbyTimer(std::ostream&, std::string);
+
+        //Funzione di supporto per il controllo dei timer
+        bool isTimerValido(Tempo&, Tempo&, std::string, std::shared_ptr<Dispositivo>);
 
         //Funzione di debug per capire il funzionamento generale
         std::ostream& printTimeLine(std::ostream&);
@@ -75,7 +78,7 @@ class SistemaDomotico
 };
 
 //Helper Function
-bool isManuale(Dispositivo*);
-bool isCP(Dispositivo*);
+bool isManuale(std::shared_ptr<Dispositivo>);
+bool isCP(std::shared_ptr<Dispositivo>);
 
 #endif
