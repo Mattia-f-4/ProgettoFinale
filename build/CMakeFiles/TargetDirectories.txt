@@ -1,3 +1,0 @@
-/c/Users/Utente/Desktop/ProgettoFinale/build/CMakeFiles/main.dir
-/c/Users/Utente/Desktop/ProgettoFinale/build/CMakeFiles/edit_cache.dir
-/c/Users/Utente/Desktop/ProgettoFinale/build/CMakeFiles/rebuild_cache.dir
