@@ -7,40 +7,43 @@
 #include <map>
 #include <stack>
 #include <vector>
+#include <memory>
+#include <queue>
+#include <cmath>
+#include <set>
 
 class SistemaDomotico
 {
     public:
-        
         //Costruttore
         SistemaDomotico();    
 
         //Member Function
         std::ostream& setTime(std::ostream&, Tempo&);
-        std::ostream& setOff(std::ostream&, Dispositivo&);
-        std::ostream& setOn(std::ostream&, Dispositivo&);
-        std::ostream& setTimer(std::ostream&, Dispositivo&, Tempo&);
-        std::ostream& setTimer(std::ostream&, DispManuale&, Tempo&, Tempo&);
-        std::ostream& rm(std::ostream&, DispManuale&);
-
+        std::ostream& setOff(std::ostream&, std::string); //se si vuole scrivere in un file mettere 2 stream di output
+        std::ostream& setOn(std::ostream&, std::string);    
+        std::ostream& setTimer(std::ostream&, std::string, Tempo&);
+        std::ostream& setTimer(std::ostream&, std::string, Tempo&, Tempo&);
+        std::ostream& rm(std::ostream&, std::string);
+    
         //Funzioni per logging
         std::ostream& show(std::ostream&); 
-        std::ostream& show(std::ostream&, Dispositivo&);
+        std::ostream& show(std::ostream&, std::string);
 
         //Funzioni per la gestione dei dispositivi
-        void add(DispManuale::DispDomotico);
-        void add(DispCicloPrefissato::DispDomotico);
-        void erase(int);
+        void add(std::string, DispCicloPrefissato::DispDomotico);
+        void add(std::string, DispManuale::DispDomotico);
+        void erase(std::string);
 
         // Funzioni di debug
         std::ostream& resetTime(std::ostream&);
-        void resetTimers();
-        void resetAll();
+        std::ostream& resetTimers(std::ostream&);
+        std::ostream& resetAll(std::ostream&);
 
         //Funzioni di supporto alle funzioni di debug
         void setOffAll();
         void rmAll();
-
+        
         //Getter
         int getSize() const;
         Tempo getTime() const;
@@ -49,19 +52,35 @@ class SistemaDomotico
 
     private:
         
-        //Contenitori STL   
-        std::multimap<Tempo, int> TimeLine;
-        std::stack<int> OrdineAccensione;
-        std::map<int,Dispositivo&> DataBase;
+        //Contenitori STL 
+        //int serve per indicare se si tratta di accensione o spegnimento  
+        std::multimap<Tempo, std::pair<int,std::shared_ptr<Dispositivo>>> TimeLine;
+        std::stack<std::string> OrdineAccensione;
+        std::map<std::string,std::shared_ptr<Dispositivo>> DataBase;
 
-        //Variabili d'istanza
-        const double limitePotenza;
+        /* DATI MEMBRO */
+        inline const static double limitePotenza = 3.5; //inline necessario per evitare di usare constexpr oppure di definire nel .cpp 
         double potenzaResidua;
         Tempo orario;
         int size;
 
         //Funzione di controllo 
-        void sovraccarico();
+        void sovraccarico(std::ostream&);
+
+        //Funzione di supporto
+        std::ostream& setOffbyTimer(std::ostream&, std::string);
+        std::ostream& setOnbyTimer(std::ostream&, std::string);
+
+        //Funzione di supporto per il controllo dei timer
+        bool isTimerValido(Tempo&, Tempo&, std::string, std::shared_ptr<Dispositivo>);
+
+        //Funzione di debug per capire il funzionamento generale
+        std::ostream& printTimeLine(std::ostream&);
+
 };
+
+//Helper Function
+bool isManuale(std::shared_ptr<Dispositivo>);
+bool isCP(std::shared_ptr<Dispositivo>);
 
 #endif

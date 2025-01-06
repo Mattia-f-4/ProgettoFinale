@@ -17,19 +17,20 @@ class DispCicloPrefissato : public Dispositivo {
             Televisore
         };
 
-        //Costruttore
+        //Costruttori
+        DispCicloPrefissato(std::string, DispDomotico);
         DispCicloPrefissato(std::string, DispDomotico, Tempo);
 
         //Getter
         Tempo getDurata() const;
 
-        //Setter
-        void setAccensione(const Tempo&);
+        //Distruttore
+        ~DispCicloPrefissato() = default;
 
     private:
         
         //Variabili d'istanza
-        std::map<DispDomotico, std::pair<Tempo, double>> tipiDispositivi;
+        static std::map<DispDomotico, std::pair<Tempo, double>> tipiDispositivi;
         DispDomotico tipoDispositivo;
         Tempo durata;
 }; 

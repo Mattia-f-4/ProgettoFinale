@@ -14,6 +14,7 @@ class Dispositivo {
         double getPotenza() const;
         Tempo getAccensione() const;
         Tempo getSpegnimento() const;
+        Tempo getDurataAccensione() const;
 
         //Setter
         void setStato(bool);
@@ -23,11 +24,14 @@ class Dispositivo {
         //Member Function
         void changeStatus();
         double consumoEnergetico(const Tempo&) const;
+        void reset();
     
     protected:
         
         //Costruttori
+        Dispositivo(std::string, Tempo, Tempo);
         Dispositivo(std::string, Tempo);
+        Dispositivo(std::string);
         
         //Variabili d'istanza
         int ID = 0;
@@ -36,6 +40,10 @@ class Dispositivo {
         double potenza;
         Tempo oraAccensione;
         Tempo oraSpegnimento;
+        Tempo durataAccensione;
+
+        //Distruttore
+        virtual ~Dispositivo() = default;
 
 };
 
