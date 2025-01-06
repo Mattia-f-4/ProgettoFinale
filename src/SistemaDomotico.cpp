@@ -8,26 +8,26 @@
         //Grazie all'utilizzo di smart pointer la gestione della memoria è automatica
 
         //Creazione dei dispositivi manuali predefiniti
-        std::shared_ptr<Dispositivo> Frigorifero = std::make_shared<DispManuale>("Frigorifero", DispManuale::DispDomotico::Frigorifero);
+        std::shared_ptr<Dispositivo> Frigorifero = std::make_shared<DispManuale>("frigorifero", DispManuale::DispDomotico::Frigorifero);
         
-        std::shared_ptr<Dispositivo> ImpiantoFotovoltaico = std::make_shared<DispManuale>("Impianto_fotovoltaico", DispManuale::DispDomotico::Impianto_Fotovoltaico);
+        std::shared_ptr<Dispositivo> ImpiantoFotovoltaico = std::make_shared<DispManuale>("impianto fotovoltaico", DispManuale::DispDomotico::Impianto_Fotovoltaico);
         
-        std::shared_ptr<Dispositivo> Pompa_di_calore_termostato = std::make_shared<DispManuale>("Pompa di calore + termostato", DispManuale::DispDomotico::Pompa_di_calore_termostato);
+        std::shared_ptr<Dispositivo> Pompa_di_calore_termostato = std::make_shared<DispManuale>("pompa di calore + termostato", DispManuale::DispDomotico::Pompa_di_calore_termostato);
         
-        std::shared_ptr<Dispositivo> Scaldabagno = std::make_shared<DispManuale>("Scaldabagno", DispManuale::DispDomotico::Scaldabagno);
+        std::shared_ptr<Dispositivo> Scaldabagno = std::make_shared<DispManuale>("scaldabagno", DispManuale::DispDomotico::Scaldabagno);
 
         // Creazione dei dispositivi a ciclo prefissato predefiniti
-        std::shared_ptr<Dispositivo> Asciugatrice = std::make_shared<DispCicloPrefissato>("Asciugatrice", DispCicloPrefissato::DispDomotico::Asciugatrice);
+        std::shared_ptr<Dispositivo> Asciugatrice = std::make_shared<DispCicloPrefissato>("asciugatrice", DispCicloPrefissato::DispDomotico::Asciugatrice);
         
-        std::shared_ptr<Dispositivo> Forno_a_microonde = std::make_shared<DispCicloPrefissato>("Forno a microonde", DispCicloPrefissato::DispDomotico::Forno_a_microonde);
+        std::shared_ptr<Dispositivo> Forno_a_microonde = std::make_shared<DispCicloPrefissato>("forno a microonde", DispCicloPrefissato::DispDomotico::Forno_a_microonde);
         
-        std::shared_ptr<Dispositivo> Lavastoviglie = std::make_shared<DispCicloPrefissato>("Lavastoviglie", DispCicloPrefissato::DispDomotico::Lavastoviglie);
+        std::shared_ptr<Dispositivo> Lavastoviglie = std::make_shared<DispCicloPrefissato>("lavastoviglie", DispCicloPrefissato::DispDomotico::Lavastoviglie);
         
-        std::shared_ptr<Dispositivo> Lavatrice = std::make_shared<DispCicloPrefissato>("Lavatrice", DispCicloPrefissato::DispDomotico::Lavatrice);
+        std::shared_ptr<Dispositivo> Lavatrice = std::make_shared<DispCicloPrefissato>("lavatrice", DispCicloPrefissato::DispDomotico::Lavatrice);
         
-        std::shared_ptr<Dispositivo> Tapparelle_elettriche = std::make_shared<DispCicloPrefissato>("Tapparelle elettriche", DispCicloPrefissato::DispDomotico::Tapparelle_elettriche);
+        std::shared_ptr<Dispositivo> Tapparelle_elettriche = std::make_shared<DispCicloPrefissato>("tapparelle elettriche", DispCicloPrefissato::DispDomotico::Tapparelle_elettriche);
         
-        std::shared_ptr<Dispositivo> Televisore = std::make_shared<DispCicloPrefissato>("Televisore", DispCicloPrefissato::DispDomotico::Televisore);
+        std::shared_ptr<Dispositivo> Televisore = std::make_shared<DispCicloPrefissato>("televisore", DispCicloPrefissato::DispDomotico::Televisore);
 
         // Creazione del DataBase
         DataBase.insert({Frigorifero->getNome(), Frigorifero});
@@ -147,7 +147,7 @@
             else
             {
                 //Se la sua accensione comporterebbe un superamento della potenza non lo accendo
-                if(potenzaResidua + pData->second->getPotenza() > limitePotenza)
+                if(potenzaResidua + d->getPotenza() < 0)
                 {
                     out << orario << " " << disp << " non acceso. Limite di potenza raggiunto." << std::endl;
                     //Non devo rimuovere alcun timer in quanto questo comando viene chiamato dall'utente
@@ -443,7 +443,7 @@
             //Se arrivo alla fine del programma spengo tutti i dispositivi VA SPOSTATO DOPO
             else if(t==Tempo(23,59))
             {
-                out << orario << " fine programma." << std::endl;
+                throw std::runtime_error("Fine programma");
             }
             else
             {   
