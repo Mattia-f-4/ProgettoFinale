@@ -26,8 +26,8 @@
         CycleID += 2;
 
         durata = tipiDispositivi[tipoDispositivo].first;
-        oraSpegnimento = getAccensione() + durata;
         potenza = tipiDispositivi[tipoDispositivo].second;
+
     }
 
 /* FUNZIONI MEMBRO*/
