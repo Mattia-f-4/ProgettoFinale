@@ -105,7 +105,9 @@ using namespace std;
     }
 
     Tempo Tempo::operator+(const Tempo& durata) const{
-               
+        if(durata.getOra() < 0 && durata.getMinuti() <= 0)
+            throw invalid_argument("Duration must be positive");
+        
         int newMin = getMinuti() + durata.getMinuti();
         int newH = getOra() + durata.getOra() + newMin/60;
         
