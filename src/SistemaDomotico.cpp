@@ -566,8 +566,8 @@
         return out;
     }
 
-    void SistemaDomotico::resetTimers(){
-        std::cout << orario << " I timer sono stati resettati." << std::endl;
+    std::ostream& SistemaDomotico::resetTimers(std::ostream& out){
+        out << orario << " I timer sono stati resettati." << std::endl;
 
         /*resetTimers:
             - rimuove tutti i timer dai dispositivi
@@ -595,11 +595,13 @@
 
         // Sostituisci la vecchia TimeLine con SoloSpegnimento
         TimeLine = std::move(SoloSpegnimento);
+
+        return out;
     }
 
-    void SistemaDomotico::resetAll(){
+    std::ostream& SistemaDomotico::resetAll(std::ostream& out){
 
-        std::cout << orario << " Il tempo e' stato resettato, tutti i dispositivi sono stati spenti e i timer rimossi." << std::endl;
+        out << orario << " Il tempo e' stato resettato, tutti i dispositivi sono stati spenti e i timer rimossi." << std::endl;
         
         /*resetAll
             - riporta l'orario a 00:00
@@ -618,7 +620,9 @@
         //Rimuove i timer (svuoto la timeline)
         TimeLine.clear();
 
-        std::cout << orario << " orario impostato." << std::endl;
+        out << orario << " orario impostato." << std::endl;
+
+        return out;
     }
 
 /* FUNZIONI DI SUPPORTO */
