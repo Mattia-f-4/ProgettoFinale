@@ -10,7 +10,7 @@
         //Creazione dei dispositivi manuali predefiniti
         std::shared_ptr<Dispositivo> Frigorifero = std::make_shared<DispManuale>("Frigorifero", DispManuale::DispDomotico::Frigorifero);
         
-        std::shared_ptr<Dispositivo> ImpiantoFotovoltaico = std::make_shared<DispManuale>("Impianto_fotovoltaico", DispManuale::DispDomotico::Impianto_Fotovoltaico);
+        std::shared_ptr<Dispositivo> ImpiantoFotovoltaico = std::make_shared<DispManuale>("Impianto fotovoltaico", DispManuale::DispDomotico::Impianto_Fotovoltaico);
         
         std::shared_ptr<Dispositivo> Pompa_di_calore_termostato = std::make_shared<DispManuale>("Pompa di calore + termostato", DispManuale::DispDomotico::Pompa_di_calore_termostato);
         
@@ -147,7 +147,7 @@
             else
             {
                 //Se la sua accensione comporterebbe un superamento della potenza non lo accendo
-                if(potenzaResidua + pData->second->getPotenza() > limitePotenza)
+                if(potenzaResidua + d->getPotenza() < 0)
                 {
                     out << orario << " " << disp << " non acceso. Limite di potenza raggiunto." << std::endl;
                     //Non devo rimuovere alcun timer in quanto questo comando viene chiamato dall'utente
@@ -443,7 +443,7 @@
             //Se arrivo alla fine del programma spengo tutti i dispositivi VA SPOSTATO DOPO
             else if(t==Tempo(23,59))
             {
-                out << orario << " fine programma." << std::endl;
+                throw std::runtime_error("Fine programma");
             }
             else
             {   
@@ -501,7 +501,7 @@
             }
         }
         
-        out << orario << " Attualmente il sistema ha prodotto " << produzione << " kWh e consumato " << consumo << " kWh. Nello specifico:" << std::endl;
+        out << orario << " Attualmente il sistema ha prodotto " << fabs(produzione) << " kWh e consumato " << consumo << " kWh. Nello specifico:" << std::endl;
 
         //Mostro i singoli dispositivi
         for(auto& elemento : DataBase) {
@@ -524,7 +524,13 @@
 
         if (dispositivo != DataBase.end()) {
             //Dispositivo trovato
-            out << orario << " Il dispositivo " << device << " ha consumato " << dispositivo->second->consumoEnergetico(orario) << " kWh"<< std::endl;
+            out << orario << " Il dispositivo " << device << " ha ";
+            if(dispositivo->second->consumoEnergetico(orario) >= 0) {
+                out << "consumato ";
+            } else {
+                out << "prodotto ";
+            }
+            out << fabs(dispositivo->second->consumoEnergetico(orario)) << " kWh" << std::endl;
         } else {
             //Dispositivo non trovato
             out << orario << " Dispositivo non trovato nel database." << std::endl;
