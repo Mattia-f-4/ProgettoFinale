@@ -10,7 +10,7 @@
         //Creazione dei dispositivi manuali predefiniti
         std::shared_ptr<Dispositivo> Frigorifero = std::make_shared<DispManuale>("Frigorifero", DispManuale::DispDomotico::Frigorifero);
         
-        std::shared_ptr<Dispositivo> ImpiantoFotovoltaico = std::make_shared<DispManuale>("Impianto_fotovoltaico", DispManuale::DispDomotico::Impianto_Fotovoltaico);
+        std::shared_ptr<Dispositivo> ImpiantoFotovoltaico = std::make_shared<DispManuale>("Impianto fotovoltaico", DispManuale::DispDomotico::Impianto_Fotovoltaico);
         
         std::shared_ptr<Dispositivo> Pompa_di_calore_termostato = std::make_shared<DispManuale>("Pompa di calore + termostato", DispManuale::DispDomotico::Pompa_di_calore_termostato);
         
@@ -639,29 +639,6 @@
             }
             OrdineAccensione.pop();
         }
-    }
-
-    std::ostream& SistemaDomotico::show(std::ostream& out){
-        out << orario << " show." << std::endl;
-        return out;
-    }
-
-    std::ostream& SistemaDomotico::show(std::ostream& out, std::string device){
-        out << orario << " show " << device << "." << std::endl;
-        return out;
-    }
-
-    std::ostream& SistemaDomotico::resetTime(std::ostream& out){
-        out << orario << " resetTime." << std::endl;
-        return out;
-    }
-
-    void SistemaDomotico::resetTimers(){
-        std::cout << orario << " resetTimers." << std::endl;
-    }
-
-    void SistemaDomotico::resetAll(){
-        std::cout << orario << " resetAll." << std::endl;
     }
 
 /* HELPER FUNCTION */
