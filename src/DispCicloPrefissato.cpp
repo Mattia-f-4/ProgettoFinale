@@ -28,6 +28,7 @@
         durata = tipiDispositivi[tipoDispositivo].first;
         oraSpegnimento = getAccensione() + durata;
         potenza = tipiDispositivi[tipoDispositivo].second;
+
     }
 
 /* FUNZIONI MEMBRO*/
@@ -38,7 +39,7 @@
 /* MAPPA */
 
     //Mappa per tipi dispositivi a ciclo prefissato
-    std::map<DispCicloPrefissato::DispDomotico, std::pair<Tempo, double>> DispCicloPrefissato::tipiDispositivi={
+    std::map<DispCicloPrefissato::DispDomotico, std::pair<Tempo, double>> DispCicloPrefissato::tipiDispositivi = {
         {DispCicloPrefissato::DispDomotico::Lavatrice, {{1, 50}, -2.0}},
         {DispCicloPrefissato::DispDomotico::Lavastoviglie, {{3, 15}, -1.5}},
         {DispCicloPrefissato::DispDomotico::Tapparelle_elettriche, {{0, 1}, -0.3}},

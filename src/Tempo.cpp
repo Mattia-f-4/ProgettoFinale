@@ -9,12 +9,28 @@ using namespace std;
         : ora{0}, minuti{0} {}
 
     //Costruttore parametrico
-    Tempo::Tempo(int h, int m)
-        : ora{h}, minuti{m} {
-        if(h < 0 || h > 23)
-            throw invalid_argument("Hours must be between 0 and 23");
-        if(m < 0 || m > 59)
-            throw invalid_argument("Minutes must be between 0 and 59");
+    Tempo::Tempo(int h, int m) {
+        setOra(h);
+        setMinuti(m);
+    }
+
+    //Costruttore con String
+    Tempo::Tempo(std::string orario) {
+        int pos = orario.find(':');
+
+        if(pos != string::npos) {
+            //Se ci sono i due punti, la stringa conterrà l'orario nel formato 12:00
+            string h = orario.substr(0, pos);
+            string m = orario.substr(pos + 1);
+
+            setOra(stoi(h));
+            setMinuti(stoi(m));
+
+        } else {
+            //Se non ci sono i due punti, la stringa conterrà solo un numero (che è l'ora!)
+            setOra(stoi(orario));
+            setMinuti(0);
+        }
     }
 
 /* FUNZIONI MEMBRO */
@@ -80,6 +96,7 @@ using namespace std;
 
         int newMin = getMinuti() + durata;
         int newH = getOra() + newMin / 60;
+        
         //Normalizzo ore e minuti in modo che rimangano nel range [0,23] e [0,59]
         newH = newH % 24;
         newMin = newMin % 60;
@@ -91,6 +108,7 @@ using namespace std;
                
         int newMin = getMinuti() + durata.getMinuti();
         int newH = getOra() + durata.getOra() + newMin/60;
+        
         //Normalizzo ore e minuti in modo che rimangano nel range [0,23] e [0,59]
         newH = newH % 24;
         newMin = newMin % 60;

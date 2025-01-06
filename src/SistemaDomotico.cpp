@@ -10,7 +10,7 @@
         //Creazione dei dispositivi manuali predefiniti
         std::shared_ptr<Dispositivo> Frigorifero = std::make_shared<DispManuale>("Frigorifero", DispManuale::DispDomotico::Frigorifero);
         
-        std::shared_ptr<Dispositivo> ImpiantoFotovoltaico = std::make_shared<DispManuale>("Impianto fotovoltaico", DispManuale::DispDomotico::Impianto_Fotovoltaico);
+        std::shared_ptr<Dispositivo> ImpiantoFotovoltaico = std::make_shared<DispManuale>("Impianto_fotovoltaico", DispManuale::DispDomotico::Impianto_Fotovoltaico);
         
         std::shared_ptr<Dispositivo> Pompa_di_calore_termostato = std::make_shared<DispManuale>("Pompa di calore + termostato", DispManuale::DispDomotico::Pompa_di_calore_termostato);
         
@@ -106,7 +106,7 @@
         //Condizione tenuta solo per precauzione VA TOLTA ALLA FINE 
         if(pData->second->getStato()==0) 
         {
-            out << orario << " " << disp << " gia' spento. QUESTO NON DOVREBBE ACCADERE, CONTROLLARE CHE PROBELEMI CI SONO" << std::endl;
+            out << orario << " " << disp << " gia' spento. QUESTO NON DOVREBBE ACCADERE, CONTROLLARE CHE PROBLEMI CI SONO" << std::endl;
         }
         else
         {
@@ -451,8 +451,11 @@
                 while(p != TimeLine.end() && p->first<=t)
                 {
                     // Debug output to check the values
-                    out << "Current time: " << p->first << ", Target time: " << t << std::endl;
-                    printTimeLine(out);
+                    
+                    /*out << "Current time: " << p->first << ", Target time: " << t << std::endl;
+                    printTimeLine(out);*/
+
+
                     //aggiorno l'ora del sistema
                     orario = p->first;
                     std::shared_ptr<Dispositivo> d = p->second.second;
@@ -467,10 +470,11 @@
                     }   
                     //Serve riassegnare p altrimenti cancellando un elemento si perde il riferimento      
                     p = TimeLine.erase(p);
-                    printTimeLine(out);
+                    
+                    /*printTimeLine(out);
 
                     // Debug output to check the values
-                out << "Current time: " << p->first << ", Target time: " << t << std::endl;
+                out << "Current time: " << p->first << ", Target time: " << t << std::endl;*/
 
                 }; 
                 orario = t;
@@ -482,26 +486,143 @@
     }
 
     std::ostream& SistemaDomotico::show(std::ostream& out){
-        out << orario << " show." << std::endl;
+        
+        double produzione = 0;
+        double consumo = 0;
+
+        //Calcolo nel sistema la produzione e il consumo attuale totale
+        for(auto& elemento : DataBase) {
+            if(elemento.second->consumoEnergetico(orario) > 0) {
+                //Consumo > 0
+                consumo += elemento.second->consumoEnergetico(orario);
+            } else {
+                //Consumo < 0 (aka Produzione)
+                produzione += elemento.second->consumoEnergetico(orario);
+            }
+        }
+        
+        out << orario << " Attualmente il sistema ha prodotto " << produzione << " kWh e consumato " << consumo << " kWh. Nello specifico:" << std::endl;
+
+        //Mostro i singoli dispositivi
+        for(auto& elemento : DataBase) {
+            out << "\t- Il dispositivo " << elemento.first << " ha ";
+            if(elemento.second->consumoEnergetico(orario) >= 0) {
+                out << "consumato ";
+            } else {
+                out << "prodotto ";
+            }
+            out << fabs(elemento.second->consumoEnergetico(orario)) << " kWh" << std::endl;
+        }
+        
+        
         return out;
     }
 
     std::ostream& SistemaDomotico::show(std::ostream& out, std::string device){
-        out << orario << " show " << device << "." << std::endl;
+        
+        auto dispositivo = DataBase.find(device);
+
+        if (dispositivo != DataBase.end()) {
+            //Dispositivo trovato
+            out << orario << " Il dispositivo " << device << " ha consumato " << dispositivo->second->consumoEnergetico(orario) << " kWh"<< std::endl;
+        } else {
+            //Dispositivo non trovato
+            out << orario << " Dispositivo non trovato nel database." << std::endl;
+        }
+        
+        
         return out;
     }
 
     std::ostream& SistemaDomotico::resetTime(std::ostream& out){
-        out << orario << " resetTime." << std::endl;
+
+        out << orario << " Il tempo e' stato resettato e tutti i dispositivi sono stati spenti." << std::endl;
+        
+        /*resetTime:
+            - riporta l'orario a 00:00
+            - riporta i dispositivi alle condizioni iniziali
+            - mantiene i timer
+        */
+
+        //Orario a 00:00
+        orario = Tempo(0,0);
+
+        //Condizioni iniziali (tutti i dispositivi spenti)
+        for(auto& elemento : DataBase) {
+            elemento.second->reset();
+
+            //Controllo nella TimeLine se, per caso, ci sono dei timer di spegnimento
+            for(auto pTime = TimeLine.begin(); pTime != TimeLine.end(); pTime++) {
+                if(pTime->second.second -> getNome() == elemento.first && pTime->second.first==0)
+                {
+                    TimeLine.erase(pTime);
+                }
+                break; //tolgo solo il primo di spegnimento
+            };
+        }
+
+        out << orario << " orario impostato." << std::endl;
+
         return out;
     }
 
-    void SistemaDomotico::resetTimers(){
-        std::cout << orario << " resetTimers." << std::endl;
+    std::ostream& SistemaDomotico::resetTimers(std::ostream& out){
+        out << orario << " I timer sono stati resettati." << std::endl;
+
+        /*resetTimers:
+            - rimuove tutti i timer dai dispositivi
+            - non modifica lo stato dei dispositivi
+            - se un timer è in corso di svolgimento in un Dispositivo CP, DEVO mantenere l'orario di termine (per mantenere il ciclo prefissato -> se cancello tutta la timeline il dispositivo rimane acceso per sempre)
+        */
+
+        //Multimap temporanea per conservare i timer di spegnimento da mantenere
+        std::multimap<Tempo, std::pair<int, std::shared_ptr<Dispositivo>>> SoloSpegnimento;
+
+        //Set per tracciare quali dispositivi CP sono già stati elaborati
+        std::set<std::shared_ptr<Dispositivo>> dispositiviGestiti;
+
+        for (auto it = TimeLine.begin(); it != TimeLine.end(); ++it) {
+            //Mantieni solo i timer di spegnimento per dispositivi CP
+            if (isCP(it->second.second) && it->second.first == 0) {
+                // Controlla se il dispositivo è già stato gestito
+                if (dispositiviGestiti.find(it->second.second) == dispositiviGestiti.end()) {
+                    // Aggiungi il timer alla nuova multimap
+                    SoloSpegnimento.insert(*it);
+                    dispositiviGestiti.insert(it->second.second); // Segna il dispositivo come gestito
+                }
+            }
+        }
+
+        // Sostituisci la vecchia TimeLine con SoloSpegnimento
+        TimeLine = std::move(SoloSpegnimento);
+
+        return out;
     }
 
-    void SistemaDomotico::resetAll(){
-        std::cout << orario << " resetAll." << std::endl;
+    std::ostream& SistemaDomotico::resetAll(std::ostream& out){
+
+        out << orario << " Il tempo e' stato resettato, tutti i dispositivi sono stati spenti e i timer rimossi." << std::endl;
+        
+        /*resetAll
+            - riporta l'orario a 00:00
+            - riporta i dispositivi alle condizioni iniziali
+            - i timer vengono rimossi
+        */
+
+        //Orario a 00:00
+        orario = Tempo(0,0);
+
+        //Condizioni iniziali (tutti i dispositivi spenti)
+        for(auto& elemento : DataBase) {
+            elemento.second->reset();
+        }
+
+        //Rimuove i timer (svuoto la timeline)
+        TimeLine.clear();
+
+        out << orario << " orario impostato." << std::endl;
+
+        return out;
     }
 
 /* FUNZIONI DI SUPPORTO */

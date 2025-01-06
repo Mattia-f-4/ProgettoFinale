@@ -90,11 +90,11 @@ void reset_time(){
 }
 
 void reset_timers(){
-    sistemaDomotico.resetTimers();
+    sistemaDomotico.resetTimers(std::cout);
 }
 
 void reset_all(){
-    sistemaDomotico.resetAll();
+    sistemaDomotico.resetAll(std::cout);
 }
 
 int main() {  

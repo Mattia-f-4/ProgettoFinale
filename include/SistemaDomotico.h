@@ -9,6 +9,8 @@
 #include <vector>
 #include <memory>
 #include <queue>
+#include <cmath>
+#include <set>
 
 class SistemaDomotico
 {
@@ -35,8 +37,8 @@ class SistemaDomotico
 
         // Funzioni di debug
         std::ostream& resetTime(std::ostream&);
-        void resetTimers();
-        void resetAll();
+        std::ostream& resetTimers(std::ostream&);
+        std::ostream& resetAll(std::ostream&);
 
         //Funzioni di supporto alle funzioni di debug
         void setOffAll();

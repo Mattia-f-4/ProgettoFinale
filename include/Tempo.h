@@ -10,6 +10,7 @@ class Tempo {
         //Costruttori
         Tempo();
         Tempo(int, int);
+        Tempo(std::string);
 
         //Getter
         int getOra() const;
