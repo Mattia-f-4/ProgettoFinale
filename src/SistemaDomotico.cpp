@@ -172,6 +172,7 @@
                 
                 if(potenzaResidua<0)
                 {
+                    out << orario << " Il sistema ha superato il limite di potenza. Verranno spenti dei dispositivi." << std::endl;
                     sovraccarico(out);
                 }
             }
@@ -202,6 +203,7 @@ if(pData->second->getStato()==0)
             //Non rimuovo dallo stack il dispositivo, in caso di sovraccarico controllerò se è ancora acceso
             if(potenzaResidua<0)
             {
+                out << orario << " Il sistema ha superato il limite di potenza. Verranno spenti dei dispositivi." << std::endl;
                 sovraccarico(out);
             }
         }
@@ -702,7 +704,7 @@ if(pData->second->getStato()==0)
         while(potenzaResidua<0)
         {
             std::string name = OrdineAccensione.top();
-            
+
             //Controllo che il dispositivo sia ancora presente e non sia stato eliminato
             if(DataBase.find(name)!=DataBase.end())
             {
