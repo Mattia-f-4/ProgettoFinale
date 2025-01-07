@@ -22,100 +22,59 @@ static std::map<std::string, Commands> mapCommands = {
     {"exit", Commands::exit}
 };
 
-void set_device_on(SistemaDomotico sistemaDomotico, std::string device){
+SistemaDomotico sistemaDomotico;
+
+void set_device_on(std::string device){
     sistemaDomotico.setOn(std::cout, device);
 }
 
-void set_device_off(SistemaDomotico sistemaDomotico, std::string device){
+void set_device_off(std::string device){
     sistemaDomotico.setOff(std::cout, device);
 }
 
-void set_device_start(SistemaDomotico sistemaDomotico, std::string device, std::string start){
+void set_device_start(std::string device, std::string start){
     Tempo t_start(start);
     sistemaDomotico.setTimer(std::cout, device, t_start);
 }
 
-void set_device_start_stop(SistemaDomotico sistemaDomotico, std::string device, std::string start, std::string stop){
+void set_device_start_stop(std::string device, std::string start, std::string stop){
     Tempo t_start(start);
     Tempo t_stop(stop);
 
-    sistemaDomotico.setTimer(SistemaDomotico sistemaDomotico, std::cout, device, t_start, t_stop);
+    sistemaDomotico.setTimer(std::cout, device, t_start, t_stop);
 }
 
-void rm_device(SistemaDomotico sistemaDomotico, std::string device){
+void rm_device(std::string device){
     sistemaDomotico.rm(std::cout, device);
 }
 
-void show(SistemaDomotico sistemaDomotico){
+void show(){
     sistemaDomotico.show(std::cout);
 }
 
-void show_device(SistemaDomotico sistemaDomotico, std::string device){
+void show_device(std::string device){
     sistemaDomotico.show(std::cout, device);
 }
 
-void set_time(SistemaDomotico sistemaDomotico, std::string time){
+void set_time(std::string time){
     Tempo t(time);
 
     sistemaDomotico.setTime(std::cout, t);
 }
 
-void reset_time(SistemaDomotico sistemaDomotico){
+void reset_time(){
     sistemaDomotico.resetTime(std::cout);
 }
 
-void reset_timers(SistemaDomotico sistemaDomotico){
+void reset_timers(){
     sistemaDomotico.resetTimers(std::cout);
 }
 
-void reset_all(SistemaDomotico sistemaDomotico){
+void reset_all(){
     sistemaDomotico.resetAll(std::cout);
 }
 
-bool check_command(Commands command, std::string input){
-    std::string delimiter = " ";
-    switch(command){
-        case Commands::set:
-             std::string pattern = answer.substr(answer.find_last_of(delimiter) + 1);
-             if(pattern.find(':') == std::string::npos && pattern != "on" && pattern != "off"){
-                return false;
-             } else if(pattern.find(':') != std::string::npos){
-                try {
-                    delimiter = ":";
-
-                    int h = stoi(pattern.substr(0, pattern.find(delimiter)));
-                    pattern.erase(0, pattern.find(delimiter) + delimiter.length());
-                    int m = stoi(pattern.substr(0, pattern.find(delimiter)));
-
-                    input.erase(input.find_last_of(delimiter));
-                    pattern = answer.substr(answer.find_last_of(delimiter) + 1);
-
-                    if(pattern.find(':') != std::string::npos){
-                        h = stoi(pattern.substr(0, pattern.find(delimiter)));
-                        pattern.erase(0, pattern.find(delimiter) + delimiter.length());
-                        m = stoi(pattern.substr(0, pattern.find(delimiter)));
-                    }
-                } catch(std::invalid_argument& e) {
-                    return false;
-                } catch(std::out_of_range& e) {
-                    return false;
-                }
-             }
-            break;
-        case Commands::reset:
-            if(input != "")
-                return false;
-            break;
-        case Commands::exit:
-            if(input != "")
-                return false;
-            break;
-    }
-    return true;
-}
-
 int main() {  
-    SistemaDomotico sistemaDomotico;
 
     std::string answer;
     std::string delimiter = " ";
@@ -152,13 +111,9 @@ int main() {
         
         switch(mapCommands[command]){
             case Commands::set:
-                if(!check_command(mapCommands[command], answer)){
-                    std::cout << "Errore di sintassi nel comando"
-                    break;
-                }
                 if(answer.substr(0, answer.find(delimiter)) == "time"){
                     std::string time = answer.substr(answer.find_last_of(delimiter) + 1);
-                    set_time(sistemaDomotico, time);
+                    set_time(time);
 
                 } else {
                     pattern = answer.substr(answer.find_last_of(delimiter) + 1); 
@@ -170,7 +125,7 @@ int main() {
                         if(pattern == "on")
                             set_device_on(device);
                         else if ( pattern == "off")
-                            set_device_off(sistemaDomotico, device);
+                            set_device_off(device);
                     }
                     else {
                         answer.erase(answer.find_last_of(delimiter));
@@ -178,7 +133,7 @@ int main() {
                             std::string start = pattern;
                             device = answer;
 
-                            set_device_start(sistemaDomotico, device, start);
+                            set_device_start(device, start);
                         } else {
                             std::string stop = pattern;
                             std::string start = answer.substr(answer.find_last_of(delimiter) + 1);
@@ -186,7 +141,7 @@ int main() {
                             answer.erase(answer.find_last_of(delimiter));
                             device = answer;
 
-                            set_device_start_stop(sistemaDomotico, device, start, stop);
+                            set_device_start_stop(device, start, stop);
                         }
                     }
                 }
@@ -195,7 +150,7 @@ int main() {
             case Commands::rm:
                 device = answer;
                 std::cout << device << std::endl;
-                rm_device(sistemaDomotico, device);
+                rm_device(device);
                 break;
 
             case Commands::show:
@@ -204,34 +159,23 @@ int main() {
                 else{
                     device = answer;
                     std::cout << device << std::endl;
-                    show_device(sistemaDomotico, device);
+                    show_device(device);
                 }
                 break;
 
             case Commands::reset:
-                if(!check_command(mapCommands[command], answer)){
-                    std::cout << "Errore di sintassi nel comando"
-                    break;
-                }
                 pattern = answer.substr(0, answer.find(delimiter));
                 if(pattern == "time")
-                    reset_time(sistemaDomotico);
+                    reset_time();
                 else if(pattern == "timers")
-                    reset_timers(sistemaDomotico);
+                    reset_timers();
                 else
-                    reset_all(sistemaDomotico);
+                    reset_all();
                 break;
 
             case Commands::exit:
-                if(!check_command(mapCommands[command], answer)){
-                    std::cout << "Errore di sintassi nel comando"
-                    break;
-                }
                 exit(0);
                 break;
-
-            default:
-                std::cout << "Comando '" << command << "' non esistente!" << std::endl;
         }
     }
 
