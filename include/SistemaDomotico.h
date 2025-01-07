@@ -31,9 +31,9 @@ class SistemaDomotico
         std::ostream& show(std::ostream&, std::string);
 
         //Funzioni per la gestione dei dispositivi
-        void add(std::string, DispCicloPrefissato::DispDomotico);
-        void add(std::string, DispManuale::DispDomotico);
-        void erase(std::string);
+        std::ostream& add(std::ostream&, std::string, DispCicloPrefissato::DispDomotico);
+        std::ostream& add(std::ostream&, std::string, DispManuale::DispDomotico);
+        std::ostream& erase(std::ostream&, std::string);
 
         // Funzioni di debug
         std::ostream& resetTime(std::ostream&);

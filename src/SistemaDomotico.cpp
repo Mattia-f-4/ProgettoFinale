@@ -8,26 +8,26 @@
         //Grazie all'utilizzo di smart pointer la gestione della memoria è automatica
 
         //Creazione dei dispositivi manuali predefiniti
-        std::shared_ptr<Dispositivo> Frigorifero = std::make_shared<DispManuale>("frigorifero", DispManuale::DispDomotico::Frigorifero);
+        std::shared_ptr<Dispositivo> Frigorifero = std::make_shared<DispManuale>("Frigorifero", DispManuale::DispDomotico::Frigorifero);
         
-        std::shared_ptr<Dispositivo> ImpiantoFotovoltaico = std::make_shared<DispManuale>("impianto fotovoltaico", DispManuale::DispDomotico::Impianto_Fotovoltaico);
+        std::shared_ptr<Dispositivo> ImpiantoFotovoltaico = std::make_shared<DispManuale>("Impianto fotovoltaico", DispManuale::DispDomotico::Impianto_Fotovoltaico);
         
-        std::shared_ptr<Dispositivo> Pompa_di_calore_termostato = std::make_shared<DispManuale>("pompa di calore + termostato", DispManuale::DispDomotico::Pompa_di_calore_termostato);
+        std::shared_ptr<Dispositivo> Pompa_di_calore_termostato = std::make_shared<DispManuale>("Pompa di calore + termostato", DispManuale::DispDomotico::Pompa_di_calore_termostato);
         
-        std::shared_ptr<Dispositivo> Scaldabagno = std::make_shared<DispManuale>("scaldabagno", DispManuale::DispDomotico::Scaldabagno);
+        std::shared_ptr<Dispositivo> Scaldabagno = std::make_shared<DispManuale>("Scaldabagno", DispManuale::DispDomotico::Scaldabagno);
 
         // Creazione dei dispositivi a ciclo prefissato predefiniti
-        std::shared_ptr<Dispositivo> Asciugatrice = std::make_shared<DispCicloPrefissato>("asciugatrice", DispCicloPrefissato::DispDomotico::Asciugatrice);
+        std::shared_ptr<Dispositivo> Asciugatrice = std::make_shared<DispCicloPrefissato>("Asciugatrice", DispCicloPrefissato::DispDomotico::Asciugatrice);
         
-        std::shared_ptr<Dispositivo> Forno_a_microonde = std::make_shared<DispCicloPrefissato>("forno a microonde", DispCicloPrefissato::DispDomotico::Forno_a_microonde);
+        std::shared_ptr<Dispositivo> Forno_a_microonde = std::make_shared<DispCicloPrefissato>("Forno a microonde", DispCicloPrefissato::DispDomotico::Forno_a_microonde);
         
-        std::shared_ptr<Dispositivo> Lavastoviglie = std::make_shared<DispCicloPrefissato>("lavastoviglie", DispCicloPrefissato::DispDomotico::Lavastoviglie);
+        std::shared_ptr<Dispositivo> Lavastoviglie = std::make_shared<DispCicloPrefissato>("Lavastoviglie", DispCicloPrefissato::DispDomotico::Lavastoviglie);
         
-        std::shared_ptr<Dispositivo> Lavatrice = std::make_shared<DispCicloPrefissato>("lavatrice", DispCicloPrefissato::DispDomotico::Lavatrice);
+        std::shared_ptr<Dispositivo> Lavatrice = std::make_shared<DispCicloPrefissato>("Lavatrice", DispCicloPrefissato::DispDomotico::Lavatrice);
         
-        std::shared_ptr<Dispositivo> Tapparelle_elettriche = std::make_shared<DispCicloPrefissato>("tapparelle elettriche", DispCicloPrefissato::DispDomotico::Tapparelle_elettriche);
+        std::shared_ptr<Dispositivo> Tapparelle_elettriche = std::make_shared<DispCicloPrefissato>("Tapparelle elettriche", DispCicloPrefissato::DispDomotico::Tapparelle_elettriche);
         
-        std::shared_ptr<Dispositivo> Televisore = std::make_shared<DispCicloPrefissato>("televisore", DispCicloPrefissato::DispDomotico::Televisore);
+        std::shared_ptr<Dispositivo> Televisore = std::make_shared<DispCicloPrefissato>("Televisore", DispCicloPrefissato::DispDomotico::Televisore);
 
         // Creazione del DataBase
         DataBase.insert({Frigorifero->getNome(), Frigorifero});
@@ -51,6 +51,87 @@
     Tempo SistemaDomotico::getTime() const {return orario;}
     double SistemaDomotico::getPotenzaResidua() const {return potenzaResidua;}
     double SistemaDomotico::getLimitePotenza() const {return limitePotenza;}
+
+    //Metodi per aggiunta di un dispositivo
+    std::ostream& SistemaDomotico::add(std::ostream& out, std::string disp, DispCicloPrefissato::DispDomotico t)
+    {   
+        //Controllo se il dispositivo è già presente
+        auto p = DataBase.find(disp);
+        if(p != DataBase.end())
+        {
+            out << orario << " " << disp << " gia' presente nel Sistema Domotico." << std::endl;
+        }
+        else
+        {
+            std::shared_ptr<Dispositivo> d = std::make_shared<DispCicloPrefissato>(disp, t);
+            DataBase.insert({disp, d});
+            size ++;
+            out << orario << " " << disp << " aggiunto al Sistema Domotico." << std::endl;
+        }
+
+        return out;
+    }
+    
+    std::ostream& SistemaDomotico::add(std::ostream& out, std::string disp, DispManuale::DispDomotico t)
+    {
+        //Controllo se il dispositivo è già presente
+        auto p = DataBase.find(disp);
+        if(p == DataBase.end())
+        {
+            out << orario << " " << disp << " gia' presente nel Sistema Domotico." << std::endl;
+        }
+        else
+        {
+            std::shared_ptr<Dispositivo> d = std::make_shared<DispManuale>(disp, t);
+            DataBase.insert({disp, d});
+            size ++;
+            out << orario << " " << disp << " aggiunto al Sistema Domotico." << std::endl;
+        }
+
+        return out;
+        
+    }
+
+    //Metodo per la rimozione di un dispositivo
+    std::ostream& SistemaDomotico::erase(std::ostream& out, std::string disp)
+    {
+        if(size==0)
+        {
+            out << orario << " Il Sistema Domotico e' vuoto. Impossibile rimuovere ulteriori dispositivi." << std::endl;
+        }
+        else
+        {
+            //Controllo se il dispositivo è presente
+            auto p = DataBase.find(disp);
+            if(p == DataBase.end())
+            {
+                out << orario << " " << disp << " non presente nel Sistema Domotico." << std::endl;
+            }
+            else
+            {
+                //Controllo se il dispositivo è acceso, lo rimuovo solo se spento
+                if(p->second->getStato()==1)
+                {
+                    out << orario << " " << disp << " acceso. Impossibile rimuovere il dispositivo." << std::endl;
+                }
+                else
+                {
+                    //Rimuovo dalla timeline eventuali timer di accensione e spegnimento
+                    for(auto pTime = TimeLine.begin(); pTime != TimeLine.end(); pTime++)
+                    {
+                        if(pTime->second.second->getNome()==disp)
+                        {
+                            TimeLine.erase(pTime);
+                        }
+                    };
+                    DataBase.erase(p);
+                    size --;
+                    out << orario << " " << disp << " rimosso dal Sistema Domotico." << std::endl;
+                }
+            }
+        }
+        return out;
+    }
 
     //setOff
     std::ostream& SistemaDomotico::setOff(std::ostream& out, std::string disp)
@@ -104,10 +185,10 @@
         //Nessun controllo su disp, controllo già effettuato da setTimer
         auto pData = DataBase.find(disp);
         //Condizione tenuta solo per precauzione VA TOLTA ALLA FINE 
-        if(pData->second->getStato()==0) 
-        {
-            out << orario << " " << disp << " gia' spento. QUESTO NON DOVREBBE ACCADERE, CONTROLLARE CHE PROBLEMI CI SONO" << std::endl;
-        }
+if(pData->second->getStato()==0) 
+{
+    out << orario << " " << disp << " gia' spento. QUESTO NON DOVREBBE ACCADERE, CONTROLLARE CHE PROBLEMI CI SONO" << std::endl;
+}
         else
         {
             std::shared_ptr<Dispositivo> d = pData->second;
@@ -356,7 +437,7 @@
                 //I dispositivi CP non hanno timer di spegnimento, viene lanciata un'eccezione
                 if(isCP(d))
                 {
-                    out << orario << " Il dispositivo " << disp << " è un dispositivo a ciclo prefissato. Impossibile impostare un timer di spegnimento. Nessun timer impostato." << std::endl;
+                    out << orario << " Il dispositivo " << disp << " e' un dispositivo a ciclo prefissato. Impossibile impostare un timer di spegnimento. Nessun timer impostato." << std::endl;
                 }
                 else
                 {
@@ -383,7 +464,7 @@
                     }
                     else
                     {
-                        out << orario << " Il timer inserito non è valido. Timer non impostato." << std::endl;
+                        out << orario << " Il timer inserito non e' valido. Timer non impostato." << std::endl;
                     }
                 }
             }
@@ -440,22 +521,11 @@
             {
                 out << orario << " orario attuale." << std::endl;
             }
-            //Se arrivo alla fine del programma spengo tutti i dispositivi VA SPOSTATO DOPO
-            else if(t==Tempo(23,59))
-            {
-                throw std::runtime_error("Fine programma");
-            }
             else
             {   
                 auto  p = TimeLine.begin();
                 while(p != TimeLine.end() && p->first<=t)
                 {
-                    // Debug output to check the values
-                    
-                    /*out << "Current time: " << p->first << ", Target time: " << t << std::endl;
-                    printTimeLine(out);*/
-
-
                     //aggiorno l'ora del sistema
                     orario = p->first;
                     std::shared_ptr<Dispositivo> d = p->second.second;
@@ -470,15 +540,16 @@
                     }   
                     //Serve riassegnare p altrimenti cancellando un elemento si perde il riferimento      
                     p = TimeLine.erase(p);
-                    
-                    /*printTimeLine(out);
-
-                    // Debug output to check the values
-                out << "Current time: " << p->first << ", Target time: " << t << std::endl;*/
 
                 }; 
                 orario = t;
                 out << orario << " orario impostato." << std::endl;
+
+                //Se arrivo alla fine del programma lancio un'eccezione per non permettere ulteriori operazioni
+                if(orario==Tempo(23,59))
+                {
+                    throw std::runtime_error("Fine programma");
+                }
             }
         }
 
@@ -518,19 +589,18 @@
         return out;
     }
 
-    std::ostream& SistemaDomotico::show(std::ostream& out, std::string device){
-        
-        auto dispositivo = DataBase.find(device);
-
-        if (dispositivo != DataBase.end()) {
-            //Dispositivo trovato
-            out << orario << " Il dispositivo " << device << " ha consumato " << dispositivo->second->consumoEnergetico(orario) << " kWh"<< std::endl;
-        } else {
-            //Dispositivo non trovato
-            out << orario << " Dispositivo non trovato nel database." << std::endl;
+    std::ostream& SistemaDomotico::show(std::ostream& out, std::string disp)
+    {
+        auto p = DataBase.find(disp);
+        if(p == DataBase.end())
+        {
+            //se cerco di eliminare un timer per un dispositivo inesistente mi avverte
+            out << orario << " Il dispositivo " << disp << " non esiste. Impossibile eliminare il timer desiderato." << std::endl;
         }
-        
-        
+        else
+        {
+            out << orario << " Il dispositivo " << disp << " ha consumato " << p->second->consumoEnergetico(orario) << " kWh"<< std::endl;
+        }
         return out;
     }
 
@@ -632,10 +702,15 @@
         while(potenzaResidua<0)
         {
             std::string name = OrdineAccensione.top();
-            std::shared_ptr<Dispositivo> d = DataBase.find(name)->second;
-            if(d->getStato()==1)
+            
+            //Controllo che il dispositivo sia ancora presente e non sia stato eliminato
+            if(DataBase.find(name)!=DataBase.end())
             {
-                setOff(out,name);
+                std::shared_ptr<Dispositivo> d = DataBase.find(name)->second;
+                if(d->getStato()==1)
+                {
+                    setOff(out,name);
+                }
             }
             OrdineAccensione.pop();
         }
@@ -717,13 +792,14 @@
                         return false;
                     }
                     tempiSpegnimento.pop(); //lo tolgo comunque in quanto ho già considerato il primo
+                
                 }
-    if(tempiAccensione.size()!=tempiSpegnimento.size())
-    {
-        throw std::runtime_error("Errore nella gestione dei timer."); //TOGLIERE DOPO MA NON DOVREBBE ACCADERE
-        //VA GESTITO IL FINE GIORNATA IN CUI NON CI SONO SPEGNIMENTI 
-    }
-                int i = tempiAccensione.size(); //timer di accensione e spegnimento sono in numero uguale
+                                if(tempiAccensione.size()!=tempiSpegnimento.size())
+                                {
+                                    throw std::runtime_error("Errore nella gestione dei timer."); //TOGLIERE DOPO MA NON DOVREBBE ACCADERE
+                                    //VA GESTITO IL FINE GIORNATA IN CUI NON CI SONO SPEGNIMENTI 
+                                }
+                    int i = tempiAccensione.size(); //timer di accensione e spegnimento sono in numero uguale
 
                 for(int j = 0; j<i; j++)
                 {
@@ -741,23 +817,23 @@
             }
             else if(isManuale(d)) //Scritto così per maggiore chiarezza
             {
-                if(d->getStato()==1 && !tempiSpegnimento.empty())
+                if(d->getStato()==1)
                 {
                     //Se il dispositivo è acceso controllo a parte il primo timer di spegnimento
-                    if(accensione < *tempiSpegnimento.front())
+                    if(!tempiSpegnimento.empty() && accensione < *tempiSpegnimento.front())
                     {
-                        tempiSpegnimento.pop();
                         return false;
                     }
+                    
+                    if(tempiSpegnimento.empty())
+                    {
+                        return false;
+                    }       
                 }
-                else if(d->getStato()==1 && tempiAccensione.empty())
-                {
-                    return false;
-                }
-
+                
                 if(spegnimento.isNull()) //Necessario in quanto questo metodo viene usato da entrambi i setTimer
                 {
-                    if(tempiSpegnimento.empty()) //Se non ci sono timer di spegnimento quello già presente è un timer che dura tutta la giornata, verifico non lo intrecci
+                    if(tempiSpegnimento.empty()) //Se non ci sono timer di spegnimento quello  è un timer che dura tutta la giornata, verifico non lo intrecci
                     {
                         if(accensione < *tempiAccensione.front())
                         {
@@ -782,10 +858,9 @@
                 else
                 {
                     int j = tempiSpegnimento.size();
-
                     for(int k = 0; k<j; k++)
                     {
-                        if( (accensione < *tempiAccensione.front() && spegnimento < *tempiAccensione.front()) || (accensione > *tempiAccensione.front() && spegnimento > *tempiAccensione.front()) )
+                        if( (accensione < *tempiAccensione.front() && spegnimento < *tempiAccensione.front()) || (accensione > *tempiSpegnimento.front() && spegnimento > *tempiAccensione.front()) )
                         {
                             tempiAccensione.pop();
                             tempiSpegnimento.pop();
@@ -795,13 +870,17 @@
                             return false;
                         }
                     }
-
+                    //Nel caso ci sia un ultimo timer di accensione lo verifico a parte successivamente
                     if(!tempiAccensione.empty())
                     {
                         if(accensione < *tempiAccensione.front())
                         {
                             return false;
                         }
+                        return true;
+                    }
+                    else
+                    {
                         return true;
                     }
                 }
