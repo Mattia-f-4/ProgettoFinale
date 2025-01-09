@@ -180,6 +180,7 @@ void add_manuale(SistemaDomotico sistemaDomotico){
     std::cout << "2) Scaldabagno" << std::endl;
     std::cout << "3) Frigorifero" << std::endl << std::endl;
 
+    std::cout << "Numero: ";
     std::getline(std::cin, answer);
 
     enum DispManuale::DispDomotico device;
@@ -201,7 +202,8 @@ void add_manuale(SistemaDomotico sistemaDomotico){
                 device = DispManuale::DispDomotico::Frigorifero;
                 break;
             default:
-                throw new std::invalid_argument("");
+                std::cout << "[Error] Numero non valido" << std::endl;
+                return;
         }
     } catch(std::invalid_argument& e) {
         std::cout << "[Error] Numero non valido" << std::endl;
@@ -211,7 +213,7 @@ void add_manuale(SistemaDomotico sistemaDomotico){
         return;
     }
 
-    std::cout << "Nome dispositivo: " << std::endl;
+    std::cout << "Nome dispositivo: ";
     std::getline(std::cin, answer);
 
     if(!check_name(answer))
@@ -233,6 +235,7 @@ void add_CP(SistemaDomotico sistemaDomotico){
     std::cout << "4) Asciugatrice" << std::endl;
     std::cout << "5) Televisore" << std::endl << std::endl;
 
+    std::cout << "Numero: ";
     std::getline(std::cin, answer);
 
     enum DispCicloPrefissato::DispDomotico device;
@@ -260,7 +263,8 @@ void add_CP(SistemaDomotico sistemaDomotico){
                 device = DispCicloPrefissato::DispDomotico::Televisore;
                 break;
             default:
-                throw new std::invalid_argument("");
+                std::cout << "[Error] Numero non valido" << std::endl;
+                return;
         }
     } catch(std::invalid_argument& e) {
         std::cout << "[Error] Numero non valido" << std::endl;
@@ -270,7 +274,7 @@ void add_CP(SistemaDomotico sistemaDomotico){
         return;
     }
 
-    std::cout << "Nome dispositivo: " << std::endl;
+    std::cout << "Nome dispositivo: ";
     std::getline(std::cin, answer);
 
     if(!check_name(answer))
