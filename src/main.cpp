@@ -16,7 +16,8 @@ enum class Commands {
     reset,
     add,
     erase,
-    exit
+    exit,
+    unknown
 };
 
 /* MAPPE */
@@ -177,7 +178,7 @@ void add_manuale(SistemaDomotico sistemaDomotico){
     std::cout << "0) Impianto fotovoltaico" << std::endl;
     std::cout << "1) Pompa di calore + termostato" << std::endl;
     std::cout << "2) Scaldabagno" << std::endl;
-    std::cout << "3) Frigorifero" << std::endl;
+    std::cout << "3) Frigorifero" << std::endl << std::endl;
 
     std::getline(std::cin, answer);
 
@@ -204,15 +205,17 @@ void add_manuale(SistemaDomotico sistemaDomotico){
         }
     } catch(std::invalid_argument& e) {
         std::cout << "[Error] Numero non valido" << std::endl;
+        return;
     } catch(std::out_of_range& e) {
         std::cout << "[Error] Numero non valido" << std::endl;
+        return;
     }
 
     std::cout << "Nome dispositivo: " << std::endl;
     std::getline(std::cin, answer);
 
     if(!check_name(answer))
-        std::cout << "[Error] Carattere ':' non consentito";
+        std::cout << "[Error] Carattere ':' non consentito" << std::endl;
     else
         sistemaDomotico.add(std::cout, answer, device);
 }
@@ -228,7 +231,7 @@ void add_CP(SistemaDomotico sistemaDomotico){
     std::cout << "2) Tapparelle elettriche" << std::endl;
     std::cout << "3) Forno a microonde" << std::endl;
     std::cout << "4) Asciugatrice" << std::endl;
-    std::cout << "5) Televisore" << std::endl;
+    std::cout << "5) Televisore" << std::endl << std::endl;
 
     std::getline(std::cin, answer);
 
@@ -261,22 +264,24 @@ void add_CP(SistemaDomotico sistemaDomotico){
         }
     } catch(std::invalid_argument& e) {
         std::cout << "[Error] Numero non valido" << std::endl;
+        return;
     } catch(std::out_of_range& e) {
         std::cout << "[Error] Numero non valido" << std::endl;
+        return;
     }
 
     std::cout << "Nome dispositivo: " << std::endl;
     std::getline(std::cin, answer);
 
     if(!check_name(answer))
-        std::cout << "[Error] Carattere ':' non consentito";
+        std::cout << "[Error] Carattere ':' non consentito" << std::endl;
     else
         sistemaDomotico.add(std::cout, answer, device);
 }
 
 // Funzione che chiama erase di SistemaDomotico
 void erase(SistemaDomotico sistemaDomotico, std::string device){
-    sistemaDomotico.show(std::cout, device);
+    sistemaDomotico.erase(std::cout, device);
 }
 
 /* MAIN */
@@ -287,7 +292,7 @@ int main() {
     std::string answer;
     std::string delimiter = " ";
 
-    // Pagina di introduzione con leggenda comandi
+    // Log di introduzione con leggenda comandi
 
     std::cout << std::endl;
     std::cout << "-----------------------------------------------------------------------------" << std::endl;
@@ -323,8 +328,16 @@ int main() {
         std::string device;
         std::string pattern;
 
+        Commands cmd;
+
+        // Controllo se esiste o meno il comando
+        if(mapCommands.find(command) != mapCommands.end())
+            cmd = mapCommands[command];
+        else
+            cmd = Commands::unknown;
+
         // Switch statement per confrontare comando in input con quelli presenti nella mappa
-        switch(mapCommands[command]){
+        switch(cmd){
             case Commands::set:
                 // Controllo sintassi comando
                 if(!check_command(mapCommands[command], answer)){
@@ -412,13 +425,14 @@ int main() {
                     std::cout << "[Error] Sintassi comando" << std::endl;
                     break;
                 }
-                std::cout << "[Info ] Digita M (manuale) o CP (ciclo prefissato): " << std::endl;
+                std::cout << "[Info ] Digita M (manuale) o CP (ciclo prefissato): ";
                 std::getline(std::cin, answer);
+                std::cout << std::endl;
                 // Se dispositivo manuale
                 if(answer == "M")
                     add_manuale(sistemaDomotico);
                 // Se dispositivo a ciclo prefissato
-                else if(answer = "CP")
+                else if(answer == "CP")
                     add_CP(sistemaDomotico);
                 else
                     std::cout << "[Error] Risposta non valida" << std::endl;
