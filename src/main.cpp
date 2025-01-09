@@ -28,209 +28,9 @@ static std::map<std::string, Commands> mapCommands = {
     {"show", Commands::show},
     {"reset", Commands::reset},
     {"add", Commands::add},
-    {"erase", Commands:erase},
+    {"erase", Commands::erase},
     {"exit", Commands::exit}
 };
-
-/* FUNZIONI PER SISTEMA DOMOTICO*/
-
-// Funzione che chiama setOn di SistemaDomotico
-void set_device_on(SistemaDomotico sistemaDomotico, std::string device){
-    sistemaDomotico.setOn(std::cout, device);
-}
-
-// Funzione che chiama setOff di SistemaDomotico
-void set_device_off(SistemaDomotico sistemaDomotico, std::string device){
-    sistemaDomotico.setOff(std::cout, device);
-}
-
-// Funzione che chiama setTimer di SistemaDomotico con solo orarioAccensione
-void set_device_start(SistemaDomotico sistemaDomotico, std::string device, std::string start){
-    // Provo a creare un oggetto tempo con la stringa data
-    // Se la conversione in int fallisce o il numero è fuori dal range tempo, gestisco l'eccezione
-    try {
-        Tempo t_start(start);
-    } catch(std::invalid_argument& e) {
-        std::cout << "[Error] Tempo non valido" << std::endl;
-    } catch(std::out_of_range& e) {
-        std::cout << "[Error] Tempo non valido" << std::endl;
-    }
-
-    sistemaDomotico.setTimer(std::cout, device, t_start);
-}
-
-// Funzione che chiama setTimer di SistemaDomotico con orarioAccensione e orarioSpegnimento
-void set_device_start_stop(SistemaDomotico sistemaDomotico, std::string device, std::string start, std::string stop){
-    // Provo a creare due oggetti tempo con le stringhe date
-    // Se la conversione in int fallisce o il numero è fuori dal range tempo, gestisco l'eccezione
-    try {
-        Tempo t_start(start);
-        Tempo t_stop(stop);
-    } catch(std::invalid_argument& e) {
-        std::cout << "[Error] Tempo non valido" << std::endl;
-    } catch(std::out_of_range& e) {
-        std::cout << "[Error] Tempo non valido" << std::endl;
-    }
-
-    sistemaDomotico.setTimer(std::cout, device, t_start, t_stop);
-}
-
-// Funzione che chiama rm di SistemaDomotico
-void rm_device(SistemaDomotico sistemaDomotico, std::string device){
-    sistemaDomotico.rm(std::cout, device);
-}
-
-// Funzione che chiama show di SistemaDomotico di tutti i dispositivi
-void show(SistemaDomotico sistemaDomotico){
-    sistemaDomotico.show(std::cout);
-}
-
-// Funzione che chiama show di SistemaDomotico per un dispositivo
-void show_device(SistemaDomotico sistemaDomotico, std::string device){
-    sistemaDomotico.show(std::cout, device);
-}
-
-// Funzione che chiama setTime di SistemaDomotico
-void set_time(SistemaDomotico sistemaDomotico, std::string time){
-    // Provo a creare un oggetto tempo con la stringa data
-    // Se la conversione in int fallisce o il numero è fuori dal range tempo, gestisco l'eccezione
-    try {
-        Tempo t(time);
-    } catch(std::invalid_argument& e) {
-        std::cout << "[Error] Tempo non valido" << std::endl;
-    } catch(std::out_of_range& e) {
-        std::cout << "[Error] Tempo non valido" << std::endl;
-    }
-
-    // Se il tempo settato è 23.59 gestisco la relativa eccezione di fine programma
-    try{
-        sistemaDomotico.setTime(std::cout, t);
-    } catch (std::runtime_error& e) {
-        std::cout << "[Info ] Giornata conclusa, arrivederci!" << std::endl;
-        exit[0];
-    }
-}
-
-// Funzione che chiama resetTime di SistemaDomotico
-void reset_time(SistemaDomotico sistemaDomotico){
-    sistemaDomotico.resetTime(std::cout);
-}
-
-// Funzione che chiama resetTimers di SistemaDomotico
-void reset_timers(SistemaDomotico sistemaDomotico){
-    sistemaDomotico.resetTimers(std::cout);
-}
-
-// Funzione che chiama resetAll di SistemaDomotico
-void reset_all(SistemaDomotico sistemaDomotico){
-    sistemaDomotico.resetAll(std::cout);
-}
-
-// Funzione che chiama add di SistemaDomotico per un dispositivo manuale
-void add_manuale(SistemaDomotico sistemaDomotico){
-    std::string answer;
-    int number;
-
-    std::cout << "Digita il corrispettivo numero per il dispositivo desiderato: " << std::endl;
-    std::cout << "0) Impianto fotovoltaico" << std::endl;
-    std::cout << "1) Pompa di calore + termostato" << std::endl;
-    std::cout << "2) Scaldabagno" << std::endl;
-    std::cout << "3) Frigorifero" << std::endl;
-
-    std::getline(std::cin, answer);
-
-    try{
-        number = stoi(answer);
-
-        switch(number){
-            case 0:
-                enum DispManuale::DispDomotico device = DispManuale::DispDomotico::Impianto_Fotovoltaico;
-                break;
-            case 1:
-                enum DispManuale::DispDomotico device = DispManuale::DispDomotico::Pompa_di_calore_termostato;
-                break;
-            case 2:
-                enum DispManuale::DispDomotico device = DispManuale::DispDomotico::Scaldabagno;
-                break;
-            case 3:
-                enum DispManuale::DispDomotico device = DispManuale::DispDomotico::Frigorifero;
-                break;
-            default:
-                throw new invalid_argument("");
-        }
-    } catch(std::invalid_argument& e) {
-        std::cout << "[Error] Numero non valido" << std::endl;
-    } catch(std::out_of_range& e) {
-        std::cout << "[Error] Numero non valido" << std::endl;
-    }
-
-    std::cout << "Nome dispositivo: " << std::endl;
-    std::getline(std::cin, answer);
-
-    if(!check_name(answer))
-        std::cout << "[Error] Carattere ':' non consentito";
-    else
-        sistemaDomotico.add(std::cout, answer, device);
-}
-
-// Funzione che chiama add di SistemaDomotico per un dispositivo a ciclo prefissato
-void add_CP(SistemaDomotico sistemaDomotico){
-    std::string answer;
-    int number;
-
-    std::cout << "Digita il corrispettivo numero per il dispositivo desiderato: " << std::endl;
-    std::cout << "0) Lavatrice" << std::endl;
-    std::cout << "1) Lavastoviglie" << std::endl;
-    std::cout << "2) Tapparelle elettriche" << std::endl;
-    std::cout << "3) Forno a microonde" << std::endl;
-    std::cout << "4) Asciugatrice" << std::endl;
-    std::cout << "5) Televisore" << std::endl;
-
-    std::getline(std::cin, answer);
-
-    try{
-        number = stoi(answer);
-
-        switch(number){
-        case 0:
-            enum DispCicloPrefissato::DispDomotico device = DispCicloPrefissato::DispDomotico::Lavatrice;
-            break;
-        case 1:
-            enum DispCicloPrefissato::DispDomotico device = DispCicloPrefissato::DispDomotico::Lavastoviglie;
-            break;
-        case 2:
-            enum DispCicloPrefissato::DispDomotico device = DispCicloPrefissato::DispDomotico::Tapparelle_elettriche;
-            break;
-        case 3:
-            enum DispCicloPrefissato::DispDomotico device = DispCicloPrefissato::DispDomotico::Forno_a_microonde;
-            break;
-        case 4:
-            enum DispCicloPrefissato::DispDomotico device = DispCicloPrefissato::DispDomotico::Asciugatrice;
-            break;
-        case 5:
-            enum DispCicloPrefissato::DispDomotico device = DispCicloPrefissato::DispDomotico::Televisore;
-            break;
-        default:
-            throw new invalid_argument("");
-    } catch(std::invalid_argument& e) {
-        std::cout << "[Error] Numero non valido" << std::endl;
-    } catch(std::out_of_range& e) {
-        std::cout << "[Error] Numero non valido" << std::endl;
-    }
-
-    std::cout << "Nome dispositivo: " << std::endl;
-    std::getline(std::cin, answer);
-
-    if(!check_name(answer))
-        std::cout << "[Error] Carattere ':' non consentito";
-    else
-        sistemaDomotico.add(std::cout, answer, device);
-}
-
-// Funzione che chiama erase di SistemaDomotico
-void erase(SistemaDomotico sistemaDomotico, std::string device){
-    sistemaDomotico.show(std::cout, device);
-}
 
 /* FUNZIONI DI CONTROLLO */
 
@@ -277,6 +77,206 @@ bool check_command(Commands command, std::string input){
             break;
     }
     return true;
+}
+
+/* FUNZIONI PER SISTEMA DOMOTICO*/
+
+// Funzione che chiama setOn di SistemaDomotico
+void set_device_on(SistemaDomotico sistemaDomotico, std::string device){
+    sistemaDomotico.setOn(std::cout, device);
+}
+
+// Funzione che chiama setOff di SistemaDomotico
+void set_device_off(SistemaDomotico sistemaDomotico, std::string device){
+    sistemaDomotico.setOff(std::cout, device);
+}
+
+// Funzione che chiama setTimer di SistemaDomotico con solo orarioAccensione
+void set_device_start(SistemaDomotico sistemaDomotico, std::string device, std::string start){
+    // Provo a creare un oggetto tempo con la stringa data
+    // Se la conversione in int fallisce o il numero è fuori dal range tempo, gestisco l'eccezione
+    try {
+        Tempo t_start(start);
+        sistemaDomotico.setTimer(std::cout, device, t_start);
+    } catch(std::invalid_argument& e) {
+        std::cout << "[Error] Tempo non valido" << std::endl;
+    } catch(std::out_of_range& e) {
+        std::cout << "[Error] Tempo non valido" << std::endl;
+    }
+}
+
+// Funzione che chiama setTimer di SistemaDomotico con orarioAccensione e orarioSpegnimento
+void set_device_start_stop(SistemaDomotico sistemaDomotico, std::string device, std::string start, std::string stop){
+    // Provo a creare due oggetti tempo con le stringhe date
+    // Se la conversione in int fallisce o il numero è fuori dal range tempo, gestisco l'eccezione
+    try {
+        Tempo t_start(start);
+        Tempo t_stop(stop);
+        sistemaDomotico.setTimer(std::cout, device, t_start, t_stop);
+    } catch(std::invalid_argument& e) {
+        std::cout << "[Error] Tempo non valido" << std::endl;
+    } catch(std::out_of_range& e) {
+        std::cout << "[Error] Tempo non valido" << std::endl;
+    }
+}
+
+// Funzione che chiama rm di SistemaDomotico
+void rm_device(SistemaDomotico sistemaDomotico, std::string device){
+    sistemaDomotico.rm(std::cout, device);
+}
+
+// Funzione che chiama show di SistemaDomotico di tutti i dispositivi
+void show(SistemaDomotico sistemaDomotico){
+    sistemaDomotico.show(std::cout);
+}
+
+// Funzione che chiama show di SistemaDomotico per un dispositivo
+void show_device(SistemaDomotico sistemaDomotico, std::string device){
+    sistemaDomotico.show(std::cout, device);
+}
+
+// Funzione che chiama setTime di SistemaDomotico
+void set_time(SistemaDomotico sistemaDomotico, std::string time){
+    // Provo a creare un oggetto tempo con la stringa data
+    // Se la conversione in int fallisce o il numero è fuori dal range tempo, gestisco l'eccezione
+    try {
+        Tempo t(time);
+        sistemaDomotico.setTime(std::cout, t);
+    } catch(std::invalid_argument& e) {
+        std::cout << "[Error] Tempo non valido" << std::endl;
+    } catch(std::out_of_range& e) {
+        std::cout << "[Error] Tempo non valido" << std::endl;
+    } catch (std::runtime_error& e) {
+        // Se il tempo settato è 23.59 gestisco la relativa eccezione di fine programma
+        std::cout << "[Info ] Giornata conclusa, arrivederci!" << std::endl;
+        exit(0);
+    }
+}
+
+// Funzione che chiama resetTime di SistemaDomotico
+void reset_time(SistemaDomotico sistemaDomotico){
+    sistemaDomotico.resetTime(std::cout);
+}
+
+// Funzione che chiama resetTimers di SistemaDomotico
+void reset_timers(SistemaDomotico sistemaDomotico){
+    sistemaDomotico.resetTimers(std::cout);
+}
+
+// Funzione che chiama resetAll di SistemaDomotico
+void reset_all(SistemaDomotico sistemaDomotico){
+    sistemaDomotico.resetAll(std::cout);
+}
+
+// Funzione che chiama add di SistemaDomotico per un dispositivo manuale
+void add_manuale(SistemaDomotico sistemaDomotico){
+    std::string answer;
+    int number;
+
+    std::cout << "Digita il corrispettivo numero per il dispositivo desiderato: " << std::endl;
+    std::cout << "0) Impianto fotovoltaico" << std::endl;
+    std::cout << "1) Pompa di calore + termostato" << std::endl;
+    std::cout << "2) Scaldabagno" << std::endl;
+    std::cout << "3) Frigorifero" << std::endl;
+
+    std::getline(std::cin, answer);
+
+    enum DispManuale::DispDomotico device;
+
+    try{
+        number = stoi(answer);
+
+        switch(number){
+            case 0:
+                device = DispManuale::DispDomotico::Impianto_Fotovoltaico;
+                break;
+            case 1:
+                device = DispManuale::DispDomotico::Pompa_di_calore_termostato;
+                break;
+            case 2:
+                device = DispManuale::DispDomotico::Scaldabagno;
+                break;
+            case 3:
+                device = DispManuale::DispDomotico::Frigorifero;
+                break;
+            default:
+                throw new std::invalid_argument("");
+        }
+    } catch(std::invalid_argument& e) {
+        std::cout << "[Error] Numero non valido" << std::endl;
+    } catch(std::out_of_range& e) {
+        std::cout << "[Error] Numero non valido" << std::endl;
+    }
+
+    std::cout << "Nome dispositivo: " << std::endl;
+    std::getline(std::cin, answer);
+
+    if(!check_name(answer))
+        std::cout << "[Error] Carattere ':' non consentito";
+    else
+        sistemaDomotico.add(std::cout, answer, device);
+}
+
+// Funzione che chiama add di SistemaDomotico per un dispositivo a ciclo prefissato
+void add_CP(SistemaDomotico sistemaDomotico){
+    std::string answer;
+    int number;
+
+    std::cout << "Digita il corrispettivo numero per il dispositivo desiderato: " << std::endl;
+    std::cout << "0) Lavatrice" << std::endl;
+    std::cout << "1) Lavastoviglie" << std::endl;
+    std::cout << "2) Tapparelle elettriche" << std::endl;
+    std::cout << "3) Forno a microonde" << std::endl;
+    std::cout << "4) Asciugatrice" << std::endl;
+    std::cout << "5) Televisore" << std::endl;
+
+    std::getline(std::cin, answer);
+
+    enum DispCicloPrefissato::DispDomotico device;
+
+    try{
+        number = stoi(answer);
+
+        switch(number){
+            case 0:
+                device = DispCicloPrefissato::DispDomotico::Lavatrice;
+                break;
+            case 1:
+                device = DispCicloPrefissato::DispDomotico::Lavastoviglie;
+                break;
+            case 2:
+                device = DispCicloPrefissato::DispDomotico::Tapparelle_elettriche;
+                break;
+            case 3:
+                device = DispCicloPrefissato::DispDomotico::Forno_a_microonde;
+                break;
+            case 4:
+                device = DispCicloPrefissato::DispDomotico::Asciugatrice;
+                break;
+            case 5:
+                device = DispCicloPrefissato::DispDomotico::Televisore;
+                break;
+            default:
+                throw new std::invalid_argument("");
+        }
+    } catch(std::invalid_argument& e) {
+        std::cout << "[Error] Numero non valido" << std::endl;
+    } catch(std::out_of_range& e) {
+        std::cout << "[Error] Numero non valido" << std::endl;
+    }
+
+    std::cout << "Nome dispositivo: " << std::endl;
+    std::getline(std::cin, answer);
+
+    if(!check_name(answer))
+        std::cout << "[Error] Carattere ':' non consentito";
+    else
+        sistemaDomotico.add(std::cout, answer, device);
+}
+
+// Funzione che chiama erase di SistemaDomotico
+void erase(SistemaDomotico sistemaDomotico, std::string device){
+    sistemaDomotico.show(std::cout, device);
 }
 
 /* MAIN */
