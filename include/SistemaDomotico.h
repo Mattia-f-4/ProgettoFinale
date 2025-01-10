@@ -29,6 +29,7 @@ class SistemaDomotico
         //Funzioni per logging
         std::ostream& show(std::ostream&); 
         std::ostream& show(std::ostream&, std::string);
+        std::ostream& printTime(std::ostream&);
 
         //Funzioni per la gestione dei dispositivi
         std::ostream& add(std::ostream&, std::string, DispCicloPrefissato::DispDomotico);
@@ -46,7 +47,6 @@ class SistemaDomotico
         
         //Getter
         int getSize() const;
-        Tempo getTime() const;
         double getPotenzaResidua() const;
         double getLimitePotenza() const;
 

@@ -1,7 +1,7 @@
 #include "Tempo.h"
-#include "SistemaDomotico.h"
 #include "DispManuale.h"
 #include "DispCicloPrefissato.h"
+#include "SistemaDomotico.h"
 #include <iostream>
 #include <string>
 #include <map>
@@ -36,43 +36,54 @@ static std::map<std::string, Commands> mapCommands = {
 /* FUNZIONI DI CONTROLLO */
 
 // Funzione che controlla che il nome del dispositivo non abbia ':'
-bool check_name(std::string device_name){
+bool check_name(std::string device_name) {
     if(device_name.find(':') != std::string::npos)
         return false;
     return true;
 }
 
 // Funzione che controlla la correttezza del comando
-bool check_command(Commands command, std::string input){
-    std::string delimiter = " ";
+bool check_command(Commands command, std::string input) {
+    int pos;
     std::string pattern;
+    std::string delimiter = " ";
 
-    switch(command){
+    switch(command) {
         case Commands::set:
-             pattern = input.substr(input.find_last_of(delimiter) + 1);
-             if(pattern.find(':') == std::string::npos && pattern != "on" && pattern != "off"){
+             pos = input.find_last_of(delimiter); // Posizione ultimo pattern
+             pattern = input.substr(pos + 1); // Ultimo pattern
+             // Se ultimo pattern non è un orario, o 'on' o 'off'
+             if(pattern.find(':') == std::string::npos && pattern != "on" && pattern != "off") {
                 return false;
-             } else if(pattern.find(':') != std::string::npos){
-                input.erase(input.find_last_of(delimiter));
-                pattern = input.substr(input.find_last_of(delimiter) + 1);
+             // Altrimenti se è un orario
+             } else if(pattern.find(':') != std::string::npos) {
+                input.erase(pos); // Cancello ultimo pattern
+                pos = input.find_last_of(delimiter); // Posizione ultimo pattern
+                pattern = input.substr(pos + 1); // Ultimo pattern
 
-                if(pattern.find(':') != std::string::npos && input.substr(0, input.find(delimiter)) == "time")
+                pos = input.find(delimiter); // Posizione secondo pattern
+                // Se comando set time e ci sono due orari
+                if(pattern.find(':') != std::string::npos && input.substr(0, pos) == "time")
                     return false;
              }
             break;
         case Commands::reset:
+            // Se pattern non è 'time', 'timers' o 'all'
             if(input != "time" && input != "timers" && input != "all")
                 return false;
             break;
         case Commands::add:
+            // Se oltre ad 'add' ci soo altri pattern
             if(input != "add")
                 return false;
             break;
         case Commands::erase:
+            // Se oltre a 'erase' non ci sono altri pattern (nome dispositivo)
             if(input == "erase")
                 return false;
             break;
         case Commands::exit:
+            // Se oltre a 'exit' ci sono altri pattern
             if(input != "exit")
                 return false;
             break;
@@ -83,31 +94,33 @@ bool check_command(Commands command, std::string input){
 /* FUNZIONI PER SISTEMA DOMOTICO*/
 
 // Funzione che chiama setOn di SistemaDomotico
-void set_device_on(SistemaDomotico sistemaDomotico, std::string device){
+void set_device_on(SistemaDomotico sistemaDomotico, std::string device) {
     sistemaDomotico.setOn(std::cout, device);
 }
 
 // Funzione che chiama setOff di SistemaDomotico
-void set_device_off(SistemaDomotico sistemaDomotico, std::string device){
+void set_device_off(SistemaDomotico sistemaDomotico, std::string device) {
     sistemaDomotico.setOff(std::cout, device);
 }
 
 // Funzione che chiama setTimer di SistemaDomotico con solo orarioAccensione
-void set_device_start(SistemaDomotico sistemaDomotico, std::string device, std::string start){
+void set_device_start(SistemaDomotico sistemaDomotico, std::string device, std::string start) {
     // Provo a creare un oggetto tempo con la stringa data
     // Se la conversione in int fallisce o il numero è fuori dal range tempo, gestisco l'eccezione
     try {
         Tempo t_start(start);
         sistemaDomotico.setTimer(std::cout, device, t_start);
     } catch(std::invalid_argument& e) {
-        std::cout << "[Error] Tempo non valido" << std::endl;
+        sistemaDomotico.printTime();
+        std::cout << " ERROR: Tempo non valido" << std::endl;
     } catch(std::out_of_range& e) {
-        std::cout << "[Error] Tempo non valido" << std::endl;
+        sistemaDomotico.printTime();
+        std::cout << " ERROR: Tempo non valido" << std::endl;
     }
 }
 
 // Funzione che chiama setTimer di SistemaDomotico con orarioAccensione e orarioSpegnimento
-void set_device_start_stop(SistemaDomotico sistemaDomotico, std::string device, std::string start, std::string stop){
+void set_device_start_stop(SistemaDomotico sistemaDomotico, std::string device, std::string start, std::string stop) {
     // Provo a creare due oggetti tempo con le stringhe date
     // Se la conversione in int fallisce o il numero è fuori dal range tempo, gestisco l'eccezione
     try {
@@ -115,80 +128,92 @@ void set_device_start_stop(SistemaDomotico sistemaDomotico, std::string device, 
         Tempo t_stop(stop);
         sistemaDomotico.setTimer(std::cout, device, t_start, t_stop);
     } catch(std::invalid_argument& e) {
-        std::cout << "[Error] Tempo non valido" << std::endl;
+        sistemaDomotico.printTime();
+        std::cout << " ERROR: Tempo non valido" << std::endl;
     } catch(std::out_of_range& e) {
-        std::cout << "[Error] Tempo non valido" << std::endl;
+        sistemaDomotico.printTime();
+        std::cout << " ERROR: Tempo non valido" << std::endl;
     }
 }
 
 // Funzione che chiama rm di SistemaDomotico
-void rm_device(SistemaDomotico sistemaDomotico, std::string device){
+void rm_device(SistemaDomotico sistemaDomotico, std::string device) {
     sistemaDomotico.rm(std::cout, device);
 }
 
 // Funzione che chiama show di SistemaDomotico di tutti i dispositivi
-void show(SistemaDomotico sistemaDomotico){
+void show(SistemaDomotico sistemaDomotico) {
     sistemaDomotico.show(std::cout);
 }
 
 // Funzione che chiama show di SistemaDomotico per un dispositivo
-void show_device(SistemaDomotico sistemaDomotico, std::string device){
+void show_device(SistemaDomotico sistemaDomotico, std::string device) {
     sistemaDomotico.show(std::cout, device);
 }
 
 // Funzione che chiama setTime di SistemaDomotico
-void set_time(SistemaDomotico sistemaDomotico, std::string time){
+void set_time(SistemaDomotico sistemaDomotico, std::string time) {
     // Provo a creare un oggetto tempo con la stringa data
     // Se la conversione in int fallisce o il numero è fuori dal range tempo, gestisco l'eccezione
     try {
         Tempo t(time);
         sistemaDomotico.setTime(std::cout, t);
     } catch(std::invalid_argument& e) {
-        std::cout << "[Error] Tempo non valido" << std::endl;
+        sistemaDomotico.printTime();
+        std::cout << " ERROR: Tempo non valido" << std::endl;
     } catch(std::out_of_range& e) {
-        std::cout << "[Error] Tempo non valido" << std::endl;
+        sistemaDomotico.printTime();
+        std::cout << " ERROR: Tempo non valido" << std::endl;
     } catch (std::runtime_error& e) {
         // Se il tempo settato è 23.59 gestisco la relativa eccezione di fine programma
-        std::cout << "[Info ] Giornata conclusa, arrivederci!" << std::endl;
+        sistemaDomotico.printTime();
+        std::cout << " Giornata conclusa, arrivederci!" << std::endl;
         exit(0);
     }
 }
 
 // Funzione che chiama resetTime di SistemaDomotico
-void reset_time(SistemaDomotico sistemaDomotico){
+void reset_time(SistemaDomotico sistemaDomotico) {
     sistemaDomotico.resetTime(std::cout);
 }
 
 // Funzione che chiama resetTimers di SistemaDomotico
-void reset_timers(SistemaDomotico sistemaDomotico){
+void reset_timers(SistemaDomotico sistemaDomotico) {
     sistemaDomotico.resetTimers(std::cout);
 }
 
 // Funzione che chiama resetAll di SistemaDomotico
-void reset_all(SistemaDomotico sistemaDomotico){
+void reset_all(SistemaDomotico sistemaDomotico) {
     sistemaDomotico.resetAll(std::cout);
 }
 
 // Funzione che chiama add di SistemaDomotico per un dispositivo manuale
-void add_manuale(SistemaDomotico sistemaDomotico){
+void add_manuale(SistemaDomotico sistemaDomotico) {
     std::string answer;
     int number;
 
-    std::cout << "Digita il corrispettivo numero per il dispositivo desiderato: " << std::endl;
-    std::cout << "0) Impianto fotovoltaico" << std::endl;
-    std::cout << "1) Pompa di calore + termostato" << std::endl;
-    std::cout << "2) Scaldabagno" << std::endl;
-    std::cout << "3) Frigorifero" << std::endl << std::endl;
+    // Menu' dispositivi manuali disponibili
+    sistemaDomotico.printTime();
+    std::cout << " Digita il corrispettivo numero per il dispositivo desiderato: " << std::endl;
+    std::cout << "         0) Impianto fotovoltaico" << std::endl;
+    std::cout << "         1) Pompa di calore + termostato" << std::endl;
+    std::cout << "         2) Scaldabagno" << std::endl;
+    std::cout << "         3) Frigorifero" << std::endl << std::endl;
 
-    std::cout << "Numero: ";
+    // Acquisisco numero menu'
+    sistemaDomotico.printTime();
+    std::cout << " Numero: ";
     std::getline(std::cin, answer);
 
     enum DispManuale::DispDomotico device;
 
-    try{
+    // Provo a convertire la stringa in numero ed a settare tipo dispositivo
+    // Se la conversione in int fallisce, gestisco l'eccezione
+    // Se numero fuori dal menu', stampo a video l'errore
+    try {
         number = stoi(answer);
 
-        switch(number){
+        switch(number) {
             case 0:
                 device = DispManuale::DispDomotico::Impianto_Fotovoltaico;
                 break;
@@ -202,48 +227,62 @@ void add_manuale(SistemaDomotico sistemaDomotico){
                 device = DispManuale::DispDomotico::Frigorifero;
                 break;
             default:
-                std::cout << "[Error] Numero non valido" << std::endl;
+                sistemaDomotico.printTime();
+                std::cout << " ERROR: Numero non valido" << std::endl;
                 return;
         }
     } catch(std::invalid_argument& e) {
-        std::cout << "[Error] Numero non valido" << std::endl;
+        sistemaDomotico.printTime();
+        std::cout << " ERROR: Numero non valido" << std::endl;
         return;
     } catch(std::out_of_range& e) {
-        std::cout << "[Error] Numero non valido" << std::endl;
+        sistemaDomotico.printTime();
+        std::cout << " ERROR: Numero non valido" << std::endl;
         return;
     }
 
-    std::cout << "Nome dispositivo: ";
+    // Acquisisco nome dispositivo
+    sistemaDomotico.printTime();
+    std::cout << " Nome dispositivo: ";
     std::getline(std::cin, answer);
 
-    if(!check_name(answer))
-        std::cout << "[Error] Carattere ':' non consentito" << std::endl;
-    else
+    // Controllo se nel nome e' presente ':', in caso stampo a video l'errore
+    if(!check_name(answer)) {
+        sistemaDomotico.printTime();
+        std::cout << " ERROR: Carattere ':' non consentito" << std::endl;
+    } else
         sistemaDomotico.add(std::cout, answer, device);
 }
 
 // Funzione che chiama add di SistemaDomotico per un dispositivo a ciclo prefissato
-void add_CP(SistemaDomotico sistemaDomotico){
+void add_CP(SistemaDomotico sistemaDomotico) {
     std::string answer;
     int number;
 
-    std::cout << "Digita il corrispettivo numero per il dispositivo desiderato: " << std::endl;
-    std::cout << "0) Lavatrice" << std::endl;
-    std::cout << "1) Lavastoviglie" << std::endl;
-    std::cout << "2) Tapparelle elettriche" << std::endl;
-    std::cout << "3) Forno a microonde" << std::endl;
-    std::cout << "4) Asciugatrice" << std::endl;
-    std::cout << "5) Televisore" << std::endl << std::endl;
+    // Menu' dispositivi a ciclo prefissato disponibili
+    sistemaDomotico.printTime();
+    std::cout << " Digita il corrispettivo numero per il dispositivo desiderato: " << std::endl;
+    std::cout << "         0) Lavatrice" << std::endl;
+    std::cout << "         1) Lavastoviglie" << std::endl;
+    std::cout << "         2) Tapparelle elettriche" << std::endl;
+    std::cout << "         3) Forno a microonde" << std::endl;
+    std::cout << "         4) Asciugatrice" << std::endl;
+    std::cout << "         5) Televisore" << std::endl << std::endl;
 
-    std::cout << "Numero: ";
+    // Acquisisco numero menu'
+    sistemaDomotico.printTime();
+    std::cout << " Numero: ";
     std::getline(std::cin, answer);
 
     enum DispCicloPrefissato::DispDomotico device;
 
-    try{
+    // Provo a convertire la stringa in numero ed a settare tipo dispositivo
+    // Se la conversione in int fallisce, gestisco l'eccezione
+    // Se numero fuori dal menu', stampo a video l'errore
+    try {
         number = stoi(answer);
 
-        switch(number){
+        switch(number) {
             case 0:
                 device = DispCicloPrefissato::DispDomotico::Lavatrice;
                 break;
@@ -263,28 +302,35 @@ void add_CP(SistemaDomotico sistemaDomotico){
                 device = DispCicloPrefissato::DispDomotico::Televisore;
                 break;
             default:
-                std::cout << "[Error] Numero non valido" << std::endl;
+                sistemaDomotico.printTime();
+                std::cout << " ERROR: Numero non valido" << std::endl;
                 return;
         }
     } catch(std::invalid_argument& e) {
-        std::cout << "[Error] Numero non valido" << std::endl;
+        sistemaDomotico.printTime();
+        std::cout << " ERROR: Numero non valido" << std::endl;
         return;
     } catch(std::out_of_range& e) {
-        std::cout << "[Error] Numero non valido" << std::endl;
+        sistemaDomotico.printTime();
+        std::cout << " ERROR: Numero non valido" << std::endl;
         return;
     }
 
-    std::cout << "Nome dispositivo: ";
+    // Acquisisco nome dispositivo
+    sistemaDomotico.printTime();
+    std::cout << " Nome dispositivo: ";
     std::getline(std::cin, answer);
 
-    if(!check_name(answer))
-        std::cout << "[Error] Carattere ':' non consentito" << std::endl;
-    else
+    // Controllo se nel nome e' presente ':', in caso stampo a video l'errore
+    if(!check_name(answer)) {
+        sistemaDomotico.printTime();
+        std::cout << " ERROR: Carattere ':' non consentito" << std::endl;
+    } else
         sistemaDomotico.add(std::cout, answer, device);
 }
 
 // Funzione che chiama erase di SistemaDomotico
-void erase(SistemaDomotico sistemaDomotico, std::string device){
+void erase(SistemaDomotico sistemaDomotico, std::string device) {
     sistemaDomotico.erase(std::cout, device);
 }
 
@@ -296,7 +342,7 @@ int main() {
     std::string answer;
     std::string delimiter = " ";
 
-    // Log di introduzione con leggenda comandi
+    // Log di introduzione con legenda comandi
 
     std::cout << std::endl;
     std::cout << "-----------------------------------------------------------------------------" << std::endl;
@@ -319,15 +365,20 @@ int main() {
     std::cout << "Per uscire digitare: exit" << std::endl;
 
     // Ciclo per emulare l'interfaccia utente
-    while(true){
+    while(true) {
+        int pos;
         answer = "";
 
-        std::cout << std::endl << "Cosa vuoi fare?" << std::endl;
+        // Acquisisco riga di comando
+        std::cout << std::endl;
+        sistemaDomotico.printTime();
+        std::cout << "Cosa vuoi fare?" << std::endl;
         std::getline(std::cin, answer);
 
         // Acquisisco l'input ed estraggo il comando
-        std::string command = answer.substr(0, answer.find(delimiter));
-        answer.erase(0, answer.find(delimiter) + delimiter.length());
+        pos = answer.find(delimiter);
+        std::string command = answer.substr(0, pos);
+        answer.erase(0, pos + delimiter.length());
 
         std::string device;
         std::string pattern;
@@ -341,25 +392,29 @@ int main() {
             cmd = Commands::unknown;
 
         // Switch statement per confrontare comando in input con quelli presenti nella mappa
-        switch(cmd){
+        switch(cmd) {
             case Commands::set:
                 // Controllo sintassi comando
-                if(!check_command(mapCommands[command], answer)){
-                    std::cout << "[Error] Sintassi comando" << std::endl;
+                if(!check_command(mapCommands[command], answer)) {
+                    sistemaDomotico.printTime();
+                    std::cout << " ERROR: Sintassi comando" << std::endl;
                     break;
                 }
+                pos = answer.find(delimiter); // Posizione secondo pattern
                 // Se comando set time ${TIME}
-                if(answer.substr(0, answer.find(delimiter)) == "time"){
-                    std::string time = answer.substr(answer.find_last_of(delimiter) + 1);
+                if(answer.substr(0, pos) == "time") {
+                    pos = answer.find_last_of(delimiter); // Posizione ultimo pattern
+                    std::string time = answer.substr(pos + 1); // Ultimo pattern
                     set_time(sistemaDomotico, time);
 
                 } else {
-                    pattern = answer.substr(answer.find_last_of(delimiter) + 1); 
+                    pos = answer.find_last_of(delimiter); // Posizione ultimo pattern
+                    pattern = answer.substr(pos + 1); // Ultimo pattern
 
-                    // Se comando set ${DEVICENAME} on o set ${DEVICENAME} off
+                    // Se comando set ${DEVICENAME} on oppure set ${DEVICENAME} off
                     if(pattern == "on" || pattern == "off") {
-                        answer.erase(answer.find_last_of(delimiter));
-                        device = answer;
+                        answer.erase(pos); // Cancello ultimo pattern
+                        device = answer; // Nome dispositivo
 
                         if(pattern == "on")
                             set_device_on(sistemaDomotico, device);
@@ -367,24 +422,28 @@ int main() {
                             set_device_off(sistemaDomotico, device);
                     }
                     else {
-                        answer.erase(answer.find_last_of(delimiter));
+                        answer.erase(pos); // Cancello ultimo pattern
+                        pos = answer.find_last_of(delimiter); // Posizione ultimo pattern
                         // Se comando set ${DEVICENAME} ${START}
-                        if(answer.find_last_of(':') == std::string::npos){
-                            std::string start = pattern;
-                            device = answer;
+                        if(answer.find_last_of(':') == std::string::npos) {
+                            std::string start = pattern; // Orario accensione
+                            device = answer; // Nome dispositivo
 
                             set_device_start(sistemaDomotico, device, start);
                         // Se comando set ${DEVICENAME} ${START} [${STOP}]
-                        } else if (answer.substr(answer.find_last_of(delimiter) + 1).find(":") != std::string::npos){
-                            std::string stop = pattern;
-                            std::string start = answer.substr(answer.find_last_of(delimiter) + 1);
+                        } else if (answer.substr(pos + 1).find(":") != std::string::npos) {
+                            std::string stop = pattern; // Orario spegnimento
+                            std::string start = answer.substr(pos + 1); // Orario accensione
 
-                            answer.erase(answer.find_last_of(delimiter));
-                            device = answer;
+                            answer.erase(pos); // Cancello ultimo pattern
+                            device = answer; // Nome dispositivo
 
                             set_device_start_stop(sistemaDomotico, device, start, stop);
-                        } else
-                            std::cout << "[Error] Sintassi comando" << std::endl;
+                        // Altrimenti comando errato
+                        } else {
+                            sistemaDomotico.printTime();
+                            std::cout << " ERROR: Sintassi comando" << std::endl;
+                        }
                     }
                 }
                 break;
@@ -407,11 +466,13 @@ int main() {
 
             case Commands::reset:
                 // Controllo sintassi comando
-                if(!check_command(mapCommands[command], answer)){
-                    std::cout << "[Error] Sintassi comando" << std::endl;
+                if(!check_command(mapCommands[command], answer)) {
+                    sistemaDomotico.printTime();
+                    std::cout << " ERROR: Sintassi comando" << std::endl;
                     break;
                 }
-                pattern = answer.substr(0, answer.find(delimiter));
+                pos = answer.find(delimiter);
+                pattern = answer.substr(0, pos);
                 // Se comando reset time
                 if(pattern == "time")
                     reset_time(sistemaDomotico);
@@ -425,11 +486,14 @@ int main() {
 
             case Commands::add:
                 // Controllo sintassi comando
-                if(!check_command(mapCommands[command], answer)){
-                    std::cout << "[Error] Sintassi comando" << std::endl;
+                if(!check_command(mapCommands[command], answer)) {
+                    sistemaDomotico.printTime();
+                    std::cout << " ERROR: Sintassi comando" << std::endl;
                     break;
                 }
-                std::cout << "[Info ] Digita M (manuale) o CP (ciclo prefissato): ";
+                // Chiedo se si vuole aggiungere un dispositivo manuale o CP
+                sistemaDomotico.printTime();
+                std::cout << " Digita M (manuale) o CP (ciclo prefissato): ";
                 std::getline(std::cin, answer);
                 std::cout << std::endl;
                 // Se dispositivo manuale
@@ -438,14 +502,17 @@ int main() {
                 // Se dispositivo a ciclo prefissato
                 else if(answer == "CP")
                     add_CP(sistemaDomotico);
-                else
-                    std::cout << "[Error] Risposta non valida" << std::endl;
+                else {
+                    sistemaDomotico.printTime();
+                    std::cout << " ERROR: Risposta non valida" << std::endl;
+                }
                 break;
 
             case Commands::erase:
                 // Controllo sintassi comando
-                if(!check_command(mapCommands[command], answer)){
-                    std::cout << "[Error] Nome dispositivo mancante" << std::endl;
+                if(!check_command(mapCommands[command], answer)) {
+                    sistemaDomotico.printTime();
+                    std::cout << " ERROR: Nome dispositivo mancante" << std::endl;
                     break;
                 }
                 device = answer;
@@ -454,15 +521,17 @@ int main() {
 
             case Commands::exit:
                 // Controllo sintassi comando
-                if(!check_command(mapCommands[command], answer)){
-                    std::cout << "[Error] Sintassi comando" << std::endl;
+                if(!check_command(mapCommands[command], answer)) {
+                    sistemaDomotico.printTime();
+                    std::cout << " ERROR: Sintassi comando" << std::endl;
                     break;
                 }
                 exit(0);
                 break;
 
             default:
-                std::cout << "[Error] Comando '" << command << "' non esistente!" << std::endl;
+                sistemaDomotico.printTime();
+                std::cout << " ERROR: Comando '" << command << "' non esistente!" << std::endl;
         }
     }
 
