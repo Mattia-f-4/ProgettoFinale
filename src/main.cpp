@@ -94,17 +94,17 @@ bool check_command(Commands command, std::string input) {
 /* FUNZIONI PER SISTEMA DOMOTICO*/
 
 // Funzione che chiama setOn di SistemaDomotico
-void set_device_on(SistemaDomotico sistemaDomotico, std::string device) {
+void set_device_on(SistemaDomotico& sistemaDomotico, std::string device) {
     sistemaDomotico.setOn(std::cout, device);
 }
 
 // Funzione che chiama setOff di SistemaDomotico
-void set_device_off(SistemaDomotico sistemaDomotico, std::string device) {
+void set_device_off(SistemaDomotico& sistemaDomotico, std::string device) {
     sistemaDomotico.setOff(std::cout, device);
 }
 
 // Funzione che chiama setTimer di SistemaDomotico con solo orarioAccensione
-void set_device_start(SistemaDomotico sistemaDomotico, std::string device, std::string start) {
+void set_device_start(SistemaDomotico& sistemaDomotico, std::string device, std::string start) {
     // Provo a creare un oggetto tempo con la stringa data
     // Se la conversione in int fallisce o il numero è fuori dal range tempo, gestisco l'eccezione
     try {
@@ -120,7 +120,7 @@ void set_device_start(SistemaDomotico sistemaDomotico, std::string device, std::
 }
 
 // Funzione che chiama setTimer di SistemaDomotico con orarioAccensione e orarioSpegnimento
-void set_device_start_stop(SistemaDomotico sistemaDomotico, std::string device, std::string start, std::string stop) {
+void set_device_start_stop(SistemaDomotico& sistemaDomotico, std::string device, std::string start, std::string stop) {
     // Provo a creare due oggetti tempo con le stringhe date
     // Se la conversione in int fallisce o il numero è fuori dal range tempo, gestisco l'eccezione
     try {
@@ -137,22 +137,22 @@ void set_device_start_stop(SistemaDomotico sistemaDomotico, std::string device, 
 }
 
 // Funzione che chiama rm di SistemaDomotico
-void rm_device(SistemaDomotico sistemaDomotico, std::string device) {
+void rm_device(SistemaDomotico& sistemaDomotico, std::string device) {
     sistemaDomotico.rm(std::cout, device);
 }
 
 // Funzione che chiama show di SistemaDomotico di tutti i dispositivi
-void show(SistemaDomotico sistemaDomotico) {
+void show(SistemaDomotico& sistemaDomotico) {
     sistemaDomotico.show(std::cout);
 }
 
 // Funzione che chiama show di SistemaDomotico per un dispositivo
-void show_device(SistemaDomotico sistemaDomotico, std::string device) {
+void show_device(SistemaDomotico& sistemaDomotico, std::string device) {
     sistemaDomotico.show(std::cout, device);
 }
 
 // Funzione che chiama setTime di SistemaDomotico
-void set_time(SistemaDomotico sistemaDomotico, std::string time) {
+void set_time(SistemaDomotico& sistemaDomotico, std::string time) {
     // Provo a creare un oggetto tempo con la stringa data
     // Se la conversione in int fallisce o il numero è fuori dal range tempo, gestisco l'eccezione
     try {
@@ -173,22 +173,22 @@ void set_time(SistemaDomotico sistemaDomotico, std::string time) {
 }
 
 // Funzione che chiama resetTime di SistemaDomotico
-void reset_time(SistemaDomotico sistemaDomotico) {
+void reset_time(SistemaDomotico& sistemaDomotico) {
     sistemaDomotico.resetTime(std::cout);
 }
 
 // Funzione che chiama resetTimers di SistemaDomotico
-void reset_timers(SistemaDomotico sistemaDomotico) {
+void reset_timers(SistemaDomotico& sistemaDomotico) {
     sistemaDomotico.resetTimers(std::cout);
 }
 
 // Funzione che chiama resetAll di SistemaDomotico
-void reset_all(SistemaDomotico sistemaDomotico) {
+void reset_all(SistemaDomotico& sistemaDomotico) {
     sistemaDomotico.resetAll(std::cout);
 }
 
 // Funzione che chiama add di SistemaDomotico per un dispositivo manuale
-void add_manuale(SistemaDomotico sistemaDomotico) {
+void add_manuale(SistemaDomotico& sistemaDomotico) {
     std::string answer;
     int number;
 
@@ -255,7 +255,7 @@ void add_manuale(SistemaDomotico sistemaDomotico) {
 }
 
 // Funzione che chiama add di SistemaDomotico per un dispositivo a ciclo prefissato
-void add_CP(SistemaDomotico sistemaDomotico) {
+void add_CP(SistemaDomotico& sistemaDomotico) {
     std::string answer;
     int number;
 
@@ -330,7 +330,7 @@ void add_CP(SistemaDomotico sistemaDomotico) {
 }
 
 // Funzione che chiama erase di SistemaDomotico
-void erase(SistemaDomotico sistemaDomotico, std::string device) {
+void erase(SistemaDomotico& sistemaDomotico, std::string device) {
     sistemaDomotico.erase(std::cout, device);
 }
 
