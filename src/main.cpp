@@ -111,10 +111,10 @@ void set_device_start(SistemaDomotico sistemaDomotico, std::string device, std::
         Tempo t_start(start);
         sistemaDomotico.setTimer(std::cout, device, t_start);
     } catch(std::invalid_argument& e) {
-        sistemaDomotico.printTime();
+        sistemaDomotico.printTime(std::cout);
         std::cout << " ERROR: Tempo non valido" << std::endl;
     } catch(std::out_of_range& e) {
-        sistemaDomotico.printTime();
+        sistemaDomotico.printTime(std::cout);
         std::cout << " ERROR: Tempo non valido" << std::endl;
     }
 }
@@ -128,10 +128,10 @@ void set_device_start_stop(SistemaDomotico sistemaDomotico, std::string device, 
         Tempo t_stop(stop);
         sistemaDomotico.setTimer(std::cout, device, t_start, t_stop);
     } catch(std::invalid_argument& e) {
-        sistemaDomotico.printTime();
+        sistemaDomotico.printTime(std::cout);
         std::cout << " ERROR: Tempo non valido" << std::endl;
     } catch(std::out_of_range& e) {
-        sistemaDomotico.printTime();
+        sistemaDomotico.printTime(std::cout);
         std::cout << " ERROR: Tempo non valido" << std::endl;
     }
 }
@@ -159,14 +159,14 @@ void set_time(SistemaDomotico sistemaDomotico, std::string time) {
         Tempo t(time);
         sistemaDomotico.setTime(std::cout, t);
     } catch(std::invalid_argument& e) {
-        sistemaDomotico.printTime();
+        sistemaDomotico.printTime(std::cout);
         std::cout << " ERROR: Tempo non valido" << std::endl;
     } catch(std::out_of_range& e) {
-        sistemaDomotico.printTime();
+        sistemaDomotico.printTime(std::cout);
         std::cout << " ERROR: Tempo non valido" << std::endl;
     } catch (std::runtime_error& e) {
         // Se il tempo settato è 23.59 gestisco la relativa eccezione di fine programma
-        sistemaDomotico.printTime();
+        sistemaDomotico.printTime(std::cout);
         std::cout << " Giornata conclusa, arrivederci!" << std::endl;
         exit(0);
     }
@@ -193,7 +193,7 @@ void add_manuale(SistemaDomotico sistemaDomotico) {
     int number;
 
     // Menu' dispositivi manuali disponibili
-    sistemaDomotico.printTime();
+    sistemaDomotico.printTime(std::cout);
     std::cout << " Digita il corrispettivo numero per il dispositivo desiderato: " << std::endl;
     std::cout << "         0) Impianto fotovoltaico" << std::endl;
     std::cout << "         1) Pompa di calore + termostato" << std::endl;
@@ -201,7 +201,7 @@ void add_manuale(SistemaDomotico sistemaDomotico) {
     std::cout << "         3) Frigorifero" << std::endl << std::endl;
 
     // Acquisisco numero menu'
-    sistemaDomotico.printTime();
+    sistemaDomotico.printTime(std::cout);
     std::cout << " Numero: ";
     std::getline(std::cin, answer);
 
@@ -227,28 +227,28 @@ void add_manuale(SistemaDomotico sistemaDomotico) {
                 device = DispManuale::DispDomotico::Frigorifero;
                 break;
             default:
-                sistemaDomotico.printTime();
+                sistemaDomotico.printTime(std::cout);
                 std::cout << " ERROR: Numero non valido" << std::endl;
                 return;
         }
     } catch(std::invalid_argument& e) {
-        sistemaDomotico.printTime();
+        sistemaDomotico.printTime(std::cout);
         std::cout << " ERROR: Numero non valido" << std::endl;
         return;
     } catch(std::out_of_range& e) {
-        sistemaDomotico.printTime();
+        sistemaDomotico.printTime(std::cout);
         std::cout << " ERROR: Numero non valido" << std::endl;
         return;
     }
 
     // Acquisisco nome dispositivo
-    sistemaDomotico.printTime();
+    sistemaDomotico.printTime(std::cout);
     std::cout << " Nome dispositivo: ";
     std::getline(std::cin, answer);
 
     // Controllo se nel nome e' presente ':', in caso stampo a video l'errore
     if(!check_name(answer)) {
-        sistemaDomotico.printTime();
+        sistemaDomotico.printTime(std::cout);
         std::cout << " ERROR: Carattere ':' non consentito" << std::endl;
     } else
         sistemaDomotico.add(std::cout, answer, device);
@@ -260,7 +260,7 @@ void add_CP(SistemaDomotico sistemaDomotico) {
     int number;
 
     // Menu' dispositivi a ciclo prefissato disponibili
-    sistemaDomotico.printTime();
+    sistemaDomotico.printTime(std::cout);
     std::cout << " Digita il corrispettivo numero per il dispositivo desiderato: " << std::endl;
     std::cout << "         0) Lavatrice" << std::endl;
     std::cout << "         1) Lavastoviglie" << std::endl;
@@ -270,7 +270,7 @@ void add_CP(SistemaDomotico sistemaDomotico) {
     std::cout << "         5) Televisore" << std::endl << std::endl;
 
     // Acquisisco numero menu'
-    sistemaDomotico.printTime();
+    sistemaDomotico.printTime(std::cout);
     std::cout << " Numero: ";
     std::getline(std::cin, answer);
 
@@ -302,28 +302,28 @@ void add_CP(SistemaDomotico sistemaDomotico) {
                 device = DispCicloPrefissato::DispDomotico::Televisore;
                 break;
             default:
-                sistemaDomotico.printTime();
+                sistemaDomotico.printTime(std::cout);
                 std::cout << " ERROR: Numero non valido" << std::endl;
                 return;
         }
     } catch(std::invalid_argument& e) {
-        sistemaDomotico.printTime();
+        sistemaDomotico.printTime(std::cout);
         std::cout << " ERROR: Numero non valido" << std::endl;
         return;
     } catch(std::out_of_range& e) {
-        sistemaDomotico.printTime();
+        sistemaDomotico.printTime(std::cout);
         std::cout << " ERROR: Numero non valido" << std::endl;
         return;
     }
 
     // Acquisisco nome dispositivo
-    sistemaDomotico.printTime();
+    sistemaDomotico.printTime(std::cout);
     std::cout << " Nome dispositivo: ";
     std::getline(std::cin, answer);
 
     // Controllo se nel nome e' presente ':', in caso stampo a video l'errore
     if(!check_name(answer)) {
-        sistemaDomotico.printTime();
+        sistemaDomotico.printTime(std::cout);
         std::cout << " ERROR: Carattere ':' non consentito" << std::endl;
     } else
         sistemaDomotico.add(std::cout, answer, device);
@@ -371,8 +371,8 @@ int main() {
 
         // Acquisisco riga di comando
         std::cout << std::endl;
-        sistemaDomotico.printTime();
-        std::cout << "Cosa vuoi fare?" << std::endl;
+        sistemaDomotico.printTime(std::cout);
+        std::cout << " Cosa vuoi fare?" << std::endl;
         std::getline(std::cin, answer);
 
         // Acquisisco l'input ed estraggo il comando
@@ -396,7 +396,7 @@ int main() {
             case Commands::set:
                 // Controllo sintassi comando
                 if(!check_command(mapCommands[command], answer)) {
-                    sistemaDomotico.printTime();
+                    sistemaDomotico.printTime(std::cout);
                     std::cout << " ERROR: Sintassi comando" << std::endl;
                     break;
                 }
@@ -441,7 +441,7 @@ int main() {
                             set_device_start_stop(sistemaDomotico, device, start, stop);
                         // Altrimenti comando errato
                         } else {
-                            sistemaDomotico.printTime();
+                            sistemaDomotico.printTime(std::cout);
                             std::cout << " ERROR: Sintassi comando" << std::endl;
                         }
                     }
@@ -467,7 +467,7 @@ int main() {
             case Commands::reset:
                 // Controllo sintassi comando
                 if(!check_command(mapCommands[command], answer)) {
-                    sistemaDomotico.printTime();
+                    sistemaDomotico.printTime(std::cout);
                     std::cout << " ERROR: Sintassi comando" << std::endl;
                     break;
                 }
@@ -487,12 +487,12 @@ int main() {
             case Commands::add:
                 // Controllo sintassi comando
                 if(!check_command(mapCommands[command], answer)) {
-                    sistemaDomotico.printTime();
+                    sistemaDomotico.printTime(std::cout);
                     std::cout << " ERROR: Sintassi comando" << std::endl;
                     break;
                 }
                 // Chiedo se si vuole aggiungere un dispositivo manuale o CP
-                sistemaDomotico.printTime();
+                sistemaDomotico.printTime(std::cout);
                 std::cout << " Digita M (manuale) o CP (ciclo prefissato): ";
                 std::getline(std::cin, answer);
                 std::cout << std::endl;
@@ -503,7 +503,7 @@ int main() {
                 else if(answer == "CP")
                     add_CP(sistemaDomotico);
                 else {
-                    sistemaDomotico.printTime();
+                    sistemaDomotico.printTime(std::cout);
                     std::cout << " ERROR: Risposta non valida" << std::endl;
                 }
                 break;
@@ -511,7 +511,7 @@ int main() {
             case Commands::erase:
                 // Controllo sintassi comando
                 if(!check_command(mapCommands[command], answer)) {
-                    sistemaDomotico.printTime();
+                    sistemaDomotico.printTime(std::cout);
                     std::cout << " ERROR: Nome dispositivo mancante" << std::endl;
                     break;
                 }
@@ -522,7 +522,7 @@ int main() {
             case Commands::exit:
                 // Controllo sintassi comando
                 if(!check_command(mapCommands[command], answer)) {
-                    sistemaDomotico.printTime();
+                    sistemaDomotico.printTime(std::cout);
                     std::cout << " ERROR: Sintassi comando" << std::endl;
                     break;
                 }
@@ -530,7 +530,7 @@ int main() {
                 break;
 
             default:
-                sistemaDomotico.printTime();
+                sistemaDomotico.printTime(std::cout);
                 std::cout << " ERROR: Comando '" << command << "' non esistente!" << std::endl;
         }
     }

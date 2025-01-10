@@ -898,7 +898,6 @@ if(pData->second->getStato()==0)
     std::ostream& SistemaDomotico::debugDatabase(std::ostream& out) {
         if (DataBase.empty()) {
             out << "DEBUG: Il DataBase e' vuoto." << std::endl;
-            return;
         } else {
             out << "DEBUG: Contenuto del DataBase:" << std::endl;
             for (const auto& entry : DataBase) {
@@ -917,7 +916,7 @@ if(pData->second->getStato()==0)
         return out;
     }
 
-    std::ostream& SistemaDomotico::printTime(std::ostream& out) const {
+    std::ostream& SistemaDomotico::printTime(std::ostream& out) {
         out << orario;
         return out;
     }
