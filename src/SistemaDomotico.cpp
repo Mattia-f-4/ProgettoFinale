@@ -64,13 +64,14 @@
         else
         {
             std::shared_ptr<Dispositivo> d = std::make_shared<DispCicloPrefissato>(disp, t);
-            DataBase.insert({disp, d});
+            DataBase.insert({d->getNome(), d});
             size ++;
             out << orario << " " << disp << " aggiunto al Sistema Domotico." << std::endl;
         }
+        debugDatabase(out);
         return out;
     }
-    
+
     std::ostream& SistemaDomotico::add(std::ostream& out, std::string disp, DispManuale::DispDomotico t)
     {
         //Controllo se il dispositivo è già presente
@@ -82,10 +83,11 @@
         else
         {
             std::shared_ptr<Dispositivo> d = std::make_shared<DispManuale>(disp, t);
-            DataBase.insert({disp, d});
+            DataBase.insert({d->getNome(), d});
             size ++;
             out << orario << " " << disp << " aggiunto al Sistema Domotico." << std::endl;
         }
+        debugDatabase(out);
         return out;
     }
 
@@ -115,12 +117,13 @@
                 {
                     //Rimuovo dalla timeline eventuali timer di accensione e spegnimento
                     rm(out,disp);
-                    DataBase.erase(p);
+                    DataBase.erase(disp);
                     size --;
                     out << orario << " " << disp << " rimosso dal Sistema Domotico." << std::endl;
                 }
             }
         }
+        debugDatabase(out);
         return out;
     }
 
@@ -157,10 +160,10 @@
                         TimeLine.erase(pTime);
                         break; //tolgo solo il primo di spegnimento
                     }
-                }; 
+                };
                 //Mostriamo a schermo il messaggio
                 out << orario << " Il dispositivo " << disp << " si e' spento." << std::endl;
-                
+
                 if(potenzaResidua<0)
                 {
                     out << orario << " Il sistema ha superato il limite di potenza. Verranno spenti dei dispositivi." << std::endl;
@@ -170,14 +173,14 @@
         }
         return out;
     }
-    
+
     //setOffbyTimer
     std::ostream& SistemaDomotico::setOffbyTimer(std::ostream& out, std::string disp)
     {
         //Nessun controllo su disp, controllo già effettuato da setTimer
         auto pData = DataBase.find(disp);
-        //Condizione tenuta solo per precauzione VA TOLTA ALLA FINE 
-if(pData->second->getStato()==0) 
+        //Condizione tenuta solo per precauzione VA TOLTA ALLA FINE
+if(pData->second->getStato()==0)
 {
     out << orario << " " << disp << " gia' spento. QUESTO NON DOVREBBE ACCADERE, CONTROLLARE CHE PROBLEMI CI SONO" << std::endl;
 }
@@ -186,11 +189,11 @@ if(pData->second->getStato()==0)
             std::shared_ptr<Dispositivo> d = pData->second;
             d -> setStato(0); //spegniamo il dispositivo
             d->setSpegnimento(orario); //indichiamo l'ora di spegnimento
-            //Non serve rimuovere eventuali timer di spegnimento         
+            //Non serve rimuovere eventuali timer di spegnimento
             //Mostriamo a schermo il messaggio
             out << orario << " Il dispositivo " << disp << " si e' spento." << std::endl;
             potenzaResidua -= pData -> second -> getPotenza(); //aggiorniamo la potenza residua del sistema
-            
+
             //Non rimuovo dallo stack il dispositivo, in caso di sovraccarico controllerò se è ancora acceso
             if(potenzaResidua<0)
             {
@@ -200,7 +203,7 @@ if(pData->second->getStato()==0)
         }
         return out;
     }
-    
+
     //setOn
     std::ostream& SistemaDomotico::setOn(std::ostream& out, std::string disp)
     {
@@ -277,7 +280,7 @@ if(pData->second->getStato()==0)
                         count++;
                     }
                 };
-                out << orario << " " << disp << " gia' acceso. Il timer di spegnimento connesso e' stato rimosso." << std::endl; 
+                out << orario << " " << disp << " gia' acceso. Il timer di spegnimento connesso e' stato rimosso." << std::endl;
             }
             else
             {
@@ -297,9 +300,9 @@ if(pData->second->getStato()==0)
                         TimeLine.erase(pTime);
                     }
                     break; //tolgo solo il primo di spegnimento, in un momento successivo magari riuscirò ad accenderlo
-                }; 
-                
-                out << orario << " " << disp << " non acceso. Limite di potenza raggiunto." << std::endl; 
+                };
+
+                out << orario << " " << disp << " non acceso. Limite di potenza raggiunto." << std::endl;
             }
             else
             {
@@ -314,7 +317,7 @@ if(pData->second->getStato()==0)
                 out << orario << " Il dispositivo " << disp << " si e' acceso." << std::endl;
             }
         }
-        
+
 
         return out;
     }
@@ -343,7 +346,7 @@ if(pData->second->getStato()==0)
                 else
                 {
                     std::shared_ptr<Dispositivo> d = pData->second;
-                    
+
                     if(isCP(d))
                     {
                         Tempo spegnimento = accensione + std::dynamic_pointer_cast<DispCicloPrefissato>(d)->getDurata();
@@ -352,7 +355,7 @@ if(pData->second->getStato()==0)
                             spegnimento.setNull(); //se sforiamo la mezzanotte non impostiamo il timer di spegnimento
                         }
                         bool val = isTimerValido(accensione, spegnimento, disp, d);
-                        
+
                         if(accensione == orario && val==true)
                         {
                             out << orario << " L'orario di accensione del timer di " << disp << " corrisponde con l'orario attuale. Il dispositivo verra' acceso." << std::endl;
@@ -423,7 +426,7 @@ if(pData->second->getStato()==0)
             {
                 out << orario << " L'orario inserito non e' valido. Timer non settato." << std::endl;
             }
-            
+
             else
             {
                 std::shared_ptr<Dispositivo> d = p->second;
@@ -465,7 +468,7 @@ if(pData->second->getStato()==0)
         return out;
     }
 
-    //Rimozione del timer       
+    //Rimozione del timer
     std::ostream& SistemaDomotico::rm(std::ostream& out, std::string disp)
     {
         auto pData = DataBase.find(disp);
@@ -491,7 +494,7 @@ if(pData->second->getStato()==0)
                 {
                     pTime++;
                 }
-            }; 
+            };
 
             if(cont==0)
             {
@@ -515,7 +518,7 @@ if(pData->second->getStato()==0)
                 out << orario << " orario attuale." << std::endl;
             }
             else
-            {   
+            {
                 auto  p = TimeLine.begin();
                 while(p != TimeLine.end() && p->first<=t)
                 {
@@ -530,11 +533,11 @@ if(pData->second->getStato()==0)
                     else if(p->second.first==0) //uso un else if se in futuro ci saranno altri comandi
                     {
                         setOffbyTimer(out, d->getNome());
-                    }   
-                    //Serve riassegnare p altrimenti cancellando un elemento si perde il riferimento      
+                    }
+                    //Serve riassegnare p altrimenti cancellando un elemento si perde il riferimento
                     p = TimeLine.erase(p);
 
-                }; 
+                };
                 orario = t;
                 out << orario << " orario impostato." << std::endl;
 
@@ -550,7 +553,7 @@ if(pData->second->getStato()==0)
     }
 
     std::ostream& SistemaDomotico::show(std::ostream& out){
-        
+
         double produzione = 0;
         double consumo = 0;
 
@@ -564,7 +567,7 @@ if(pData->second->getStato()==0)
                 produzione += elemento.second->consumoEnergetico(orario);
             }
         }
-        
+
         out << orario << " Attualmente il sistema ha prodotto " << produzione << " kWh e consumato " << consumo << " kWh. Nello specifico:" << std::endl;
 
         //Mostro i singoli dispositivi
@@ -577,8 +580,8 @@ if(pData->second->getStato()==0)
             }
             out << fabs(elemento.second->consumoEnergetico(orario)) << " kWh" << std::endl;
         }
-        
-        
+
+
         return out;
     }
 
@@ -600,7 +603,7 @@ if(pData->second->getStato()==0)
     std::ostream& SistemaDomotico::resetTime(std::ostream& out){
 
         out << orario << " Il tempo e' stato resettato e tutti i dispositivi sono stati spenti." << std::endl;
-        
+
         /*resetTime:
             - riporta l'orario a 00:00
             - riporta i dispositivi alle condizioni iniziali
@@ -665,7 +668,7 @@ if(pData->second->getStato()==0)
     std::ostream& SistemaDomotico::resetAll(std::ostream& out){
 
         out << orario << " Il tempo e' stato resettato, tutti i dispositivi sono stati spenti e i timer rimossi." << std::endl;
-        
+
         /*resetAll
             - riporta l'orario a 00:00
             - riporta i dispositivi alle condizioni iniziali
@@ -716,7 +719,7 @@ if(pData->second->getStato()==0)
     {
         return d->getID()%2==0;
     }
-    
+
     bool isCP(std::shared_ptr<Dispositivo> d)
     {
         return d->getID()%2==1;
@@ -727,12 +730,12 @@ if(pData->second->getStato()==0)
     bool SistemaDomotico::isTimerValido(Tempo& accensione, Tempo& spegnimento, std::string disp, std::shared_ptr<Dispositivo> d)
     {
         //Non ho diviso quanto segue in due funzioni per evitare la copia dei contenitori
-        
+
         //Trovo tutti i timer di spegnimento per un dispositivo, che sono chiaramente già in ordine di orario
         //p è un iteratore che punta al primo timer di spegnimento per il dispositivo
         auto p = TimeLine.begin();
         std::queue<std::unique_ptr<Tempo>> tempiSpegnimento;
-        while(p!=TimeLine.end()) 
+        while(p!=TimeLine.end())
         {
             if(p->second.second->getNome() == disp && p->second.first==0)
             {
@@ -743,10 +746,10 @@ if(pData->second->getStato()==0)
 
         //Trovo tutti i timer di accensione per un dispositivo, che sono chiaramente già in ordine di orario
         //p è un iteratore che punta al primo timer di spegnimento per il dispositivo
-        
+
         p = TimeLine.begin();
         std::queue<std::unique_ptr<Tempo>> tempiAccensione;
-        while(p!=TimeLine.end()) 
+        while(p!=TimeLine.end())
         {
             if(p->second.second->getNome() == disp && p->second.first==1)
             {
@@ -785,12 +788,12 @@ if(pData->second->getStato()==0)
                         return false;
                     }
                     tempiSpegnimento.pop(); //lo tolgo comunque in quanto ho già considerato il primo
-                
+
                 }
                                 if(tempiAccensione.size()!=tempiSpegnimento.size())
                                 {
                                     throw std::runtime_error("Errore nella gestione dei timer."); //TOGLIERE DOPO MA NON DOVREBBE ACCADERE
-                                    //VA GESTITO IL FINE GIORNATA IN CUI NON CI SONO SPEGNIMENTI 
+                                    //VA GESTITO IL FINE GIORNATA IN CUI NON CI SONO SPEGNIMENTI
                                 }
                     int i = tempiAccensione.size(); //timer di accensione e spegnimento sono in numero uguale
 
@@ -817,13 +820,13 @@ if(pData->second->getStato()==0)
                     {
                         return false;
                     }
-                    
+
                     if(tempiSpegnimento.empty())
                     {
                         return false;
-                    }       
+                    }
                 }
-                
+
                 if(spegnimento.isNull()) //Necessario in quanto questo metodo viene usato da entrambi i setTimer
                 {
                     if(tempiSpegnimento.empty()) //Se non ci sono timer di spegnimento quello  è un timer che dura tutta la giornata, verifico non lo intrecci
@@ -835,7 +838,7 @@ if(pData->second->getStato()==0)
                         else
                         {
                             return true;
-                        }   
+                        }
                     }
                     //Altrimenti verifico che il timer che voglio inserire, che è un timer di sola accensione, non vada a intrecciarsi con altri timer
                     int i = tempiSpegnimento.size();
@@ -845,7 +848,7 @@ if(pData->second->getStato()==0)
                         {
                             return false;
                         }
-                        tempiSpegnimento.pop();   
+                        tempiSpegnimento.pop();
                     }
                 }
                 else
@@ -890,5 +893,27 @@ if(pData->second->getStato()==0)
         {
             out << p->first << " " << p->second.first << p->second.second->getNome() << std::endl;
         }
+        return out;
+    }
+
+    std::ostream& SistemaDomotico::debugDatabase(std::ostream& out) {
+        if (DataBase.empty()) {
+            out << "DEBUG: Il DataBase è vuoto." << std::endl;
+            return;
+        } else {
+            out << "DEBUG: Contenuto del DataBase:" << std::endl;
+            for (const auto& entry : DataBase) {
+                // Ottieni la chiave (nome del dispositivo) e il puntatore condiviso all'oggetto
+                const std::string& nome = entry.first;
+                const std::shared_ptr<Dispositivo>& dispositivo = entry.second;
+
+                // Stampa il nome e altre informazioni
+                out << "- Nome: " << nome
+                    << ", Stato: " << (dispositivo->getStato() ? "Acceso" : "Spento")
+                    << ", Potenza: " << dispositivo->getPotenza()
+                    << std::endl;
+            }
+        }
+
         return out;
     }

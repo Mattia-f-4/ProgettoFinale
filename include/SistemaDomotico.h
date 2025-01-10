@@ -76,6 +76,7 @@ class SistemaDomotico
 
         //Funzione di debug per capire il funzionamento generale
         std::ostream& printTimeLine(std::ostream&);
+        std::ostream& debugDatabase(std::ostream&);
 
 };
 
