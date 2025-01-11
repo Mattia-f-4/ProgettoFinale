@@ -62,8 +62,8 @@ bool check_command(Commands command, std::string input) {
                 pattern = input.substr(pos + 1); // Ultimo pattern
 
                 pos = input.find(delimiter); // Posizione secondo pattern
-                // Se comando set time e ci sono due orari
-                if(pattern.find(':') != std::string::npos && input.substr(0, pos) == "time")
+                // Se comando set time e ci sono troppi pattern
+                if(input.substr(0, pos) == "time" && input != pattern)
                     return false;
              }
             break;
