@@ -47,5 +47,4 @@ class Dispositivo {
         virtual ~Dispositivo() = default;
 };
 
-
 #endif

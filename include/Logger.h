@@ -1,8 +1,10 @@
+#ifndef LOGGER_H
+#define LOGGER_H
+
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <filesystem>
-
 #include "Tempo.h"
 
 class Logger {
@@ -24,3 +26,5 @@ class Logger {
         std::string filePath;
 
 };
+
+#endif

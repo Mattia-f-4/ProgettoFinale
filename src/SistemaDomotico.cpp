@@ -1,6 +1,7 @@
+/*MATTIA FAVRETTO*/
 #include "SistemaDomotico.h"
 
-/*COSTRUTTORI*/    
+/*COSTRUTTORE*/    
 
     //Costruttore parametrico
     SistemaDomotico::SistemaDomotico(Logger& log) : orario{0,0}, size{10}, potenzaResidua{limitePotenza}, logger{log}
@@ -51,6 +52,12 @@
     double SistemaDomotico::getPotenzaResidua() const {return potenzaResidua;}
     double SistemaDomotico::getLimitePotenza() const {return limitePotenza;}
     Logger& SistemaDomotico::getLogger() const {return logger;}
+
+    //Funzione di stampa dell'ora attuale
+    void SistemaDomotico::printTime() 
+    {
+        logger.log(orario);
+    }
 
     //Metodi per aggiunta di un dispositivo
     void SistemaDomotico::add(std::string disp, DispCicloPrefissato::DispDomotico t)
@@ -170,7 +177,7 @@
         }
     }
 
-    //setOffbyTimer
+    //setOffbyTimer - metodo richiamato da setTimer
     void SistemaDomotico::setOffbyTimer(std::string disp)
     {
         //Nessun controllo su disp, controllo già effettuato da setTimer
@@ -252,7 +259,7 @@ if(pData->second->getStato()==0)
         
     }
 
-    //setOnbyTimer
+    //setOnbyTimer - metodo richiamato da setTimer
     void SistemaDomotico::setOnbyTimer(std::string disp)
     {
         //Il controllo su disp è già stato fatto da setTimer
@@ -563,6 +570,7 @@ if(pData->second->getStato()==0)
         
     }
 
+    //metodo show per tutti i dispositivi
     void SistemaDomotico::show(){
 
         double produzione = 0;
@@ -596,6 +604,7 @@ if(pData->second->getStato()==0)
         
     }
 
+    //metodo show per un singolo dispositivo
     void SistemaDomotico::show(std::string disp)
     {
         auto p = DataBase.find(disp);
@@ -617,10 +626,8 @@ if(pData->second->getStato()==0)
         
     }
 
+    //metodo di debug
     void SistemaDomotico::resetTime(){
-
-        logger.log(orario.toString() + " Il tempo e' stato resettato e tutti i dispositivi sono stati spenti.\n");
-
         /*resetTime:
             - riporta l'orario a 00:00
             - riporta i dispositivi alle condizioni iniziali
@@ -647,14 +654,11 @@ if(pData->second->getStato()==0)
         //Reimposto il limite di potenza
         potenzaResidua = limitePotenza;
 
+        logger.log(orario.toString() + " Il tempo e' stato resettato e tutti i dispositivi sono stati spenti.\n");
         logger.log(orario.toString() + " Orario impostato.\n");
-
-        
     }
 
     void SistemaDomotico::resetTimers(){
-        logger.log(orario.toString() + " I timer sono stati resettati.\n");
-
         /*resetTimers:
             - rimuove tutti i timer dai dispositivi
             - non modifica lo stato dei dispositivi
@@ -682,7 +686,7 @@ if(pData->second->getStato()==0)
         // Sostituisci la vecchia TimeLine con SoloSpegnimento
         TimeLine = std::move(SoloSpegnimento);
 
-        
+        logger.log(orario.toString() + " I timer sono stati resettati.\n");
     }
 
     void SistemaDomotico::resetAll(){
@@ -734,22 +738,8 @@ if(pData->second->getStato()==0)
             OrdineAccensione.pop();
         }
     }
-
-/* HELPER FUNCTION */
-
-    //Funzioni per determinare il tipo di dispositivo
-    bool isManuale(std::shared_ptr<Dispositivo> d)
-    {
-        return d->getID()%2==0;
-    }
-
-    bool isCP(std::shared_ptr<Dispositivo> d)
-    {
-        return d->getID()%2==1;
-    }
-
-    //Funzione helper per setTimer
-
+  
+    //Funzione di supporto per setTimer
     bool SistemaDomotico::isTimerValido(Tempo& accensione, Tempo& spegnimento, std::string disp, std::shared_ptr<Dispositivo> d)
     {
         //Non ho diviso quanto segue in due funzioni per evitare la copia dei contenitori
@@ -908,6 +898,22 @@ if(pData->second->getStato()==0)
         throw std::runtime_error("Situazione non considerata."); //TOGLIERE DOPO MA NON DOVREBBE ACCADERE
     }
 
+/* HELPER FUNCTION */
+
+    //Funzioni per determinare il tipo di dispositivo
+    bool isManuale(std::shared_ptr<Dispositivo> d)
+    {
+        return d->getID()%2==0;
+    }
+
+    bool isCP(std::shared_ptr<Dispositivo> d)
+    {
+        return d->getID()%2==1;
+    }
+
+
+
+//DA CANCELLARE DOPO AVER FINITO
     //Funzione di stampa della TimeLine
     void SistemaDomotico::printTimeLine()
     {
@@ -938,8 +944,4 @@ if(pData->second->getStato()==0)
         }
 
         
-    }
-
-    void SistemaDomotico::printTime() {
-        logger.log(orario);
     }
