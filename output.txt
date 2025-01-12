@@ -20,18 +20,29 @@ Per uscire digitare: exit
 [00:00] set Lavatrice on
 [00:00] Il dispositivo Lavatrice si e' acceso.
 
-[00:00] set Asciugatrice 2:00
-[00:00] Impostato un timer per il dispositivo Asciugatrice dalle ore [02:00] alle ore [03:00].
+[00:00] set Impianto fotovoltaico on
+[00:00] Il dispositivo Impianto fotovoltaico si e' acceso.
 
-[00:00] set Impianto fotovoltaico 3:00 4:00
-[00:00] Impostato un timer per il dispositivo Impianto fotovoltaico dalle ore [03:00] alle ore [04:00].
+[00:00] set time 1:00
+[01:00] Orario impostato.
 
-[00:00] set time 5:00
-[01:50] Il dispositivo Lavatrice si e' spento.
-[02:00] Il dispositivo Asciugatrice si e' acceso.
-[03:00] Il dispositivo Asciugatrice si e' spento.
-[03:00] Impianto fotovoltaico non acceso. Limite di potenza raggiunto.
-[04:00] Impianto fotovoltaico gia' spento. QUESTO NON DOVREBBE ACCADERE, CONTROLLARE CHE PROBLEMI CI SONO
-[05:00] Orario impostato.
+[01:00] show
+[01:00] Attualmente il sistema ha prodotto 1.500000 kWh e consumato 2.000000 kWh. Nello specifico:
+	- Il dispositivo Asciugatrice ha consumato 0.000000 kWh
+	- Il dispositivo Forno a microonde ha consumato 0.000000 kWh
+	- Il dispositivo Frigorifero ha consumato 0.000000 kWh
+	- Il dispositivo Impianto fotovoltaico ha prodotto 1.500000 kWh
+	- Il dispositivo Lavastoviglie ha consumato 0.000000 kWh
+	- Il dispositivo Lavatrice ha consumato 2.000000 kWh
+	- Il dispositivo Pompa di calore + termostato ha consumato 0.000000 kWh
+	- Il dispositivo Scaldabagno ha consumato 0.000000 kWh
+	- Il dispositivo Tapparelle elettriche ha consumato 0.000000 kWh
+	- Il dispositivo Televisore ha consumato 0.000000 kWh
 
-[05:00] exit
+[01:00] show Lavatrice
+Il dispositivo Lavatrice ha consumato 2.000000 kWh
+
+[01:00] show Impianto fotovoltaico
+Il dispositivo Impianto fotovoltaico ha prodotto 1.500000 kWh
+
+[01:00] exit

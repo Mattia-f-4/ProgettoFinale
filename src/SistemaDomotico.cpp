@@ -563,7 +563,7 @@ if(pData->second->getStato()==0)
             }
         }
 
-        logger.log(orario.toString() + " Attualmente il sistema ha prodotto " + std::to_string(produzione) + " kWh e consumato " + std::to_string(consumo) + " kWh. Nello specifico:\n");
+        logger.log(orario.toString() + " Attualmente il sistema ha prodotto " + std::to_string(fabs((produzione))) + " kWh e consumato " + std::to_string(consumo) + " kWh. Nello specifico:\n");
 
         //Mostro i singoli dispositivi
         for(auto& elemento : DataBase) {
@@ -590,7 +590,13 @@ if(pData->second->getStato()==0)
         }
         else
         {
-            logger.log(orario.toString() + " Il dispositivo " + disp + " ha consumato " + std::to_string(p->second->consumoEnergetico(orario)) + " kWh\n");
+            logger.log("Il dispositivo " + disp + " ha ");
+            if(p->second->consumoEnergetico(orario) >= 0) {
+                logger.log("consumato ");
+            } else {
+                logger.log("prodotto ");
+            }
+            logger.log( std::to_string(fabs(p->second->consumoEnergetico(orario))) + " kWh\n");
         }
         
     }
