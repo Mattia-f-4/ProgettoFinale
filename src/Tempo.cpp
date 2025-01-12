@@ -141,25 +141,32 @@ using namespace std;
         return *this;
     }
 
+    //toString
+    string Tempo::toString() const {
+        string s = "[";
+        
+        if(getOra() < 10)
+            s += "0" + to_string(getOra()) + ":";
+        else    
+            s += to_string(getOra()) + ":";
+
+        if(getMinuti() < 10)
+            s += "0" + to_string(getMinuti());
+        else 
+            s += to_string(getMinuti());
+
+        s += "]";
+
+        return s;
+    }
+
 /* HELPER FUNCTION */
 
     //Overloading operatore <<
     ostream& operator<<(std::ostream& os, const Tempo& obj) {
         
-        os << "[";
-        
-        if(obj.getOra() < 10)
-            os << "0" << obj.getOra() << ":";
-        else    
-            os << obj.getOra() << ":";
+        os << obj.toString();
 
-        if(obj.getMinuti() < 10)
-            os << "0" << obj.getMinuti();
-        else 
-            os << obj.getMinuti();
-
-        os << "]";
-        
         return os;
     }
 

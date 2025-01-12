@@ -36,6 +36,9 @@ class Tempo {
         bool operator>=(const Tempo&) const;
         bool operator<=(const Tempo&) const;
 
+        //toString
+        std::string toString() const;
+
     private:
        
         //Variabili d'istanza
