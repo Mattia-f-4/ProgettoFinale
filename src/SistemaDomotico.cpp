@@ -538,7 +538,7 @@ if(pData->second->getStato()==0)
 
                 };
                 orario = t;
-                out << orario << " orario impostato." << std::endl;
+                out << orario << " Orario impostato." << std::endl;
 
                 //Se arrivo alla fine del programma lancio un'eccezione per non permettere ulteriori operazioni
                 if(orario==Tempo(23,59))
