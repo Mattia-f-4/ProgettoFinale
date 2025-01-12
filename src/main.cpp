@@ -415,6 +415,7 @@ int main() {
                         sistemaDomotico.printTime();
                         logger.log(" ERROR: Sintassi comando\n");
                         break;
+    
                     }
                     pos = answer.find(delimiter); // Posizione secondo pattern
                     // Se comando set time ${TIME}
