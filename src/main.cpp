@@ -350,18 +350,18 @@ int main() {
     std::cout << "----------------------------------------------------------------------------- " << std::endl << std::endl;
     
     std::cout << "Le operazioni che puoi eseguire con il tuo sistema domotico sono le seguenti: " << std::endl;
-    std::cout << "# set ${DEVICENAME} on" << std::endl;
-    std::cout << "# set ${DEVICENAME} off" << std::endl;
-    std::cout << "# set ${DEVICENAME} ${START} [${STOP}]" << std::endl;
-    std::cout << "# rm ${DEVICENAME}" << std::endl;
-    std::cout << "# show" << std::endl;
-    std::cout << "# show ${DEVICENAME}" << std::endl;
-    std::cout << "# set time ${TIME}" << std::endl;
-    std::cout << "# reset time" << std::endl;
-    std::cout << "# reset timers" << std::endl;
-    std::cout << "# reset all" << std::endl;
-    std::cout << "# add" << std::endl;
-    std::cout << "# erase ${DEVICENAME}" << std::endl << std::endl;
+    std::cout << "  # set ${DEVICENAME} on" << std::endl;
+    std::cout << "  # set ${DEVICENAME} off" << std::endl;
+    std::cout << "  # set ${DEVICENAME} ${START} [${STOP}]" << std::endl;
+    std::cout << "  # rm ${DEVICENAME}" << std::endl;
+    std::cout << "  # show" << std::endl;
+    std::cout << "  # show ${DEVICENAME}" << std::endl;
+    std::cout << "  # set time ${TIME}" << std::endl;
+    std::cout << "  # reset time" << std::endl;
+    std::cout << "  # reset timers" << std::endl;
+    std::cout << "  # reset all" << std::endl;
+    std::cout << "  # add" << std::endl;
+    std::cout << "  # erase ${DEVICENAME}" << std::endl << std::endl;
     std::cout << "Per uscire digitare: exit" << std::endl;
 
     // Ciclo per emulare l'interfaccia utente
@@ -372,7 +372,7 @@ int main() {
         // Acquisisco riga di comando
         std::cout << std::endl;
         sistemaDomotico.printTime(std::cout);
-        std::cout << " Cosa vuoi fare?" << std::endl;
+        std::cout << " ";
         std::getline(std::cin, answer);
 
         // Acquisisco l'input ed estraggo il comando
