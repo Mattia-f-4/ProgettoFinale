@@ -6,7 +6,6 @@
     SistemaDomotico::SistemaDomotico(Logger& log) : orario{0,0}, size{10}, potenzaResidua{limitePotenza}, logger{log}
     {
         //Grazie all'utilizzo di smart pointer la gestione della memoria è automatica
-
         //Creazione dei dispositivi manuali predefiniti
         std::shared_ptr<Dispositivo> Frigorifero = std::make_shared<DispManuale>("Frigorifero", DispManuale::DispDomotico::Frigorifero);
         
