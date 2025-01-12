@@ -3,6 +3,7 @@
 
 #include "DispManuale.h"
 #include "DispCicloPrefissato.h"
+#include "Logger.h"
 #include <iostream>
 #include <map>
 #include <stack>
@@ -16,20 +17,20 @@ class SistemaDomotico
 {
     public:
         //Costruttore
-        SistemaDomotico();    
+        SistemaDomotico(Logger&);    
 
         //Member Function
-        std::ostream& setTime(std::ostream&, Tempo&);
-        std::ostream& setOff(std::ostream&, std::string); //se si vuole scrivere in un file mettere 2 stream di output
-        std::ostream& setOn(std::ostream&, std::string);    
-        std::ostream& setTimer(std::ostream&, std::string, Tempo&);
-        std::ostream& setTimer(std::ostream&, std::string, Tempo&, Tempo&);
-        std::ostream& rm(std::ostream&, std::string);
+        void setTime(Tempo&);
+        void setOff(std::string); //se si vuole scrivere in un file mettere 2 stream di output
+        void setOn(std::string);    
+        void setTimer(std::string, Tempo&);
+        void setTimer(std::string, Tempo&, Tempo&);
+        void rm(std::string);
     
         //Funzioni per logging
-        std::ostream& show(std::ostream&); 
-        std::ostream& show(std::ostream&, std::string);
-        std::ostream& printTime(std::ostream&);
+        void show(); 
+        void show(std::string);
+        void printTime();
 
         //Funzioni per la gestione dei dispositivi
         std::ostream& add(std::ostream&, std::string, DispCicloPrefissato::DispDomotico);
@@ -37,9 +38,9 @@ class SistemaDomotico
         std::ostream& erase(std::ostream&, std::string);
 
         // Funzioni di debug
-        std::ostream& resetTime(std::ostream&);
-        std::ostream& resetTimers(std::ostream&);
-        std::ostream& resetAll(std::ostream&);
+        void resetTime();
+        void resetTimers();
+        void resetAll();
 
         //Funzioni di supporto alle funzioni di debug
         void setOffAll();
@@ -49,7 +50,9 @@ class SistemaDomotico
         int getSize() const;
         double getPotenzaResidua() const;
         double getLimitePotenza() const;
+        Logger& getLogger() const;
 
+        
     private:
         
         //Contenitori STL 
@@ -63,20 +66,21 @@ class SistemaDomotico
         double potenzaResidua;
         Tempo orario;
         int size;
+        Logger& logger;
 
         //Funzione di controllo 
-        void sovraccarico(std::ostream&);
+        void sovraccarico();
 
         //Funzione di supporto
-        std::ostream& setOffbyTimer(std::ostream&, std::string);
-        std::ostream& setOnbyTimer(std::ostream&, std::string);
+        void setOffbyTimer(std::string);
+        void setOnbyTimer(std::string);
 
         //Funzione di supporto per il controllo dei timer
         bool isTimerValido(Tempo&, Tempo&, std::string, std::shared_ptr<Dispositivo>);
 
         //Funzione di debug per capire il funzionamento generale
-        std::ostream& printTimeLine(std::ostream&);
-        std::ostream& debugDatabase(std::ostream&);
+        void printTimeLine();
+        void debugDatabase();
 
 };
 
