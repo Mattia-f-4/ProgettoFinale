@@ -240,7 +240,10 @@ if(pData->second->getStato()==0)
                         //Se è CP metto un timer di spegnimento, in caso di ulteriori timer di accensione questo verrà ignorato
                         std::shared_ptr<DispCicloPrefissato> cp = std::dynamic_pointer_cast<DispCicloPrefissato>(d);
                         Tempo spegnimento = orario + cp->getDurata();
-                        TimeLine.insert(std::make_pair(spegnimento, std::make_pair(0, d)));
+                        if(spegnimento > orario)
+                        {
+                            TimeLine.insert(std::make_pair(spegnimento, std::make_pair(0, d))); //se sforiamo la mezzanotte non impostiamo il timer di spegnimento
+                        }
                     }
                 }
             }
@@ -285,7 +288,7 @@ if(pData->second->getStato()==0)
         else
         {
             //Se la sua accensione comporterebbe un superamento della potenza non lo accendo
-            if(potenzaResidua + pData->second->getPotenza() > limitePotenza)
+            if(potenzaResidua + d->getPotenza() < 0)
             {
                 //Rimuovo eventuali timer di spegnimento in quanto l'accensione è stata chiamata da un timer
                 for(auto pTime = TimeLine.begin(); pTime != TimeLine.end(); pTime++)
@@ -311,10 +314,7 @@ if(pData->second->getStato()==0)
                 //Mostriamo a schermo il messaggio
                 logger.log(orario.toString() + " Il dispositivo " + disp + " si e' acceso.\n");
             }
-        }
-
-
-        
+        }      
     }
 
     //setTimer
@@ -355,19 +355,35 @@ if(pData->second->getStato()==0)
                         {
                             logger.log(orario.toString() + " L'orario di accensione del timer di " + disp + " corrisponde con l'orario attuale. Il dispositivo verra' acceso.\n");
                             setOn(disp);
-                            //Impostiamo comunque un timer di spegnimento
-                            TimeLine.insert(std::make_pair(spegnimento, std::make_pair(0, d)));
+                            //Impostiamo comunque un timer di spegnimento nel caso in cui non superi la mezzanotte
+                            if(!spegnimento.isNull())
+                            {
+                                TimeLine.insert(std::make_pair(spegnimento, std::make_pair(0, d)));
 
-                            logger.log(orario.toString() + " Impostato un timer di spegnimento per il dispositivo " + disp + " alle ore " + spegnimento.toString() + ".\n");
+                                logger.log(orario.toString() + " Impostato un timer di spegnimento per il dispositivo " + disp + " alle ore " + spegnimento.toString() + ".\n");
+                            }
+                            else
+                            {
+                                //Nel caso in cui superiamo la mezzanotte non impostiamo il timer di spegnimento, il dispositivo rimarrà acceso fino alla fine del programma
+                                logger.log(orario.toString() + " Il timer di spegnimento non e' stato impostato in quanto supera la mezzanotte.\n");
+                            }
                         }
                         else
                         {
                             if(val==true)
                             {
                                 TimeLine.insert(std::make_pair(accensione, std::make_pair(1, d)));
-                                TimeLine.insert(std::make_pair(spegnimento, std::make_pair(0, d)));
+                                if(!spegnimento.isNull())
+                                {
+                                    TimeLine.insert(std::make_pair(spegnimento, std::make_pair(0, d)));
 
-                                logger.log(orario.toString() + " Impostato un timer per il dispositivo " + disp + " dalle ore " + accensione.toString() + " alle ore " + spegnimento.toString() + ".\n");
+                                    logger.log(orario.toString() + " Impostato un timer per il dispositivo " + disp + " dalle ore " + accensione.toString() + " alle ore " + spegnimento.toString() + ".\n");
+                                }
+                                else
+                                {
+                                    //Nel caso in cui superiamo la mezzanotte non impostiamo il timer di spegnimento, il dispositivo rimarrà acceso fino alla fine del programma
+                                    logger.log(orario.toString() + " Impostato un timer per il dispositivo " + disp + " dalle ore " + accensione.toString() + ".\n");
+                                }
                             }
                             else
                             {
@@ -628,6 +644,9 @@ if(pData->second->getStato()==0)
             };
         }
 
+        //Reimposto il limite di potenza
+        potenzaResidua = limitePotenza;
+
         logger.log(orario.toString() + " Orario impostato.\n");
 
         
@@ -683,6 +702,9 @@ if(pData->second->getStato()==0)
         for(auto& elemento : DataBase) {
             elemento.second->reset();
         }
+
+        //Reimposto il limite di potenza
+        potenzaResidua = limitePotenza;
 
         //Rimuove i timer (svuoto la timeline)
         TimeLine.clear();

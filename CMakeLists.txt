@@ -22,6 +22,7 @@ set(
     src/DispManuale.cpp
     src/DispCicloPrefissato.cpp
     src/Tempo.cpp
+    src/Logger.cpp
 )
 
 #Creiamo l'eseguibile

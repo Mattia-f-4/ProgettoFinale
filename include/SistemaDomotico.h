@@ -33,9 +33,9 @@ class SistemaDomotico
         void printTime();
 
         //Funzioni per la gestione dei dispositivi
-        std::ostream& add(std::ostream&, std::string, DispCicloPrefissato::DispDomotico);
-        std::ostream& add(std::ostream&, std::string, DispManuale::DispDomotico);
-        std::ostream& erase(std::ostream&, std::string);
+        void add(std::string, DispCicloPrefissato::DispDomotico);
+        void add(std::string, DispManuale::DispDomotico);
+        void erase(std::string);
 
         // Funzioni di debug
         void resetTime();
