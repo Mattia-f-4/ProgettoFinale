@@ -1,5 +1,4 @@
 #include "Dispositivo.h"
-#include <cmath>
 
 using namespace std;
 
@@ -63,10 +62,10 @@ using namespace std;
         return -((getDurataAccensione()+durata).getOra() * getPotenza() + ( (double) (getDurataAccensione()+durata).getMinuti() / 60) * getPotenza());
     }
 
-    //reset, per riportare il dispositivo alle condizioni iniziali
+    //Metodo reset per riportare il dispositivo alle condizioni iniziali
     void Dispositivo::reset() {
-        getAccensione().setNull();
-        getSpegnimento().setNull();
+        oraAccensione.setNull();
+        oraSpegnimento.setNull();
         setStato(false);
         durataAccensione = Tempo(0,0);
     }

@@ -3,6 +3,7 @@
 
 #include "Tempo.h"
 #include <string>
+#include <cmath>
 
 class Dispositivo {
     public:
@@ -44,8 +45,6 @@ class Dispositivo {
 
         //Distruttore
         virtual ~Dispositivo() = default;
-
 };
-
 
 #endif
