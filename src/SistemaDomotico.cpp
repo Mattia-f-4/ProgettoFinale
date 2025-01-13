@@ -85,7 +85,7 @@
                 else
                 {
                     //Rimuovo dalla timeline eventuali timer di accensione e spegnimento
-                    rm(disp);
+                    rmAll(disp);
                     DataBase.erase(disp);
                     size --;
                     logger.log(orario.toString() + " " + disp + " rimosso dal Sistema Domotico.\n");
@@ -461,16 +461,25 @@ if(pData->second->getStato()==0)
         }
         else
         {
+            auto d = pData->second;
             int cont = 0;
             //In questo modo rimuove tutti i timer dei dispositivi
             auto pTime = TimeLine.begin();
             while(pTime != TimeLine.end())
-            {
+            {               
                 if(pTime->second.second -> getNome() == disp)
                 {
-                    logger.log(orario.toString() + " Rimosso il timer alle ore " + pTime->first.toString() +  " dal dispositivo " + disp + " .\n");
-                    TimeLine.erase(pTime);
-                    cont++;
+                    if(isCP(d) && cont==0 && pTime->second.first==0) //il primo timer di spegnimento non lo rimuovo per i dispositivi CP
+                    {
+                        pTime++;
+                        cont++;
+                    }
+                    else
+                    {
+                        logger.log(orario.toString() + " Rimosso il timer alle ore " + pTime->first.toString() +  " dal dispositivo " + disp + ".\n");
+                        pTime = TimeLine.erase(pTime);
+                        cont++;
+                    }
                 }
                 else
                 {
@@ -483,7 +492,28 @@ if(pData->second->getStato()==0)
                 logger.log(orario.toString() + " Il dispositivo " + disp + " non ha timer impostati.\n");
             }
         }
-        
+    }
+
+    //Funzione di supporto per erase
+    void SistemaDomotico::rmAll(std::string disp)
+    {
+        auto pData = DataBase.find(disp);
+        auto d = pData->second;
+        //In questo modo rimuove tutti i timer dei dispositivi
+        auto pTime = TimeLine.begin();
+        while(pTime != TimeLine.end())
+        {               
+            if(pTime->second.second -> getNome() == disp)
+            {
+                //Rimuove tutto incondizionatamente
+                logger.log(orario.toString() + " Rimosso il timer alle ore " + pTime->first.toString() +  " dal dispositivo " + disp + ".\n");
+                pTime = TimeLine.erase(pTime);
+            }
+            else
+            {
+                pTime++;
+            }
+        }
     }
 
     //setTime
@@ -865,18 +895,7 @@ if(pData->second->getStato()==0)
 
                 if(spegnimento.isNull()) //Necessario in quanto questo metodo viene usato da entrambi i setTimer
                 {
-                    if(tempiSpegnimento.empty()) //Se non ci sono timer di spegnimento quello  è un timer che dura tutta la giornata, verifico non lo intrecci
-                    {
-                        if(accensione < *tempiAccensione.front())
-                        {
-                            return false;
-                        }
-                        else
-                        {
-                            return true;
-                        }
-                    }
-                    //Altrimenti verifico che il timer che voglio inserire, che è un timer di sola accensione, non vada a intrecciarsi con altri timer
+                    //Verifico che il timer che voglio inserire, che è un timer di sola accensione, non vada a intrecciarsi con altri timer
                     int i = tempiSpegnimento.size();
                     for(int j = 0;j<i;j++)
                     {
@@ -885,7 +904,18 @@ if(pData->second->getStato()==0)
                             return false;
                         }
                         tempiSpegnimento.pop();
+                        tempiAccensione.pop();
                     }
+
+                    //Se sono presenti altri timer di sola accensione sicuramente intrecciano il timer che voglio inserire
+                    if(!tempiAccensione.empty())
+                    {
+                        return false; 
+                    }
+                    else
+                    {
+                        return true;
+                    }  
                 }
                 else
                 {

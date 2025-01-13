@@ -75,6 +75,8 @@ class SistemaDomotico
         void setOnbyTimer(std::string);
         void setDatabase();
         void resetDatabase();
+        void rmAll(std::string);
+
 
         //Funzione di supporto per il controllo dei timer
         bool isTimerValido(Tempo&, Tempo&, std::string, std::shared_ptr<Dispositivo>);
