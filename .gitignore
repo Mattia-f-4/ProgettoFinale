@@ -33,3 +33,6 @@
 
 #ignora la cartella build
 build/
+
+#ignora la cartella .vscode
+.vscode/
