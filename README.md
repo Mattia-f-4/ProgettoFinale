@@ -31,3 +31,9 @@ L'ID è stato da noi usato come parametro per distinguere i dispositivi CP dai d
 8.
 Si è deciso che per i tutti i comandi nei nomi dei dispositivi ci fosse tolleranza tra maiscole e minuscole, in modo da permettere ad esempio "set Lavatrice on" o "set lavatrice on" come comandi possibili per accendere lo stesso dispositivo.
 
+*/RESET/*
+
+9.
+Il metodo 'resetAll()' comporta un reset anche del database dei dispositivi, quindi vengono rimossi eventuali dispositivi nuovi e ripristinati quelli inizialmente presenti di default.
+Questo comportamento non è previsto per 'resetTimers()' e per 'resetTime()'
+

@@ -104,6 +104,7 @@ using namespace std;
         return Tempo(newH, newMin);
     }
 
+    //Overloadig operator +
     Tempo Tempo::operator+(const Tempo& durata) const{
         if(durata.getOra() < 0 && durata.getMinuti() <= 0)
             throw invalid_argument("Duration must be positive");
@@ -160,14 +161,20 @@ using namespace std;
         return s;
     }
 
-/* HELPER FUNCTION */
-
-    //Overloading operatore <<
-    ostream& operator<<(std::ostream& os, const Tempo& obj) {
+    string Tempo::toSimpleString() const {
+        string s = "";
         
-        os << obj.toString();
+        if(getOra() < 10)
+            s += "0" + to_string(getOra()) + ":";
+        else    
+            s += to_string(getOra()) + ":";
 
-        return os;
+        if(getMinuti() < 10)
+            s += "0" + to_string(getMinuti());
+        else 
+            s += to_string(getMinuti());
+
+        return s;
     }
 
     //Overloading operator==
@@ -216,4 +223,14 @@ using namespace std;
             return true;
         }
         return false;
+    }
+
+/* HELPER FUNCTION */
+
+    //Overloading operatore <<
+    ostream& operator<<(std::ostream& os, const Tempo& obj) {
+        
+        os << obj.toString();
+
+        return os;
     }

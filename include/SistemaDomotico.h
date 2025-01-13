@@ -12,6 +12,8 @@
 #include <queue>
 #include <cmath>
 #include <set>
+#include <iomanip>
+#include <sstream>
 
 class SistemaDomotico
 {
@@ -41,10 +43,6 @@ class SistemaDomotico
         void resetTime();
         void resetTimers();
         void resetAll();
-
-        //Funzioni di supporto alle funzioni di debug
-        void setOffAll();
-        void rmAll();
         
         //Getter
         int getSize() const;
@@ -55,7 +53,7 @@ class SistemaDomotico
         
     private:
         
-        //Contenitori STL 
+        //Contenitori STL
         //int serve per indicare se si tratta di accensione o spegnimento  
         std::multimap<Tempo, std::pair<int,std::shared_ptr<Dispositivo>>> TimeLine;
         std::stack<std::string> OrdineAccensione;
@@ -68,20 +66,23 @@ class SistemaDomotico
         int size;
         Logger& logger;
 
+        /*FUNZIONI MEMBRO PRIVATE*/
         //Funzione di controllo 
         void sovraccarico();
 
-        //Funzione di supporto
+        //Funzioni di supporto
         void setOffbyTimer(std::string);
         void setOnbyTimer(std::string);
+        void setDatabase();
+        void resetDatabase();
 
         //Funzione di supporto per il controllo dei timer
         bool isTimerValido(Tempo&, Tempo&, std::string, std::shared_ptr<Dispositivo>);
 
+        //DEVONO ESSERE CANCELLATE ALLA FINE
         //Funzione di debug per capire il funzionamento generale
         void printTimeLine();
         void debugDatabase();
-
 };
 
 //Helper Function

@@ -24,20 +24,21 @@ class Tempo {
         //Funzione per capire se il tempo è usabile oppure no
         bool isNull();
 
-        //Overloading operatori >, >=, <, <=, +, -, = ,==, !=
+        //Overloading operatori
         bool operator>(const Tempo&) const;
         bool operator<(const Tempo&) const;
+        bool operator>=(const Tempo&) const;
+        bool operator<=(const Tempo&) const;
         Tempo operator+(const int) const;
         Tempo operator+(const Tempo&) const;
         Tempo operator-(const Tempo&) const;
         Tempo& operator=(const Tempo&);
         bool operator==(const Tempo&) const;
         bool operator!=(const Tempo&) const;
-        bool operator>=(const Tempo&) const;
-        bool operator<=(const Tempo&) const;
 
         //toString
         std::string toString() const;
+        std::string toSimpleString() const;
 
     private:
        
