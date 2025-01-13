@@ -531,6 +531,7 @@ if(pData->second->getStato()==0)
             }
             else
             {
+                logger.log(orario.toString() + " L'orario attuale e' " + orario.toSimpleString() + ".\n");
                 auto  p = TimeLine.begin();
                 while(p != TimeLine.end() && p->first<=t)
                 {
