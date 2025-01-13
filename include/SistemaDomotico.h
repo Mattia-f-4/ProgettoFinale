@@ -12,6 +12,8 @@
 #include <queue>
 #include <cmath>
 #include <set>
+#include <iomanip>
+#include <sstream>
 
 class SistemaDomotico
 {
@@ -71,6 +73,9 @@ class SistemaDomotico
         //Funzioni di supporto
         void setOffbyTimer(std::string);
         void setOnbyTimer(std::string);
+        void setDatabase();
+        void resetDatabase();
+        void rmAll(std::string);
 
         //Funzione di supporto per il controllo dei timer
         bool isTimerValido(Tempo&, Tempo&, std::string, std::shared_ptr<Dispositivo>);

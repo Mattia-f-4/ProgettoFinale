@@ -38,6 +38,7 @@ class Tempo {
 
         //toString
         std::string toString() const;
+        std::string toSimpleString() const;
 
     private:
        
