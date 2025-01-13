@@ -6,43 +6,7 @@
     //Costruttore parametrico
     SistemaDomotico::SistemaDomotico(Logger& log) : orario{0,0}, size{10}, potenzaResidua{limitePotenza}, logger{log}
     {
-        //Grazie all'utilizzo di smart pointer la gestione della memoria è automatica
-
-        //Creazione dei dispositivi manuali predefiniti
-        std::shared_ptr<Dispositivo> Frigorifero = std::make_shared<DispManuale>("Frigorifero", DispManuale::DispDomotico::Frigorifero);
-        
-        std::shared_ptr<Dispositivo> ImpiantoFotovoltaico = std::make_shared<DispManuale>("Impianto fotovoltaico", DispManuale::DispDomotico::Impianto_Fotovoltaico);
-        
-        std::shared_ptr<Dispositivo> Pompa_di_calore_termostato = std::make_shared<DispManuale>("Pompa di calore + termostato", DispManuale::DispDomotico::Pompa_di_calore_termostato);
-        
-        std::shared_ptr<Dispositivo> Scaldabagno = std::make_shared<DispManuale>("Scaldabagno", DispManuale::DispDomotico::Scaldabagno);
-
-        // Creazione dei dispositivi a ciclo prefissato predefiniti
-        std::shared_ptr<Dispositivo> Asciugatrice = std::make_shared<DispCicloPrefissato>("Asciugatrice", DispCicloPrefissato::DispDomotico::Asciugatrice);
-        
-        std::shared_ptr<Dispositivo> Forno_a_microonde = std::make_shared<DispCicloPrefissato>("Forno a microonde", DispCicloPrefissato::DispDomotico::Forno_a_microonde);
-        
-        std::shared_ptr<Dispositivo> Lavastoviglie = std::make_shared<DispCicloPrefissato>("Lavastoviglie", DispCicloPrefissato::DispDomotico::Lavastoviglie);
-        
-        std::shared_ptr<Dispositivo> Lavatrice = std::make_shared<DispCicloPrefissato>("Lavatrice", DispCicloPrefissato::DispDomotico::Lavatrice);
-        
-        std::shared_ptr<Dispositivo> Tapparelle_elettriche = std::make_shared<DispCicloPrefissato>("Tapparelle elettriche", DispCicloPrefissato::DispDomotico::Tapparelle_elettriche);
-        
-        std::shared_ptr<Dispositivo> Televisore = std::make_shared<DispCicloPrefissato>("Televisore", DispCicloPrefissato::DispDomotico::Televisore);
-
-        // Creazione del DataBase
-        DataBase.insert({Frigorifero->getNome(), Frigorifero});
-        DataBase.insert({ImpiantoFotovoltaico->getNome(), ImpiantoFotovoltaico});
-        DataBase.insert({Pompa_di_calore_termostato->getNome(), Pompa_di_calore_termostato});
-        DataBase.insert({Scaldabagno->getNome(), Scaldabagno});
-        DataBase.insert({Asciugatrice->getNome(), Asciugatrice});
-        DataBase.insert({Forno_a_microonde->getNome(), Forno_a_microonde});
-        DataBase.insert({Lavastoviglie->getNome(), Lavastoviglie});
-        DataBase.insert({Lavatrice->getNome(), Lavatrice});
-        DataBase.insert({Tapparelle_elettriche->getNome(), Tapparelle_elettriche});
-        DataBase.insert({Televisore->getNome(), Televisore});
-
-
+        setDatabase();
     }
 
 /*FUNZIONI MEMBRO*/
@@ -557,7 +521,7 @@ if(pData->second->getStato()==0)
 
                 };
                 orario = t;
-                logger.log(orario.toString() + " Orario impostato.\n");
+                logger.log(orario.toString() + " L'orario attuale e' " + orario.toSimpleString() + ".\n");
 
                 //Se arrivo alla fine del programma lancio un'eccezione per non permettere ulteriori operazioni
                 if(orario==Tempo(23,59))
@@ -587,22 +551,29 @@ if(pData->second->getStato()==0)
             }
         }
 
-        logger.log(orario.toString() + " Attualmente il sistema ha prodotto " + std::to_string(fabs((produzione))) + " kWh e consumato " + std::to_string(consumo) + " kWh. Nello specifico:\n");
+        // Funzione di supporto per arrotondare e convertire i double a stringhe con due cifre decimali
+        auto formatDouble = [](double value) {
+            std::ostringstream stream;
+            stream << std::fixed << std::setprecision(2) << value;
+            return stream.str();
+        };
 
-        //Mostro i singoli dispositivi
-        for(auto& elemento : DataBase) {
+        // Log della produzione e del consumo totale
+        logger.log(orario.toString() + " Attualmente il sistema ha prodotto " + formatDouble(fabs(produzione)) + " kWh e consumato " + formatDouble(consumo) + " kWh. Nello specifico:\n");
+
+        // Mostro i singoli dispositivi
+        for (auto& elemento : DataBase) {
             logger.log("\t- Il dispositivo " + elemento.first + " ha ");
-            if(elemento.second->consumoEnergetico(orario) >= 0) {
+            if (elemento.second->consumoEnergetico(orario) >= 0) {
                 logger.log("consumato ");
             } else {
                 logger.log("prodotto ");
             }
-            logger.log( std::to_string(fabs(elemento.second->consumoEnergetico(orario))) + " kWh\n");
+            logger.log(formatDouble(fabs(elemento.second->consumoEnergetico(orario))) + " kWh\n");
         }
-
-
-        
+     
     }
+
 
     //metodo show per un singolo dispositivo
     void SistemaDomotico::show(std::string disp)
@@ -615,13 +586,20 @@ if(pData->second->getStato()==0)
         }
         else
         {
-            logger.log("Il dispositivo " + disp + " ha ");
+            // Funzione di supporto per arrotondare e convertire i double a stringhe con due cifre decimali
+            auto formatDouble = [](double value) {
+                std::ostringstream stream;
+                stream << std::fixed << std::setprecision(2) << value;
+                return stream.str();
+            };
+
+            logger.log(orario.toString() + " Il dispositivo " + disp + " ha ");
             if(p->second->consumoEnergetico(orario) >= 0) {
                 logger.log("consumato ");
             } else {
                 logger.log("prodotto ");
             }
-            logger.log( std::to_string(fabs(p->second->consumoEnergetico(orario))) + " kWh\n");
+            logger.log(formatDouble(fabs(p->second->consumoEnergetico(orario))) + " kWh\n");
         }
         
     }
@@ -655,7 +633,7 @@ if(pData->second->getStato()==0)
         potenzaResidua = limitePotenza;
 
         logger.log(orario.toString() + " Il tempo e' stato resettato e tutti i dispositivi sono stati spenti.\n");
-        logger.log(orario.toString() + " Orario impostato.\n");
+        logger.log(orario.toString() + " L'orario attuale e' " + orario.toSimpleString() + ".\n");
     }
 
     void SistemaDomotico::resetTimers(){
@@ -697,15 +675,14 @@ if(pData->second->getStato()==0)
             - riporta l'orario a 00:00
             - riporta i dispositivi alle condizioni iniziali
             - i timer vengono rimossi
+            - il database deve essere ripristinato alle condizioni iniziali (rimossi eventuali dispositivi nuovi e ripristinati quelli iniziali)
         */
 
         //Orario a 00:00
         orario = Tempo(0,0);
 
-        //Condizioni iniziali (tutti i dispositivi spenti)
-        for(auto& elemento : DataBase) {
-            elemento.second->reset();
-        }
+        //Condizioni iniziali
+        resetDatabase();
 
         //Reimposto il limite di potenza
         potenzaResidua = limitePotenza;
@@ -713,12 +690,58 @@ if(pData->second->getStato()==0)
         //Rimuove i timer (svuoto la timeline)
         TimeLine.clear();
 
-        logger.log(orario.toString() + " Orario impostato.\n");
+        logger.log(orario.toString() + " L'orario attuale e' " + orario.toSimpleString() + ".\n");
 
         
     }
 
 /* FUNZIONI DI SUPPORTO */
+    
+    //Funzione per ripristinare il Database alle condizioni iniziali
+    void SistemaDomotico::setDatabase() {
+        
+        //Grazie all'utilizzo di smart pointer la gestione della memoria è automatica
+
+        //Creazione dei dispositivi manuali predefiniti
+        std::shared_ptr<Dispositivo> Frigorifero = std::make_shared<DispManuale>("Frigorifero", DispManuale::DispDomotico::Frigorifero);
+        
+        std::shared_ptr<Dispositivo> ImpiantoFotovoltaico = std::make_shared<DispManuale>("Impianto fotovoltaico", DispManuale::DispDomotico::Impianto_Fotovoltaico);
+        
+        std::shared_ptr<Dispositivo> Pompa_di_calore_termostato = std::make_shared<DispManuale>("Pompa di calore + termostato", DispManuale::DispDomotico::Pompa_di_calore_termostato);
+        
+        std::shared_ptr<Dispositivo> Scaldabagno = std::make_shared<DispManuale>("Scaldabagno", DispManuale::DispDomotico::Scaldabagno);
+
+        // Creazione dei dispositivi a ciclo prefissato predefiniti
+        std::shared_ptr<Dispositivo> Asciugatrice = std::make_shared<DispCicloPrefissato>("Asciugatrice", DispCicloPrefissato::DispDomotico::Asciugatrice);
+        
+        std::shared_ptr<Dispositivo> Forno_a_microonde = std::make_shared<DispCicloPrefissato>("Forno a microonde", DispCicloPrefissato::DispDomotico::Forno_a_microonde);
+        
+        std::shared_ptr<Dispositivo> Lavastoviglie = std::make_shared<DispCicloPrefissato>("Lavastoviglie", DispCicloPrefissato::DispDomotico::Lavastoviglie);
+        
+        std::shared_ptr<Dispositivo> Lavatrice = std::make_shared<DispCicloPrefissato>("Lavatrice", DispCicloPrefissato::DispDomotico::Lavatrice);
+        
+        std::shared_ptr<Dispositivo> Tapparelle_elettriche = std::make_shared<DispCicloPrefissato>("Tapparelle elettriche", DispCicloPrefissato::DispDomotico::Tapparelle_elettriche);
+        
+        std::shared_ptr<Dispositivo> Televisore = std::make_shared<DispCicloPrefissato>("Televisore", DispCicloPrefissato::DispDomotico::Televisore);
+
+        // Creazione del DataBase
+        DataBase.insert({Frigorifero->getNome(), Frigorifero});
+        DataBase.insert({ImpiantoFotovoltaico->getNome(), ImpiantoFotovoltaico});
+        DataBase.insert({Pompa_di_calore_termostato->getNome(), Pompa_di_calore_termostato});
+        DataBase.insert({Scaldabagno->getNome(), Scaldabagno});
+        DataBase.insert({Asciugatrice->getNome(), Asciugatrice});
+        DataBase.insert({Forno_a_microonde->getNome(), Forno_a_microonde});
+        DataBase.insert({Lavastoviglie->getNome(), Lavastoviglie});
+        DataBase.insert({Lavatrice->getNome(), Lavatrice});
+        DataBase.insert({Tapparelle_elettriche->getNome(), Tapparelle_elettriche});
+        DataBase.insert({Televisore->getNome(), Televisore});
+    }
+
+    void SistemaDomotico::resetDatabase(){
+        DataBase.clear();
+        setDatabase();
+    }
+    
     //Funzione per il sovraccarico
     void SistemaDomotico::sovraccarico()
     {

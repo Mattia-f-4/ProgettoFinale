@@ -161,6 +161,22 @@ using namespace std;
         return s;
     }
 
+    string Tempo::toSimpleString() const {
+        string s = "";
+        
+        if(getOra() < 10)
+            s += "0" + to_string(getOra()) + ":";
+        else    
+            s += to_string(getOra()) + ":";
+
+        if(getMinuti() < 10)
+            s += "0" + to_string(getMinuti());
+        else 
+            s += to_string(getMinuti());
+
+        return s;
+    }
+
     //Overloading operator==
     bool Tempo::operator==(const Tempo& t) const
     {
