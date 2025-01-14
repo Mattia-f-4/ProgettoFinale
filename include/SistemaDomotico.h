@@ -26,7 +26,7 @@ class SistemaDomotico {
 
         //Member Function
         void setTime(Tempo&);
-        void setOff(std::string); //se si vuole scrivere in un file mettere 2 stream di output
+        void setOff(std::string); 
         void setOn(std::string);    
         void setTimer(std::string, Tempo&);
         void setTimer(std::string, Tempo&, Tempo&);
