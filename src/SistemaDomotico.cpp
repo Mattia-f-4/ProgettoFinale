@@ -487,28 +487,6 @@
         }
     }
 
-    //Funzione di supporto per erase
-    void SistemaDomotico::rmAll(std::string disp)
-    {
-        auto pData = DataBase.find(disp);
-        auto d = pData->second;
-        //In questo modo rimuove tutti i timer dei dispositivi
-        auto pTime = TimeLine.begin();
-        while(pTime != TimeLine.end())
-        {               
-            if(pTime->second.second -> getNome() == disp)
-            {
-                //Rimuove tutto incondizionatamente
-                logger.log(orario.toString() + " Rimosso il timer alle ore " + pTime->first.toString() +  " dal dispositivo " + disp + ".\n");
-                pTime = TimeLine.erase(pTime);
-            }
-            else
-            {
-                pTime++;
-            }
-        }
-    }
-
     //setTime
     void SistemaDomotico::setTime(Tempo& t)
     {
@@ -558,7 +536,7 @@
         
     }
 
-    //metodo show per tutti i dispositivi
+    //Metodo show per tutti i dispositivi
     void SistemaDomotico::show(){
 
         double produzione = 0;
@@ -598,8 +576,7 @@
      
     }
 
-
-    //metodo show per un singolo dispositivo
+    //Metodo show per un singolo dispositivo
     void SistemaDomotico::show(std::string disp)
     {
         auto p = DataBase.find(disp);
@@ -628,7 +605,7 @@
         
     }
 
-    //metodo di debug
+    //Funzioni di debug
     void SistemaDomotico::resetTime(){
         /*resetTime:
             - riporta l'orario a 00:00
@@ -723,7 +700,7 @@
 
 /* FUNZIONI DI SUPPORTO */
     
-    //Funzione per ripristinare il Database alle condizioni iniziali
+    //Funzione per costruire il Database
     void SistemaDomotico::setDatabase() {
         
         //Grazie all'utilizzo di smart pointer la gestione della memoria è automatica
@@ -763,6 +740,7 @@
         DataBase.insert({Televisore->getNome(), Televisore});
     }
 
+    //Funzione per resettare il Database
     void SistemaDomotico::resetDatabase(){
         DataBase.clear();
         setDatabase();
@@ -779,10 +757,30 @@
             //Controllo che il dispositivo sia ancora presente e non sia stato eliminato
             if(DataBase.find(name)!=DataBase.end())
             {
+                //Il codice di setOff è stato inserito direttamente in questa funzione per evitare di stampare il messaggio di superamento di potenza più volte
                 std::shared_ptr<Dispositivo> d = DataBase.find(name)->second;
                 if(d->getStato()==1)
                 {
-                    setOff(name);
+                    auto pData = DataBase.find(name);
+                    d->setStato(0);                                     //spegniamo il dispositivo
+                    d->setSpegnimento(orario);                          //indichiamo l'ora di spegnimento
+                    potenzaResidua -= pData->second->getPotenza();      //aggiorniamo la potenza residua del sistema
+                    //Rimuovo eventuali timer di spegnimento se ho spento anticipatamente il dispositivo
+                    for(auto pTime = TimeLine.begin(); pTime != TimeLine.end(); pTime++)
+                    {
+                        //Se incontro per primo un timer di accensione non devo più togliere nulla
+                        if(pTime->second.second->getNome()==name && pTime->second.first==1)
+                        {
+                            break;
+                        }
+                        if(pTime->second.second->getNome()==name && pTime->second.first==0)
+                        {
+                            TimeLine.erase(pTime);
+                            break;                                      //tolgo solo il primo di spegnimento
+                        }
+                    };
+                    //Mostriamo a schermo il messaggio
+                    logger.log(orario.toString() + " Il dispositivo " + name + " si e' spento.\n");
                 }
             }
             OrdineAccensione.pop();
@@ -939,22 +937,32 @@
                 }
             }
         }
+        //Se per qualche motivo non è stato possibile verificare il timer lo considero non valido
+        return false; 
     }
 
-/* HELPER FUNCTION */
-
-    //Funzioni per determinare il tipo di dispositivo
-    bool isManuale(std::shared_ptr<Dispositivo> d)
+     //Funzione di supporto per erase, la quale elimina incondizionatamente tutti i timer per il dispositivo selezionato
+    void SistemaDomotico::rmAll(std::string disp)
     {
-        return d->getID()%2==0;
+        auto pData = DataBase.find(disp);
+        auto d = pData->second;
+        auto pTime = TimeLine.begin();
+        while(pTime != TimeLine.end())
+        {               
+            if(pTime->second.second -> getNome() == disp)
+            {
+                //Rimuove tutto incondizionatamente
+                logger.log(orario.toString() + " Rimosso il timer alle ore " + pTime->first.toString() +  " dal dispositivo " + disp + ".\n");
+                pTime = TimeLine.erase(pTime);
+            }
+            else
+            {
+                pTime++;
+            }
+        }
     }
 
-    bool isCP(std::shared_ptr<Dispositivo> d)
-    {
-        return d->getID()%2==1;
-    }
-
-    //Le seguenti funzioni sono state utilizzate in fase di debug per controllare il corretto funzionamento del sistema, sono state lasciate solamente per completezza ma non vengono mai richiamate.
+    //Le seguenti funzioni sono state utilizzate in fase di debug per controllare il corretto funzionamento del sistema, sono state lasciate solamente per completezza ma non vengono mai richiamate all'interno del codice.
     //Funzione di stampa della TimeLine
     void SistemaDomotico::printTimeLine()
     {
@@ -984,4 +992,17 @@
                     + "\n");
             }
         }
+    }
+
+/* HELPER FUNCTION */
+
+    //Funzioni per determinare il tipo di dispositivo
+    bool isManuale(std::shared_ptr<Dispositivo> d)
+    {
+        return d->getID()%2==0;
+    }
+
+    bool isCP(std::shared_ptr<Dispositivo> d)
+    {
+        return d->getID()%2==1;
     }
