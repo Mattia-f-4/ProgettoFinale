@@ -1,7 +1,10 @@
+/* Creato da: GIACOMO CARLOTTO */
+
 #ifndef DISPOSITIVOCICLO_H
 #define DISPOSITIVOCICLO_H
 
 #include "Dispositivo.h"
+
 #include <map>
 
 class DispCicloPrefissato : public Dispositivo {

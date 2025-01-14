@@ -1,3 +1,5 @@
+/* Creato da: DAVID PADOVAN */
+
 #include "Tempo.h"
 
 using namespace std;
@@ -19,6 +21,7 @@ using namespace std;
         int pos = orario.find(':');
 
         if(pos != string::npos) {
+            
             //Se ci sono i due punti, la stringa conterrà l'orario nel formato 12:00
             string h = orario.substr(0, pos);
             string m = orario.substr(pos + 1);
@@ -27,6 +30,7 @@ using namespace std;
             setMinuti(stoi(m));
 
         } else {
+            
             //Se non ci sono i due punti, la stringa conterrà solo un numero (che è l'ora!)
             setOra(stoi(orario));
             setMinuti(0);
@@ -41,25 +45,30 @@ using namespace std;
 
     //Setter
     void Tempo::setOra(int h) {
+        
+        //E' necessario controllare che l'ora sia nella forma corretta
         if(h >= 0 && h < 24)
             ora = h;
         else   
-            throw invalid_argument("Hours must be between 0 and 23");
+            throw invalid_argument("ERROR: Le ore devono essere comprese tra 0 e 23");
     }
 
     void Tempo::setMinuti(int m) {
+        
+        //E' necessario controllare che i minuti siano nella forma corretta
         if(m >= 0 && m < 60)
             minuti = m;
         else   
-            throw invalid_argument("Minutes must be between 0 and 59");
+            throw invalid_argument("ERROR: I minuti devono essere compresi tra 0 e 59");
     }
 
+    //setNull, per impostare il Tempo in formato 'null' (non utilizzabile)
     void Tempo::setNull() {
         ora = -1;
         minuti = -1;
     }
 
-    //Funzione isNull() per capire se il tempo è utilizzabile o meno
+    //isNull(), per capire se il tempo è utilizzabile o meno
     bool Tempo::isNull() {
         if(ora == -1 && minuti == -1)
             return true;
@@ -67,83 +76,9 @@ using namespace std;
             return false;
     }
 
-    //Overloading operator >
-    bool Tempo::operator>(const Tempo& t) const {
-        if (getOra() > t.getOra()) {
-            return true;
-        }
-        if (getOra() == t.getOra() && getMinuti() > t.getMinuti()) {
-            return true;
-        }
-        return false;
-    }
-
-    //Overloading operator <
-    bool Tempo::operator<(const Tempo& t) const {
-        if (getOra() < t.getOra()) {
-            return true;
-        }
-        if (getOra() == t.getOra() && getMinuti() < t.getMinuti()) {
-            return true;
-        }
-        return false;
-    }
-
-    //Overloading operator +
-    Tempo Tempo::operator+(const int durata) const{
-        if(durata <= 0)
-            throw invalid_argument("Duration must be positive");
-
-        int newMin = getMinuti() + durata;
-        int newH = getOra() + newMin / 60;
-        
-        //Normalizzo ore e minuti in modo che rimangano nel range [0,23] e [0,59]
-        newH = newH % 24;
-        newMin = newMin % 60;
-
-        return Tempo(newH, newMin);
-    }
-
-    //Overloadig operator +
-    Tempo Tempo::operator+(const Tempo& durata) const{
-        if(durata.getOra() < 0 && durata.getMinuti() <= 0)
-            throw invalid_argument("Duration must be positive");
-        
-        int newMin = getMinuti() + durata.getMinuti();
-        int newH = getOra() + durata.getOra() + newMin/60;
-        
-        //Normalizzo ore e minuti in modo che rimangano nel range [0,23] e [0,59]
-        newH = newH % 24;
-        newMin = newMin % 60;
-
-        return Tempo(newH, newMin);
-    }
-
-    //Overloading operator -
-    Tempo Tempo::operator-(const Tempo& t) const{
-        if(t > *this)
-            throw invalid_argument("Cannot subtract a bigger time");
-        
-        int newMin = getMinuti() - t.getMinuti();
-        int newH = getOra() - t.getOra();
-        if(newMin < 0) {
-            newH--;
-            newMin = (60-abs(newMin)) % 60;
-        }
-
-        return Tempo(newH, newMin);
-    }
-
-    //Overloading operator=
-    Tempo& Tempo::operator=(const Tempo& t)
-    {
-        ora = t.getOra();
-        minuti = t.getMinuti();
-        return *this;
-    }
-
-    //toString
+    //toString, per restituire un orario nella forma [XX:YY]
     string Tempo::toString() const {
+        
         string s = "[";
         
         if(getOra() < 10)
@@ -161,7 +96,9 @@ using namespace std;
         return s;
     }
 
+    //toSimpleString, per restituire un orario nella forma XX:YY
     string Tempo::toSimpleString() const {
+        
         string s = "";
         
         if(getOra() < 10)
@@ -177,51 +114,117 @@ using namespace std;
         return s;
     }
 
-    //Overloading operator==
-    bool Tempo::operator==(const Tempo& t) const
-    {
-        if(t.getOra()==ora && t.getMinuti()==minuti)
-        {
+/* OVERLOADING OPERATORI */
+    
+    //Overloading operator >
+    bool Tempo::operator>(const Tempo& t) const {
+        if(getOra() > t.getOra()) {
             return true;
         }
-        else
-        {
-            return false;
-        }
-    }
-
-    //Overloading operator!=
-    bool Tempo::operator!=(const Tempo& t) const
-    {
-        if(t.getOra()!=ora || t.getMinuti()!=minuti)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    //Overloading operator >=
-    bool Tempo::operator>=(const Tempo& t) const {
-        if (getOra() > t.getOra()) {
-            return true;
-        }
-        if (getOra() == t.getOra() && getMinuti() >= t.getMinuti()) {
+        if(getOra() == t.getOra() && getMinuti() > t.getMinuti()) {
             return true;
         }
         return false;
     }
 
+    //Overloading operator <
+    bool Tempo::operator<(const Tempo& t) const {
+        if(getOra() < t.getOra()) {
+            return true;
+        }
+        if(getOra() == t.getOra() && getMinuti() < t.getMinuti()) {
+            return true;
+        }
+        return false;
+    }
+
+    //Overloading operator +
+    Tempo Tempo::operator+(const int durata) const{
+        if(durata <= 0)
+            throw invalid_argument("ERROR: La durata deve essere positiva");
+
+        int newMin = getMinuti() + durata;
+        int newH = getOra() + newMin / 60;
+        
+        //Normalizzo ore e minuti in modo che rimangano nel range [0,23] e [0,59]
+        newH = newH % 24;
+        newMin = newMin % 60;
+
+        return Tempo(newH, newMin);
+    }
+
+    //Overloadig operator +
+    Tempo Tempo::operator+(const Tempo& durata) const{
+        if(durata.getOra() < 0 && durata.getMinuti() <= 0)
+            throw invalid_argument("ERROR: La durata deve essere positiva");
+        
+        int newMin = getMinuti() + durata.getMinuti();
+        int newH = getOra() + durata.getOra() + newMin/60;
+        
+        //Normalizzo ore e minuti in modo che rimangano nel range [0,23] e [0,59]
+        newH = newH % 24;
+        newMin = newMin % 60;
+
+        return Tempo(newH, newMin);
+    }
+
+    //Overloading operator -
+    Tempo Tempo::operator-(const Tempo& t) const{
+        if(t > *this)
+            throw invalid_argument("ERROR: Impossibile sottrarre un tempo più grande");
+        
+        int newMin = getMinuti() - t.getMinuti();
+        int newH = getOra() - t.getOra();
+        
+        //Normalizzo ore e minuti in modo che rimangano nel range [0,23] e [0,59]
+        if(newMin < 0) {
+            newH--;
+            newMin = (60-abs(newMin)) % 60;
+        }
+
+        return Tempo(newH, newMin);
+    }
+
+    //Overloading operator=
+    Tempo& Tempo::operator=(const Tempo& t) {
+        ora = t.getOra();
+        minuti = t.getMinuti();
+        return *this;
+    }
+
+    //Overloading operator==
+    bool Tempo::operator==(const Tempo& t) const {
+        if(t.getOra()==ora && t.getMinuti()==minuti)
+            return true;
+        else
+            return false;
+    }
+
+    //Overloading operator!=
+    bool Tempo::operator!=(const Tempo& t) const {
+        if(t.getOra()!=ora || t.getMinuti()!=minuti)
+            return true;
+        else
+            return false;
+    }
+
+    //Overloading operator >=
+    bool Tempo::operator>=(const Tempo& t) const {
+        if (getOra() > t.getOra())
+            return true;
+        if (getOra() == t.getOra() && getMinuti() >= t.getMinuti())
+            return true;
+        
+        return false;
+    }
+
     //Overloading operator <=
     bool Tempo::operator<=(const Tempo& t) const {
-        if (getOra() < t.getOra()) {
+        if (getOra() < t.getOra()) 
             return true;
-        }
-        if (getOra() == t.getOra() && getMinuti() <= t.getMinuti()) {
+        if (getOra() == t.getOra() && getMinuti() <= t.getMinuti()) 
             return true;
-        }
+        
         return false;
     }
 
@@ -231,6 +234,5 @@ using namespace std;
     ostream& operator<<(std::ostream& os, const Tempo& obj) {
         
         os << obj.toString();
-
         return os;
     }
