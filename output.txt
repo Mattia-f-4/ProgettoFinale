@@ -17,29 +17,43 @@ Le operazioni che puoi eseguire con il tuo sistema domotico sono le seguenti:
   # erase ${DEVICENAME}
 Per uscire digitare: exit
 
-[00:00] set Lavatrice 5:00
-[00:00] Impostato un timer per il dispositivo Lavatrice dalle ore [05:00] alle ore [06:50].
+[00:00] set Lavastoviglie on
+[00:00] Il dispositivo Lavastoviglie si e' acceso.
 
-[00:00] rm Lavatrice
-[00:00] Rimosso il timer alle ore [05:00] dal dispositivo Lavatrice.
-[00:00] Rimosso il timer alle ore [06:50] dal dispositivo Lavatrice.
+[00:00] set Lavatrice on
+[00:00] Il dispositivo Lavatrice si e' acceso.
 
-[00:00] set Lavatrice 5:00
-[00:00] Impostato un timer per il dispositivo Lavatrice dalle ore [05:00] alle ore [06:50].
+[00:00] set Televisore 00:30 1:00
+[00:00] Il dispositivo Televisore e' un dispositivo a ciclo prefissato. Impossibile impostare un timer di spegnimento. Nessun timer impostato.
 
-[00:00] erase Lavatrice
-[00:00] Rimosso il timer alle ore [05:00] dal dispositivo Lavatrice.
-[00:00] Rimosso il timer alle ore [06:50] dal dispositivo Lavatrice.
-[00:00] Lavatrice rimosso dal Sistema Domotico.
-DEBUG: Contenuto del DataBase:
-- Nome: Asciugatrice, Stato: Spento, Potenza: -0.500000
-- Nome: Forno a microonde, Stato: Spento, Potenza: -0.800000
-- Nome: Frigorifero, Stato: Spento, Potenza: -0.400000
-- Nome: Impianto fotovoltaico, Stato: Spento, Potenza: 1.500000
-- Nome: Lavastoviglie, Stato: Spento, Potenza: -1.500000
-- Nome: Pompa di calore + termostato, Stato: Spento, Potenza: -2.000000
-- Nome: Scaldabagno, Stato: Spento, Potenza: -1.000000
-- Nome: Tapparelle elettriche, Stato: Spento, Potenza: -0.300000
-- Nome: Televisore, Stato: Spento, Potenza: -0.200000
+[00:00] set Televisore 00:30
+[00:00] Impostato un timer per il dispositivo Televisore dalle ore [00:30] alle ore [01:30].
 
-[00:00] exit
+[00:00] set Televisore on
+[00:00] Televisore non acceso. Limite di potenza raggiunto.
+
+[00:00] set Pompa di calore + termostato 00:10
+[00:00] Impostato un timer per il dispositivo Pompa di calore + termostato dalle ore [00:10].
+
+[00:00] set time 00:25
+[00:00] L'orario attuale e' 00:00.
+[00:10] Pompa di calore + termostato non acceso. Limite di potenza raggiunto.
+[00:25] L'orario attuale e' 00:25.
+
+[00:25] set time 00:45
+[00:25] L'orario attuale e' 00:25.
+[00:30] Televisore non acceso. Limite di potenza raggiunto.
+[00:45] L'orario attuale e' 00:45.
+
+[00:45] set Lavatrice off
+[00:45] Il dispositivo Lavatrice si e' spento.
+
+[00:45] set Televisore on
+[00:45] Il dispositivo Televisore si e' acceso.
+
+[00:45] set time 3:00
+[00:45] L'orario attuale e' 00:45.
+[01:45] Il dispositivo Televisore si e' spento.
+[03:00] L'orario attuale e' 03:00.
+
+[03:00] exit

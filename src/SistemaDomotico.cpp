@@ -1,4 +1,5 @@
-/*MATTIA FAVRETTO*/
+/* Creato da: MATTIA FAVRETTO */
+
 #include "SistemaDomotico.h"
 
 /*COSTRUTTORE*/    
@@ -39,7 +40,6 @@
             size ++;
             logger.log(orario.toString() + " " + disp + " aggiunto al Sistema Domotico.\n");
         }
-        debugDatabase();
     }
 
     void SistemaDomotico::add(std::string disp, DispManuale::DispDomotico t)
@@ -57,7 +57,6 @@
             size ++;
             logger.log(orario.toString() + " " + disp + " aggiunto al Sistema Domotico.\n");
         }
-        debugDatabase();
     }
 
     //Metodo per la rimozione di un dispositivo
@@ -92,7 +91,6 @@
                 }
             }
         }
-        debugDatabase();
     }
 
     //setOff
@@ -134,7 +132,7 @@
 
                 if(potenzaResidua<0)
                 {
-                    logger.log(orario.toString() + " Il sistema ha superato il limite di potenza. Verranno spenti dei dispositivi.\n");
+                    //Il messaggio viene mostrato in sovraccarico( ) per evitare una sua duplicazione in caso di spegnimento di più dispositivi
                     sovraccarico();
                 }
             }
@@ -146,27 +144,21 @@
     {
         //Nessun controllo su disp, controllo già effettuato da setTimer
         auto pData = DataBase.find(disp);
-        //Condizione tenuta solo per precauzione VA TOLTA ALLA FINE
-if(pData->second->getStato()==0)
-{
-    logger.log(orario.toString() + " " + disp + " gia' spento. QUESTO NON DOVREBBE ACCADERE, CONTROLLARE CHE PROBLEMI CI SONO\n");
-}
-        else
-        {
-            std::shared_ptr<Dispositivo> d = pData->second;
-            d -> setStato(0); //spegniamo il dispositivo
-            d->setSpegnimento(orario); //indichiamo l'ora di spegnimento
-            //Non serve rimuovere eventuali timer di spegnimento
-            //Mostriamo a schermo il messaggio
-            logger.log(orario.toString() + " Il dispositivo " + disp + " si e' spento.\n");
-            potenzaResidua -= pData -> second -> getPotenza(); //aggiorniamo la potenza residua del sistema
+        
+        //Il controllo se il dispositivo è già spento non viene effettuato in quanto è una situazione che non si presenta mai.
+        std::shared_ptr<Dispositivo> d = pData->second;
+        d -> setStato(0); //spegniamo il dispositivo
+        d->setSpegnimento(orario); //indichiamo l'ora di spegnimento
+        //Non serve rimuovere eventuali timer di spegnimento
+        //Mostriamo a schermo il messaggio
+        logger.log(orario.toString() + " Il dispositivo " + disp + " si e' spento.\n");
+        potenzaResidua -= pData -> second -> getPotenza(); //aggiorniamo la potenza residua del sistema
 
-            //Non rimuovo dallo stack il dispositivo, in caso di sovraccarico controllerò se è ancora acceso
-            if(potenzaResidua<0)
-            {
-                logger.log(orario.toString() + " Il sistema ha superato il limite di potenza. Verranno spenti dei dispositivi.\n");
-                sovraccarico();
-            }
+        //Non rimuovo dallo stack il dispositivo, in caso di sovraccarico controllerò se è ancora acceso
+        if(potenzaResidua<0)
+        {
+            //Il messaggio viene mostrato in sovraccarico( ) per evitare una sua duplicazione in caso di spegnimento di più dispositivi
+            sovraccarico();
         }
     }
 
@@ -267,8 +259,8 @@ if(pData->second->getStato()==0)
                     if(pTime->second.second -> getNome() == disp && pTime->second.first==0)
                     {
                         TimeLine.erase(pTime);
+                        break; //tolgo solo il primo di spegnimento, in un momento successivo magari riuscirò ad accenderlo
                     }
-                    break; //tolgo solo il primo di spegnimento, in un momento successivo magari riuscirò ad accenderlo
                 };
 
                 logger.log(orario.toString() + " " + disp + " non acceso. Limite di potenza raggiunto.\n");
@@ -471,6 +463,7 @@ if(pData->second->getStato()==0)
                 {
                     if(isCP(d) && cont==0 && pTime->second.first==0) //il primo timer di spegnimento non lo rimuovo per i dispositivi CP
                     {
+                        logger.log(orario.toString() + " Non e' possibile rimuovere il timer di spegnimento delle ore " + pTime->first.toString() +  " dal dispositivo a ciclo prefissato " + disp + ".\n");
                         pTime++;
                         cont++;
                     }
@@ -531,6 +524,7 @@ if(pData->second->getStato()==0)
             }
             else
             {
+                logger.log(orario.toString() + " L'orario attuale e' " + orario.toSimpleString() + ".\n");
                 auto  p = TimeLine.begin();
                 while(p != TimeLine.end() && p->first<=t)
                 {
@@ -680,10 +674,12 @@ if(pData->second->getStato()==0)
         std::set<std::shared_ptr<Dispositivo>> dispositiviGestiti;
 
         for (auto it = TimeLine.begin(); it != TimeLine.end(); ++it) {
-            //Mantieni solo i timer di spegnimento per dispositivi CP
-            if (isCP(it->second.second) && it->second.first == 0) {
+            //Mantieni solo i timer di spegnimento per dispositivi CP che sono attualmente accesi
+            if (isCP(it->second.second) && it->second.second->getStato()==1 && it->second.first == 0) 
+            {
                 // Controlla se il dispositivo è già stato gestito
-                if (dispositiviGestiti.find(it->second.second) == dispositiviGestiti.end()) {
+                if (dispositiviGestiti.find(it->second.second) == dispositiviGestiti.end()) 
+                {
                     // Aggiungi il timer alla nuova multimap
                     SoloSpegnimento.insert(*it);
                     dispositiviGestiti.insert(it->second.second); // Segna il dispositivo come gestito
@@ -694,7 +690,7 @@ if(pData->second->getStato()==0)
         // Sostituisci la vecchia TimeLine con SoloSpegnimento
         TimeLine = std::move(SoloSpegnimento);
 
-        logger.log(orario.toString() + " I timer sono stati resettati.\n");
+        logger.log(orario.toString() + " I timer sono stati resettati. Vengono mantenuti solamente i timer di spegnimento dei dispositivi a ciclo prefissato.\n");
     }
 
     void SistemaDomotico::resetAll(){
@@ -775,6 +771,7 @@ if(pData->second->getStato()==0)
     //Funzione per il sovraccarico
     void SistemaDomotico::sovraccarico()
     {
+        logger.log(orario.toString() + " Il sistema ha superato il limite di potenza. Verranno spenti dei dispositivi.\n");
         while(potenzaResidua<0)
         {
             std::string name = OrdineAccensione.top();
@@ -830,7 +827,6 @@ if(pData->second->getStato()==0)
         }
         else
         {
-
             if(isCP(d))
             {
                 if(spegnimento.isNull()) //Necessario nel caso in cui lo spegnimento superi la mezzanotte
@@ -856,13 +852,8 @@ if(pData->second->getStato()==0)
                     tempiSpegnimento.pop(); //lo tolgo comunque in quanto ho già considerato il primo
 
                 }
-                                if(tempiAccensione.size()!=tempiSpegnimento.size())
-                                {
-                                    throw std::runtime_error("Errore nella gestione dei timer."); //TOGLIERE DOPO MA NON DOVREBBE ACCADERE
-                                    //VA GESTITO IL FINE GIORNATA IN CUI NON CI SONO SPEGNIMENTI
-                                }
-                    int i = tempiAccensione.size(); //timer di accensione e spegnimento sono in numero uguale
 
+                int i = tempiAccensione.size(); //timer di accensione e spegnimento sono in numero uguale
                 for(int j = 0; j<i; j++)
                 {
                     if( (accensione < *tempiAccensione.front() && spegnimento < *tempiAccensione.front()) || (accensione > *tempiSpegnimento.front() && spegnimento > *tempiSpegnimento.front()) )
@@ -948,7 +939,6 @@ if(pData->second->getStato()==0)
                 }
             }
         }
-        throw std::runtime_error("Situazione non considerata."); //TOGLIERE DOPO MA NON DOVREBBE ACCADERE
     }
 
 /* HELPER FUNCTION */
@@ -964,9 +954,7 @@ if(pData->second->getStato()==0)
         return d->getID()%2==1;
     }
 
-
-
-//DA CANCELLARE DOPO AVER FINITO
+    //Le seguenti funzioni sono state utilizzate in fase di debug per controllare il corretto funzionamento del sistema, sono state lasciate solamente per completezza ma non vengono mai richiamate.
     //Funzione di stampa della TimeLine
     void SistemaDomotico::printTimeLine()
     {
@@ -978,6 +966,7 @@ if(pData->second->getStato()==0)
         
     }
 
+    //Funzione di debug per il DataBase
     void SistemaDomotico::debugDatabase() {
         if (DataBase.empty()) {
             logger.log("DEBUG: Il DataBase e' vuoto.\n");
@@ -995,6 +984,4 @@ if(pData->second->getStato()==0)
                     + "\n");
             }
         }
-
-        
     }

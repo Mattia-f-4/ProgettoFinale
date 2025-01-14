@@ -1,11 +1,14 @@
+/* Creato da: DAVID PADOVAN */
+
 #ifndef LOGGER_H
 #define LOGGER_H
+
+#include "Tempo.h"
 
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <filesystem>
-#include "Tempo.h"
 
 class Logger {
     public:
@@ -22,9 +25,10 @@ class Logger {
         void logInput(const std::string&);
 
     private:
-        std::ofstream logFile;
-        std::string filePath;
 
+        //Variabili d'istanza
+        std::ofstream logFile;          //File di log       
+        std::string filePath;           //Percorso del file di log
 };
 
 #endif

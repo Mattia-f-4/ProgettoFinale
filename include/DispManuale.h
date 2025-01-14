@@ -1,7 +1,10 @@
+/* Creato da: GIACOMO CARLOTTO */
+
 #ifndef DISPOSITIVOMANUALE_H
 #define DISPOSITIVOMANUALE_H
 
 #include "Dispositivo.h"
+
 #include <map>
 
 class DispManuale : public Dispositivo {

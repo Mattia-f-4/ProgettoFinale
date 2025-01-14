@@ -1,3 +1,5 @@
+/* Creato da: GIACOMO CARLOTTO */
+
 #include "DispCicloPrefissato.h"
 
 /* VARIABILE GLOBALE ID */

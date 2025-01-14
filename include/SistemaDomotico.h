@@ -1,9 +1,12 @@
+/* Creato da: DAVID PADOVAN */
+
 #ifndef SISTEMADOMOTICO_H
 #define SISTEMADOMOTICO_H
 
 #include "DispManuale.h"
 #include "DispCicloPrefissato.h"
 #include "Logger.h"
+
 #include <iostream>
 #include <map>
 #include <stack>
@@ -15,9 +18,9 @@
 #include <iomanip>
 #include <sstream>
 
-class SistemaDomotico
-{
+class SistemaDomotico {
     public:
+        
         //Costruttore
         SistemaDomotico(Logger&);    
 
@@ -54,19 +57,17 @@ class SistemaDomotico
     private:
         
         //Contenitori STL
-        //int serve per indicare se si tratta di accensione o spegnimento  
-        std::multimap<Tempo, std::pair<int,std::shared_ptr<Dispositivo>>> TimeLine;
+        std::multimap<Tempo, std::pair<int,std::shared_ptr<Dispositivo>>> TimeLine;     //int per indicare se si tratta di accensione o spegnimento  
         std::stack<std::string> OrdineAccensione;
         std::map<std::string,std::shared_ptr<Dispositivo>> DataBase;
 
-        /* DATI MEMBRO */
-        inline const static double limitePotenza = 3.5; //inline necessario per evitare di usare constexpr oppure di definire nel .cpp 
-        double potenzaResidua;
+        //Variabili d'istanza
+        inline const static double limitePotenza = 3.5;             //inline necessario per evitare di usare constexpr oppure di definire nel .cpp 
+        double potenzaResidua;                                      //Tiene conto della potenza residua utilizzabile nel sistema                     
         Tempo orario;
         int size;
-        Logger& logger;
+        Logger& logger;                                             //Necessario per permettere la scrittura contemporanea sia su terminale che su file di log
 
-        /*FUNZIONI MEMBRO PRIVATE*/
         //Funzione di controllo 
         void sovraccarico();
 
@@ -76,12 +77,9 @@ class SistemaDomotico
         void setDatabase();
         void resetDatabase();
         void rmAll(std::string);
-
-        //Funzione di supporto per il controllo dei timer
         bool isTimerValido(Tempo&, Tempo&, std::string, std::shared_ptr<Dispositivo>);
 
-        //DEVONO ESSERE CANCELLATE ALLA FINE
-        //Funzione di debug per capire il funzionamento generale
+        //Funzioni di debug
         void printTimeLine();
         void debugDatabase();
 };

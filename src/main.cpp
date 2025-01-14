@@ -1,3 +1,5 @@
+/* Creato da: GIACOMO CARLOTTO */
+
 #include "Tempo.h"
 #include "DispManuale.h"
 #include "DispCicloPrefissato.h"
@@ -205,7 +207,7 @@ void add_manuale(SistemaDomotico& sistemaDomotico) {
     sistemaDomotico.printTime();
     sistemaDomotico.getLogger().log(" Numero: ");
     std::getline(std::cin, answer);
-    sistemaDomotico.getLogger().logInput(answer);
+    sistemaDomotico.getLogger().logInput(answer + "\n");
 
     enum DispManuale::DispDomotico device;
 
@@ -247,7 +249,7 @@ void add_manuale(SistemaDomotico& sistemaDomotico) {
     sistemaDomotico.printTime();
     sistemaDomotico.getLogger().log(" Nome dispositivo: ");
     std::getline(std::cin, answer);
-    sistemaDomotico.getLogger().logInput(answer);
+    sistemaDomotico.getLogger().logInput(answer + "\n");
 
     // Controllo se nel nome e' presente ':', in caso stampo a video l'errore
     if(!check_name(answer)) {
@@ -276,7 +278,7 @@ void add_CP(SistemaDomotico& sistemaDomotico) {
     sistemaDomotico.printTime();
     sistemaDomotico.getLogger().log(" Numero: ");
     std::getline(std::cin, answer);
-    sistemaDomotico.getLogger().logInput(answer);
+    sistemaDomotico.getLogger().logInput(answer + "\n");
 
     enum DispCicloPrefissato::DispDomotico device;
 
@@ -324,7 +326,7 @@ void add_CP(SistemaDomotico& sistemaDomotico) {
     sistemaDomotico.printTime();
     sistemaDomotico.getLogger().log(" Nome dispositivo: ");
     std::getline(std::cin, answer);
-    sistemaDomotico.getLogger().logInput(answer);
+    sistemaDomotico.getLogger().logInput(answer + "\n");
 
     // Controllo se nel nome e' presente ':', in caso stampo a video l'errore
     if(!check_name(answer)) {
