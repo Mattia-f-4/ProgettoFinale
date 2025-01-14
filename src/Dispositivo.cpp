@@ -1,13 +1,15 @@
+/* Creato da: DAVID PADOVAN */
+
 #include "Dispositivo.h"
-#include <cmath>
 
 using namespace std;
 
 /* COSTRUTTORI */
 
-    //Costruttore parametrico
+    //Costruttori parametrici
     Dispositivo::Dispositivo(std::string nome, Tempo accensione, Tempo spegnimento)
         : nome{nome}, oraAccensione{accensione}, oraSpegnimento{spegnimento}, stato{false} {}
+    
     Dispositivo::Dispositivo(std::string nome, Tempo accensione)
         : nome{nome}, oraAccensione{accensione},  stato{false} 
     {
@@ -49,7 +51,7 @@ using namespace std;
             setStato(true);
     }
 
-    //consumoEnergetico
+    //consumoEnergetico, per calcolare il consumo del dispositivo in funzione del tempo in cui è rimasto acceso
     double Dispositivo::consumoEnergetico(const Tempo& t) const {
         
         //Se il dispositivo è ancora acceso, bisogna calcolare anche la durata attuale di accensione
@@ -59,14 +61,14 @@ using namespace std;
             durata = t - getAccensione();
         }
         
-        
+        //Consumo = periodo di accensione * potenza (- perchè se la potenza è negativa, il dispositivo ha consumo positivo e viceversa)
         return -((getDurataAccensione()+durata).getOra() * getPotenza() + ( (double) (getDurataAccensione()+durata).getMinuti() / 60) * getPotenza());
     }
 
     //reset, per riportare il dispositivo alle condizioni iniziali
     void Dispositivo::reset() {
-        getAccensione().setNull();
-        getSpegnimento().setNull();
+        oraAccensione.setNull();
+        oraSpegnimento.setNull();
         setStato(false);
         durataAccensione = Tempo(0,0);
     }

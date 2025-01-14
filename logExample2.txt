@@ -1,0 +1,180 @@
+
+-----------------------------------------------------------------------------
+------------------------------ SISTEMA DOMOTICO -----------------------------
+-----------------------------------------------------------------------------
+Le operazioni che puoi eseguire con il tuo sistema domotico sono le seguenti: 
+  # set ${DEVICENAME} on
+  # set ${DEVICENAME} off
+  # set ${DEVICENAME} ${START} [${STOP}]
+  # rm ${DEVICENAME}
+  # show
+  # show ${DEVICENAME}
+  # set time ${TIME}
+  # reset time
+  # reset timers
+  # reset all
+  # add
+  # erase ${DEVICENAME}
+Per uscire digitare: exit
+
+[00:00] add
+[00:00] Digita M (manuale) o CP (ciclo prefissato): M
+
+[00:00] Digita il corrispettivo numero per il dispositivo desiderato: 
+         0) Impianto fotovoltaico
+         1) Pompa di calore + termostato
+         2) Scaldabagno
+         3) Frigorifero
+
+[00:00] Numero: 3
+[00:00] Nome dispositivo: Frigo Taverna
+[00:00] Frigo Taverna aggiunto al Sistema Domotico.
+
+[00:00] add
+[00:00] Digita M (manuale) o CP (ciclo prefissato): CP
+
+[00:00] Digita il corrispettivo numero per il dispositivo desiderato: 
+         0) Lavatrice
+         1) Lavastoviglie
+         2) Tapparelle elettriche
+         3) Forno a microonde
+         4) Asciugatrice
+         5) Televisore
+[00:00] Numero: 5
+[00:00] Nome dispositivo: Televisore Soggiorno
+[00:00] Televisore Soggiorno aggiunto al Sistema Domotico.
+
+[00:00] erase Scaldabagno
+[00:00] Scaldabagno rimosso dal Sistema Domotico.
+
+[00:00] show
+[00:00] Attualmente il sistema ha prodotto 0.00 kWh e consumato 0.00 kWh. Nello specifico:
+	- Il dispositivo Asciugatrice ha consumato 0.00 kWh
+	- Il dispositivo Forno a microonde ha consumato 0.00 kWh
+	- Il dispositivo Frigo Taverna ha consumato 0.00 kWh
+	- Il dispositivo Frigorifero ha consumato 0.00 kWh
+	- Il dispositivo Impianto fotovoltaico ha consumato 0.00 kWh
+	- Il dispositivo Lavastoviglie ha consumato 0.00 kWh
+	- Il dispositivo Lavatrice ha consumato 0.00 kWh
+	- Il dispositivo Pompa di calore + termostato ha consumato 0.00 kWh
+	- Il dispositivo Tapparelle elettriche ha consumato 0.00 kWh
+	- Il dispositivo Televisore ha consumato 0.00 kWh
+	- Il dispositivo Televisore Soggiorno ha consumato 0.00 kWh
+
+[00:00] add
+[00:00] Digita M (manuale) o CP (ciclo prefissato): M
+
+[00:00] Digita il corrispettivo numero per il dispositivo desiderato: 
+         0) Impianto fotovoltaico
+         1) Pompa di calore + termostato
+         2) Scaldabagno
+         3) Frigorifero
+
+[00:00] Numero: 0
+[00:00] Nome dispositivo: Impianto Tetto
+[00:00] Impianto Tetto aggiunto al Sistema Domotico.
+
+[00:00] set Televisore Soggiorno 1:00
+[00:00] Impostato un timer per il dispositivo Televisore Soggiorno dalle ore [01:00] alle ore [02:00].
+
+[00:00] set Frigorifero Taverna 2:00
+[00:00] Il dispositivo Frigorifero Taverna non esiste. Impossibile impostare il timer desiderato.
+
+[00:00] set Frigo Taverna 2:00
+[00:00] Impostato un timer per il dispositivo Frigo Taverna dalle ore [02:00].
+
+[00:00] set time 3:00
+[00:00] L'orario attuale e' 00:00.
+[01:00] Il dispositivo Televisore Soggiorno si e' acceso.
+[02:00] Il dispositivo Televisore Soggiorno si e' spento.
+[02:00] Il dispositivo Frigo Taverna si e' acceso.
+[03:00] L'orario attuale e' 03:00.
+
+[03:00] show
+[03:00] Attualmente il sistema ha prodotto 0.00 kWh e consumato 0.60 kWh. Nello specifico:
+	- Il dispositivo Asciugatrice ha consumato 0.00 kWh
+	- Il dispositivo Forno a microonde ha consumato 0.00 kWh
+	- Il dispositivo Frigo Taverna ha consumato 0.40 kWh
+	- Il dispositivo Frigorifero ha consumato 0.00 kWh
+	- Il dispositivo Impianto Tetto ha consumato 0.00 kWh
+	- Il dispositivo Impianto fotovoltaico ha consumato 0.00 kWh
+	- Il dispositivo Lavastoviglie ha consumato 0.00 kWh
+	- Il dispositivo Lavatrice ha consumato 0.00 kWh
+	- Il dispositivo Pompa di calore + termostato ha consumato 0.00 kWh
+	- Il dispositivo Tapparelle elettriche ha consumato 0.00 kWh
+	- Il dispositivo Televisore ha consumato 0.00 kWh
+	- Il dispositivo Televisore Soggiorno ha consumato 0.20 kWh
+
+[03:00] set Impianto Tetto on
+[03:00] Il dispositivo Impianto Tetto si e' acceso.
+
+[03:00] set time 5:00
+[03:00] L'orario attuale e' 03:00.
+[05:00] L'orario attuale e' 05:00.
+
+[05:00] show
+[05:00] Attualmente il sistema ha prodotto 3.00 kWh e consumato 1.40 kWh. Nello specifico:
+	- Il dispositivo Asciugatrice ha consumato 0.00 kWh
+	- Il dispositivo Forno a microonde ha consumato 0.00 kWh
+	- Il dispositivo Frigo Taverna ha consumato 1.20 kWh
+	- Il dispositivo Frigorifero ha consumato 0.00 kWh
+	- Il dispositivo Impianto Tetto ha prodotto 3.00 kWh
+	- Il dispositivo Impianto fotovoltaico ha consumato 0.00 kWh
+	- Il dispositivo Lavastoviglie ha consumato 0.00 kWh
+	- Il dispositivo Lavatrice ha consumato 0.00 kWh
+	- Il dispositivo Pompa di calore + termostato ha consumato 0.00 kWh
+	- Il dispositivo Tapparelle elettriche ha consumato 0.00 kWh
+	- Il dispositivo Televisore ha consumato 0.00 kWh
+	- Il dispositivo Televisore Soggiorno ha consumato 0.20 kWh
+
+[05:00] set Impianto Tetto off
+[05:00] Il dispositivo Impianto Tetto si e' spento.
+
+[05:00] set Pompa di calore + termostato 6:00 18:00
+[05:00] Impostato un timer per il dispositivo Pompa di calore + termostato dalle ore [06:00] alle ore [18:00].
+
+[05:00] rm Pompa di calore + termostato
+[05:00] Rimosso il timer alle ore [06:00] dal dispositivo Pompa di calore + termostato.
+[05:00] Rimosso il timer alle ore [18:00] dal dispositivo Pompa di calore + termostato.
+
+[05:00] set time 19:00
+[05:00] L'orario attuale e' 05:00.
+[19:00] L'orario attuale e' 19:00.
+
+[19:00] reset time
+[00:00] Il tempo e' stato resettato e tutti i dispositivi sono stati spenti.
+[00:00] L'orario attuale e' 00:00.
+
+[00:00] show
+[00:00] Attualmente il sistema ha prodotto 0.00 kWh e consumato 0.00 kWh. Nello specifico:
+	- Il dispositivo Asciugatrice ha consumato 0.00 kWh
+	- Il dispositivo Forno a microonde ha consumato 0.00 kWh
+	- Il dispositivo Frigo Taverna ha consumato 0.00 kWh
+	- Il dispositivo Frigorifero ha consumato 0.00 kWh
+	- Il dispositivo Impianto Tetto ha consumato 0.00 kWh
+	- Il dispositivo Impianto fotovoltaico ha consumato 0.00 kWh
+	- Il dispositivo Lavastoviglie ha consumato 0.00 kWh
+	- Il dispositivo Lavatrice ha consumato 0.00 kWh
+	- Il dispositivo Pompa di calore + termostato ha consumato 0.00 kWh
+	- Il dispositivo Tapparelle elettriche ha consumato 0.00 kWh
+	- Il dispositivo Televisore ha consumato 0.00 kWh
+	- Il dispositivo Televisore Soggiorno ha consumato 0.00 kWh
+
+[00:00] reset all
+[00:00] Il tempo e' stato resettato, tutti i dispositivi sono stati spenti e i timer rimossi.
+[00:00] L'orario attuale e' 00:00.
+
+[00:00] show
+[00:00] Attualmente il sistema ha prodotto 0.00 kWh e consumato 0.00 kWh. Nello specifico:
+	- Il dispositivo Asciugatrice ha consumato 0.00 kWh
+	- Il dispositivo Forno a microonde ha consumato 0.00 kWh
+	- Il dispositivo Frigorifero ha consumato 0.00 kWh
+	- Il dispositivo Impianto fotovoltaico ha consumato 0.00 kWh
+	- Il dispositivo Lavastoviglie ha consumato 0.00 kWh
+	- Il dispositivo Lavatrice ha consumato 0.00 kWh
+	- Il dispositivo Pompa di calore + termostato ha consumato 0.00 kWh
+	- Il dispositivo Scaldabagno ha consumato 0.00 kWh
+	- Il dispositivo Tapparelle elettriche ha consumato 0.00 kWh
+	- Il dispositivo Televisore ha consumato 0.00 kWh
+
+[00:00] exit

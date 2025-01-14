@@ -1,3 +1,5 @@
+/* Creato da: GIACOMO CARLOTTO */
+
 #include "DispManuale.h"
 
 /* VARIABILE GLOBALE ID */

@@ -18,16 +18,26 @@ Nel caso in cui sia già presente un timer per lo stesso orario di accensione, p
 
 */AGGIUNTA DISPOSITIVI/*
 
-6.
+6. 
 Il SistemaDomotico prevede la possibilità di aggiungere altri dispositivi, scegliendone un nome che però deve essere unico e quindi diverso da tutti gli altri dispositivi già presenti. Il tipo dei nuovi dipositivi aggiunti deve essere uno tra quelli previsti nella consegna del progetto, non sono quindi previste aggiunte di dispositivi completamente nuovi.
 
 */CLASSI DISPOSITIVO, DISPMANUALE, DISPCICLOPREFISSATO/*
 
-7.
+7. 
 L'ID è stato da noi usato come parametro per distinguere i dispositivi CP dai dispositivi Manuali, i dispositivi CP hanno infatti ID dispari e i manuali hanno un ID pari.
 
-*/MAIN/*
+*/RESET/*
 
-8.
-Si è deciso che per i tutti i comandi nei nomi dei dispositivi ci fosse tolleranza tra maiscole e minuscole, in modo da permettere ad esempio "set Lavatrice on" o "set lavatrice on" come comandi possibili per accendere lo stesso dispositivo.
+9. 
+Il metodo 'resetAll()' comporta un reset anche del database dei dispositivi, quindi vengono rimossi eventuali dispositivi nuovi e ripristinati quelli inizialmente presenti di default.
+Questo comportamento non è previsto per 'resetTimers()' e per 'resetTime()'.
+
+10. 
+Il metodo 'resetTimers()' elimina tutti i timer attualmente presenti nel sistema tranne i timer di spegnimento dei dispositivi a ciclo prefissato che sono attualmente accesi.
+
+*/SISTEMA DOMOTICO/*
+
+11. 
+All'interno di SistemaDomotico.cpp sono state lasciate 2 funzioni di debug, chiamate "printTimeLine" e "debugDataBase", le quali non hanno alcuna utilità nel progetto finale ma sono state utilizzate durante lo sviluppo del progetto per risolvere eventuali problematiche. Sono state lasciate nel file finale per completezza e per mostrare il processo di sviluppo. 
+
 

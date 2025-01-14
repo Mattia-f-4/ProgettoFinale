@@ -1,0 +1,163 @@
+
+-----------------------------------------------------------------------------
+------------------------------ SISTEMA DOMOTICO -----------------------------
+-----------------------------------------------------------------------------
+Le operazioni che puoi eseguire con il tuo sistema domotico sono le seguenti: 
+  # set ${DEVICENAME} on
+  # set ${DEVICENAME} off
+  # set ${DEVICENAME} ${START} [${STOP}]
+  # rm ${DEVICENAME}
+  # show
+  # show ${DEVICENAME}
+  # set time ${TIME}
+  # reset time
+  # reset timers
+  # reset all
+  # add
+  # erase ${DEVICENAME}
+Per uscire digitare: exit
+
+[00:00] set Lavatrice on
+[00:00] Il dispositivo Lavatrice si e' acceso.
+
+[00:00] set Lavatrice off
+[00:00] Il dispositivo Lavatrice si e' spento.
+
+[00:00] set Lavatrice 1:00
+[00:00] Impostato un timer per il dispositivo Lavatrice dalle ore [01:00] alle ore [02:50].
+
+[00:00] rm Lavatrice
+[00:00] Rimosso il timer alle ore [01:00] dal dispositivo Lavatrice.
+[00:00] Rimosso il timer alle ore [02:50] dal dispositivo Lavatrice.
+
+[00:00] set Lavatrice 1:00 2:00
+[00:00] Il dispositivo Lavatrice e' un dispositivo a ciclo prefissato. Impossibile impostare un timer di spegnimento. Nessun timer impostato.
+
+[00:00] set Lavatrice 1:15
+[00:00] Impostato un timer per il dispositivo Lavatrice dalle ore [01:15] alle ore [03:05].
+
+[00:00] set time 3:30
+[00:00] L'orario attuale e' 00:00.
+[01:15] Il dispositivo Lavatrice si e' acceso.
+[03:05] Il dispositivo Lavatrice si e' spento.
+[03:30] L'orario attuale e' 03:30.
+
+[03:30] set Lavatrice 4:00
+[03:30] Impostato un timer per il dispositivo Lavatrice dalle ore [04:00] alle ore [05:50].
+
+[03:30] set time 4:30
+[03:30] L'orario attuale e' 03:30.
+[04:00] Il dispositivo Lavatrice si e' acceso.
+[04:30] L'orario attuale e' 04:30.
+
+[04:30] rm Lavatrice
+[04:30] Non e' possibile rimuovere il timer di spegnimento delle ore [05:50] dal dispositivo a ciclo prefissato Lavatrice.
+
+[04:30] set time 6:00
+[04:30] L'orario attuale e' 04:30.
+[05:50] Il dispositivo Lavatrice si e' spento.
+[06:00] L'orario attuale e' 06:00.
+
+[06:00] show
+[06:00] Attualmente il sistema ha prodotto 0.00 kWh e consumato 7.33 kWh. Nello specifico:
+	- Il dispositivo Asciugatrice ha consumato 0.00 kWh
+	- Il dispositivo Forno a microonde ha consumato 0.00 kWh
+	- Il dispositivo Frigorifero ha consumato 0.00 kWh
+	- Il dispositivo Impianto fotovoltaico ha consumato 0.00 kWh
+	- Il dispositivo Lavastoviglie ha consumato 0.00 kWh
+	- Il dispositivo Lavatrice ha consumato 7.33 kWh
+	- Il dispositivo Pompa di calore + termostato ha consumato 0.00 kWh
+	- Il dispositivo Scaldabagno ha consumato 0.00 kWh
+	- Il dispositivo Tapparelle elettriche ha consumato 0.00 kWh
+	- Il dispositivo Televisore ha consumato 0.00 kWh
+
+[06:00] show Lavatrice
+[06:00] Il dispositivo Lavatrice ha consumato 7.33 kWh
+
+[06:00] set Impianto fotovoltaico on
+[06:00] Il dispositivo Impianto fotovoltaico si e' acceso.
+
+[06:00] set Asciugatrice on
+[06:00] Il dispositivo Asciugatrice si e' acceso.
+
+[06:00] set Lavatrice on
+[06:00] Il dispositivo Lavatrice si e' acceso.
+
+[06:00] set Lavastoviglie on
+[06:00] Il dispositivo Lavastoviglie si e' acceso.
+
+[06:00] set Pompa di calore + termostato on
+[06:00] Pompa di calore + termostato non acceso. Limite di potenza raggiunto.
+
+[06:00] set Impianto fotovoltaico off
+[06:00] Il dispositivo Impianto fotovoltaico si e' spento.
+[06:00] Il sistema ha superato il limite di potenza. Verranno spenti dei dispositivi.
+[06:00] Il dispositivo Lavastoviglie si e' spento.
+
+[06:00] set Lavastoviglie 9:00
+[06:00] Impostato un timer per il dispositivo Lavastoviglie dalle ore [09:00] alle ore [12:15].
+
+[06:00] reset time
+[00:00] Il tempo e' stato resettato e tutti i dispositivi sono stati spenti.
+[00:00] L'orario attuale e' 00:00.
+
+[00:00] show
+[00:00] Attualmente il sistema ha prodotto 0.00 kWh e consumato 0.00 kWh. Nello specifico:
+	- Il dispositivo Asciugatrice ha consumato 0.00 kWh
+	- Il dispositivo Forno a microonde ha consumato 0.00 kWh
+	- Il dispositivo Frigorifero ha consumato 0.00 kWh
+	- Il dispositivo Impianto fotovoltaico ha consumato 0.00 kWh
+	- Il dispositivo Lavastoviglie ha consumato 0.00 kWh
+	- Il dispositivo Lavatrice ha consumato 0.00 kWh
+	- Il dispositivo Pompa di calore + termostato ha consumato 0.00 kWh
+	- Il dispositivo Scaldabagno ha consumato 0.00 kWh
+	- Il dispositivo Tapparelle elettriche ha consumato 0.00 kWh
+	- Il dispositivo Televisore ha consumato 0.00 kWh
+
+[00:00] set time 12:30
+[00:00] L'orario attuale e' 00:00.
+[09:00] Il dispositivo Lavastoviglie si e' acceso.
+[12:15] Il dispositivo Lavastoviglie si e' spento.
+[12:30] L'orario attuale e' 12:30.
+
+[12:30] show
+[12:30] Attualmente il sistema ha prodotto 0.00 kWh e consumato 4.88 kWh. Nello specifico:
+	- Il dispositivo Asciugatrice ha consumato 0.00 kWh
+	- Il dispositivo Forno a microonde ha consumato 0.00 kWh
+	- Il dispositivo Frigorifero ha consumato 0.00 kWh
+	- Il dispositivo Impianto fotovoltaico ha consumato 0.00 kWh
+	- Il dispositivo Lavastoviglie ha consumato 4.88 kWh
+	- Il dispositivo Lavatrice ha consumato 0.00 kWh
+	- Il dispositivo Pompa di calore + termostato ha consumato 0.00 kWh
+	- Il dispositivo Scaldabagno ha consumato 0.00 kWh
+	- Il dispositivo Tapparelle elettriche ha consumato 0.00 kWh
+	- Il dispositivo Televisore ha consumato 0.00 kWh
+
+[12:30] set Lavatrice 13:00
+[12:30] Impostato un timer per il dispositivo Lavatrice dalle ore [13:00] alle ore [14:50].
+
+[12:30] reset all
+[12:30] Il tempo e' stato resettato, tutti i dispositivi sono stati spenti e i timer rimossi.
+[00:00] L'orario attuale e' 00:00.
+
+[00:00] show
+[00:00] Attualmente il sistema ha prodotto 0.00 kWh e consumato 0.00 kWh. Nello specifico:
+	- Il dispositivo Asciugatrice ha consumato 0.00 kWh
+	- Il dispositivo Forno a microonde ha consumato 0.00 kWh
+	- Il dispositivo Frigorifero ha consumato 0.00 kWh
+	- Il dispositivo Impianto fotovoltaico ha consumato 0.00 kWh
+	- Il dispositivo Lavastoviglie ha consumato 0.00 kWh
+	- Il dispositivo Lavatrice ha consumato 0.00 kWh
+	- Il dispositivo Pompa di calore + termostato ha consumato 0.00 kWh
+	- Il dispositivo Scaldabagno ha consumato 0.00 kWh
+	- Il dispositivo Tapparelle elettriche ha consumato 0.00 kWh
+	- Il dispositivo Televisore ha consumato 0.00 kWh
+
+[00:00] set time 15:00
+[00:00] L'orario attuale e' 00:00.
+[15:00] L'orario attuale e' 15:00.
+
+[15:00] set time 23:59
+[15:00] L'orario attuale e' 15:00.
+[23:59] L'orario attuale e' 23:59.
+[23:59] Giornata conclusa, arrivederci!

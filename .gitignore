@@ -30,6 +30,3 @@
 *.exe
 *.out
 *.app
-
-#ignora la cartella build
-build/
