@@ -3,15 +3,15 @@
 #include "DispCicloPrefissato.h"
 
 /* VARIABILE GLOBALE ID */
-    int CycleID = 1;    //Disp. a ciclo prefissato hanno ID dispari
+    int CycleID = 1;    // ID dispari per dispositivo a ciclo prefissato
 
 /* COSTRUTTORI */
     
-    //Costruttore parametrico
+    // Costruttore parametrico con orario di accensione
     DispCicloPrefissato::DispCicloPrefissato(std::string nome, DispDomotico tipo, Tempo accensione)
         : Dispositivo(nome, accensione), tipoDispositivo{tipo}
     {
-        //Assegnamento e aggiornamento ID
+        // Assegnamento e aggiornamento ID
         ID = CycleID;
         CycleID += 2;
 
@@ -20,10 +20,11 @@
         potenza = tipiDispositivi[tipoDispositivo].second;
     }
 
+    // Costruttore parametrico senza orario di accensione
     DispCicloPrefissato::DispCicloPrefissato(std::string nome, DispDomotico tipo)
         : Dispositivo(nome), tipoDispositivo{tipo}
     {
-        //Assegnamento e aggiornamento ID
+        // Assegnamento e aggiornamento ID
         ID = CycleID;
         CycleID += 2;
 
@@ -34,7 +35,7 @@
 
 /* FUNZIONI MEMBRO*/
 
-    //Getter
+    // Getter
     Tempo DispCicloPrefissato::getDurata() const { return durata; }
 
 /* MAPPA */

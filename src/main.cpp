@@ -360,7 +360,7 @@ int main() {
         logger.log("\n");
         logger.log("-----------------------------------------------------------------------------\n");
         logger.log("------------------------------ SISTEMA DOMOTICO -----------------------------\n");
-        logger.log("-----------------------------------------------------------------------------\n");
+        logger.log("-----------------------------------------------------------------------------\n\n");
         
         logger.log("Le operazioni che puoi eseguire con il tuo sistema domotico sono le seguenti: \n");
         logger.log("  # set ${DEVICENAME} on\n");
@@ -374,13 +374,11 @@ int main() {
         logger.log("  # reset timers\n");
         logger.log("  # reset all\n");
         logger.log("  # add\n");
-        logger.log("  # erase ${DEVICENAME}\n");
+        logger.log("  # erase ${DEVICENAME}\n\n");
         logger.log("Per uscire digitare: exit\n");
 
         // Ciclo per emulare l'interfaccia utente
         while(true) {
-            
-
             
             int pos;
             answer = "";
@@ -391,7 +389,6 @@ int main() {
             logger.log(" ");
             std::getline(std::cin, answer);
             logger.logInput(answer + "\n");
-
             
             // Acquisisco l'input ed estraggo il comando
             pos = answer.find(delimiter);

@@ -3,25 +3,26 @@
 #include "DispManuale.h"
 
 /* VARIABILE GLOBALE ID */
-    int ManualID = 0;   //Disp. manuali hanno ID pari
+    int ManualID = 0;   // ID pari per dispositivo manuale
 
 /* COSTRUTTORI */
     
-    //Costruttori parametrici
+    // Costruttore parametrico con orario di accensione
     DispManuale::DispManuale(std::string nome, DispDomotico tipo, Tempo accensione, Tempo spegnimento)
         : Dispositivo(nome, accensione, spegnimento), tipoDispositivo{tipo}
     {
-        //Assegnamento e aggiornamento ID
+        // Assegnamento e aggiornamento ID
         ID = ManualID;
         ManualID = ManualID +2;
 
         potenza = tipiDispositivi[tipoDispositivo];
     }
 
+    // Costruttore parametrico senza orario di accensione
     DispManuale::DispManuale(std::string nome, DispDomotico tipo)
         : Dispositivo(nome), tipoDispositivo{tipo}
     {
-        //Assegnamento e aggiornamento ID
+        // Assegnamento e aggiornamento ID
         ID = ManualID;
         ManualID = ManualID +2;
 
@@ -30,12 +31,12 @@
 
 /* FUNZIONI MEMBRO */
 
-    //Setter
+    // Setter
     void DispManuale::setSpegnimento(const Tempo& t) { oraSpegnimento = t; }
 
 /* MAPPA */
 
-    //Mappa per tipi dispositivi manuali
+    // Mappa per tipi dispositivi manuali
     std::map<DispManuale::DispDomotico, double> DispManuale::tipiDispositivi = {
         {DispManuale::DispDomotico::Impianto_Fotovoltaico, 1.5},
         {DispManuale::DispDomotico::Pompa_di_calore_termostato, -2.0},

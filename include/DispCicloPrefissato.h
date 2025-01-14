@@ -4,13 +4,12 @@
 #define DISPOSITIVOCICLO_H
 
 #include "Dispositivo.h"
-
 #include <map>
 
 class DispCicloPrefissato : public Dispositivo {
     public:
         
-        //Enum class per elencare i vari tipi di dispositivi
+        // Enum class per elencare i vari tipi di dispositivi
         enum class DispDomotico {
             Lavatrice,
             Lavastoviglie,
@@ -20,22 +19,22 @@ class DispCicloPrefissato : public Dispositivo {
             Televisore
         };
 
-        //Costruttori
+        // Costruttori
         DispCicloPrefissato(std::string, DispDomotico);
         DispCicloPrefissato(std::string, DispDomotico, Tempo);
 
-        //Getter
+        // Getter
         Tempo getDurata() const;
 
-        //Distruttore
+        // Distruttore
         ~DispCicloPrefissato() = default;
 
     private:
         
-        //Variabili d'istanza
-        static std::map<DispDomotico, std::pair<Tempo, double>> tipiDispositivi;
-        DispDomotico tipoDispositivo;
-        Tempo durata;
+        // Variabili d'istanza
+        static std::map<DispDomotico, std::pair<Tempo, double>> tipiDispositivi; // Mappa per caratteristiche dispositivi
+        DispDomotico tipoDispositivo; // Tipo dispositivo da enum class
+        Tempo durata; // Durata ciclo accensione
 }; 
 
 #endif
